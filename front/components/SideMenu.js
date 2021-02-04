@@ -1,22 +1,43 @@
-import { Card } from 'antd';
+import { Card, Divider } from 'antd';
 import styled from 'styled-components';
+import Link from 'next/link';
 
-const ListWrapper = styled.div`
+const StyledCard = styled(Card)`
   margin-left: 350px;
+  margin-right: 20px;
+`;
+
+const Atag = styled.a`
+  color: black;
+  display: flex;
+  margin-bottom: 10px;
 `;
 
 const SideMenu = () => {
   return (
-    <ListWrapper>
-      <Card title="커뮤니티" bordered={true}>
-        <p>자유</p>
-        <p>유머</p>
-        <p>전략</p>
-        <p>분석</p>
-        <p>경기예측</p>
-        <p>전략</p>
-      </Card>
-    </ListWrapper>
+    <>
+      <StyledCard title="커뮤니티" bordered={true}>
+        <Link href="/free">
+          <Atag>자유 </Atag>
+        </Link>
+        <Link href="/humor">
+          <Atag>유머 </Atag>
+        </Link>
+        <Divider />
+        <Link href="/transfer">
+          <Atag>이적 시장</Atag>
+        </Link>
+        <Link href="/forecast">
+          <Atag>경기 예측</Atag>
+        </Link>
+        <Link href="/examine">
+          <Atag>경기 분석</Atag>
+        </Link>
+        <Link href="/debate">
+          <Atag>경기 토론</Atag>
+        </Link>
+      </StyledCard>
+    </>
   );
 };
 

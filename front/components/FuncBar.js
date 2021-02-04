@@ -7,8 +7,6 @@ const FuncWrapper = styled.div`
   height: 30px;
   padding-top: 10px;
   margin-bottom: 10px;
-  color: white;
-
   & p {
     margin-left: 20px;
   }
@@ -18,13 +16,13 @@ const Funcbar = () => {
   return (
     <FuncWrapper>
       <Row>
-        <Col xs={24} md={18}>
+        <Col xs={24} md={14}>
           <p> 전체 </p>
         </Col>
-        <Col xs={0} md={5}>
-          <Search placeholder="input search text" />
+        <Col xs={0} md={6}>
+          <Search placeholder="검색" />
         </Col>
-        <Col xs={0} md={1}>
+        <Col xs={0} md={4}>
           <FormOutlined />
         </Col>
       </Row>

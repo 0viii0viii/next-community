@@ -1,28 +1,40 @@
 import React from 'react';
+import Link from 'next/link';
 import { PropTypes } from 'prop-types';
 import { Col, Menu, Row } from 'antd';
-import styled from 'styled-components';
-import HeaderBg from './HeaderBg';
+import styled, { createGlobalStyle } from 'styled-components';
 
+import HeaderBg from './HeaderBg';
 import SideMenu from './SideMenu';
 import Funcbar from './FuncBar';
 
 const Header = styled.header`
-  background: red;
+  background: blue;
   height: 56px;
 `;
 
-const MenuWrapper = styled.div`
-  background: #f00000;
+const StyledLink = styled(Link)`
+  margin-top: 15px;
+`;
+
+const Global = createGlobalStyle`
+ body {
+     background:#ebeef1;
+ }
 `;
 
 const Layout = ({ children }) => {
   return (
     <div>
+      <Global />
       <Header>
         <Row>
           <Col md={5}></Col>
-          <Col xs={24} md={14}></Col>
+          <Col xs={24} md={14}>
+            <StyledLink href="/">
+              <a>아스날</a>
+            </StyledLink>
+          </Col>
           <Col md={5}></Col>
         </Row>
       </Header>
@@ -32,17 +44,26 @@ const Layout = ({ children }) => {
           <SideMenu />
         </Col>
         <Col xs={24} md={10}>
-          <MenuWrapper>
-            <Funcbar />
-            <Menu
-              mode="horizontal"
-              style={{ backgroundColor: '#f00000', color: 'white' }}
-            >
-              <Menu.Item>인기</Menu.Item>
-              <Menu.Item>최신</Menu.Item>
-              <Menu.Item>축잘</Menu.Item>
-            </Menu>
-          </MenuWrapper>
+          <Funcbar />
+
+          <Menu mode="horizontal">
+            <Menu.Item>
+              <Link href="/popular">
+                <a>인기</a>
+              </Link>
+            </Menu.Item>
+            <Menu.Item>
+              <Link href="/latest">
+                <a>최신</a>
+              </Link>
+            </Menu.Item>
+            <Menu.Item>
+              <Link href="/respect">
+                <a>축잘</a>
+              </Link>
+            </Menu.Item>
+          </Menu>
+
           {children}
         </Col>
         <Col md={6}></Col>

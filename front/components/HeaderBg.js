@@ -1,4 +1,3 @@
-import { Col, Row } from 'antd';
 import styled from 'styled-components';
 import img from '../img/logo.jpg';
 

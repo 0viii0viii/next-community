@@ -1,10 +1,10 @@
-import Layout from '../components/Layout';
+import AppLayout from '../components/AppLayout';
 
 const Home = () => {
   return (
-    <Layout>
+    <AppLayout>
       <div> Hello, Next!</div>
-    </Layout>
+    </AppLayout>
   );
 };
 

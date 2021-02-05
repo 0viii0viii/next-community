@@ -1,10 +1,10 @@
-import Layout from '../components/Layout';
+import AppLayout from '../components/AppLayout';
 
 const Free = () => {
   return (
-    <Layout>
+    <AppLayout>
       <div>자유 게시판입니다</div>
-    </Layout>
+    </AppLayout>
   );
 };
 

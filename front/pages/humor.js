@@ -1,10 +1,10 @@
-import Layout from '../components/Layout';
+import AppLayout from '../components/AppLayout';
 
 const Humor = () => {
   return (
-    <Layout>
+    <AppLayout>
       <div>유머 게시판입니다</div>
-    </Layout>
+    </AppLayout>
   );
 };
 

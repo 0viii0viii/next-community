@@ -1,7 +1,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { PropTypes } from 'prop-types';
-import { Col, Menu, Row } from 'antd';
+import { Button, Col, Menu, Row, Layout } from 'antd';
 import styled, { createGlobalStyle } from 'styled-components';
 
 import HeaderBg from './HeaderBg';
@@ -16,6 +16,9 @@ const Header = styled.header`
 const StyledLink = styled(Link)`
   margin-top: 15px;
 `;
+const StyledButton = styled(Button)`
+position
+`;
 
 const Global = createGlobalStyle`
  body {
@@ -23,27 +26,26 @@ const Global = createGlobalStyle`
  }
 `;
 
-const Layout = ({ children }) => {
+const AppLayout = ({ children }) => {
   return (
     <div>
       <Global />
-      <Header>
-        <Row>
-          <Col md={5}></Col>
-          <Col xs={24} md={14}>
-            <StyledLink href="/">
-              <a>아스날</a>
-            </StyledLink>
-          </Col>
-          <Col md={5}></Col>
-        </Row>
-      </Header>
+      <Layout>
+        <Header>
+          <StyledLink href="/">
+            <a>아스날</a>
+          </StyledLink>
+          <StyledButton>로그인</StyledButton>
+        </Header>
+      </Layout>
+
       <HeaderBg />
       <Row>
-        <Col xs={0} md={8}>
+        <Col xs={0} sm={0} md={3}></Col>
+        <Col xs={0} sm={5} md={5}>
           <SideMenu />
         </Col>
-        <Col xs={24} md={10}>
+        <Col xs={24} sm={19} md={10}>
           <Funcbar />
 
           <Menu mode="horizontal">
@@ -66,14 +68,14 @@ const Layout = ({ children }) => {
 
           {children}
         </Col>
-        <Col md={6}></Col>
+        <Col sm={0} md={6}></Col>
       </Row>
     </div>
   );
 };
 
-Layout.propType = {
+AppLayout.propType = {
   children: PropTypes.node.isRequired,
 };
 
-export default Layout;
+export default AppLayout;

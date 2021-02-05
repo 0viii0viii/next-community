@@ -2,10 +2,7 @@ import { Card, Divider } from 'antd';
 import styled from 'styled-components';
 import Link from 'next/link';
 
-const StyledCard = styled(Card)`
-  margin-left: 350px;
-  margin-right: 20px;
-`;
+const StyledCard = styled(Card)``;
 
 const Atag = styled.a`
   color: black;

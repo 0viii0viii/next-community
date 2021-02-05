@@ -1,10 +1,10 @@
-import Layout from '../components/Layout';
+import AppLayout from '../components/AppLayout';
 
 const Respect = () => {
   return (
-    <Layout>
+    <AppLayout>
       <div>축잘알 게시판입니다</div>
-    </Layout>
+    </AppLayout>
   );
 };
 

@@ -3,7 +3,10 @@ import img from '../img/logo.jpg';
 
 const Background = styled.div`
   background-image: url(${img});
-  background-size: 100%;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+
   height: 200px;
 `;
 

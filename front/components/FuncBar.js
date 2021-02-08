@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import Search from 'antd/lib/input/Search';
 
 const FuncWrapper = styled.div`
-  height: 30px;
+  height: 50px;
   padding-top: 10px;
   border-bottom: 1px;
   background: white;

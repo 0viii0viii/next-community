@@ -3,7 +3,7 @@ import img from '../img/logo.jpg';
 
 const Background = styled.div`
   background-image: url(${img});
-  background-size: 1300px;
+  background-size: 100%;
   height: 200px;
 `;
 

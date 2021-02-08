@@ -1,12 +1,14 @@
-import React from 'react';
+import React, { useCallback, useState } from 'react';
 import Link from 'next/link';
 import { PropTypes } from 'prop-types';
-import { Button, Col, Menu, Row, Layout } from 'antd';
+import { Button, Col, Menu, Row, Layout, Card } from 'antd';
 import styled, { createGlobalStyle } from 'styled-components';
 
 import HeaderBg from './HeaderBg';
 import SideMenu from './SideMenu';
 import Funcbar from './FuncBar';
+import MainMenu from './MainMenu';
+import { MenuOutlined } from '@ant-design/icons';
 
 const Header = styled.header`
   background: blue;
@@ -16,8 +18,27 @@ const Header = styled.header`
 const StyledLink = styled(Link)`
   margin-top: 15px;
 `;
-const StyledButton = styled(Button)`
-position
+const StyledButton = styled(Button)``;
+
+const StyledMenuOutlined = styled(MenuOutlined)`
+  font-size: 30px;
+  position: absolute;
+  right: 0;
+  margin-top: 10px;
+`;
+
+const StyledItem = styled.div`
+  display: flex;
+  align-item: center;
+  justify-content: center;
+  background: white;
+`;
+const Atag = styled.a`
+  color: black;
+  display: flex;
+  margin-right: 20px;
+  margin-top: 10px;
+  margin-bottom: 10px;
 `;
 
 const Global = createGlobalStyle`
@@ -27,48 +48,83 @@ const Global = createGlobalStyle`
 `;
 
 const AppLayout = ({ children }) => {
+  const [menuOpened, setmenuOpened] = useState(false);
+
+  const handleMenuClick = useCallback(() => {
+    setmenuOpened((prev) => !prev);
+  });
+
   return (
     <div>
       <Global />
-      <Layout>
-        <Header>
-          <StyledLink href="/">
-            <a>아스날</a>
-          </StyledLink>
-          <StyledButton>로그인</StyledButton>
-        </Header>
-      </Layout>
 
-      <HeaderBg />
+      <Header>
+        <Row>
+          <Col xs={0} md={4}></Col>
+          <Col xs={12} md={7}>
+            <StyledLink href="/">
+              <a>아스날</a>
+            </StyledLink>
+          </Col>
+          <Col xs={12} md={0}>
+            <StyledMenuOutlined onClick={handleMenuClick} />
+          </Col>
+          <Col xs={0} md={8}>
+            <StyledButton>로그인</StyledButton>
+          </Col>
+          <Col xs={0} md={4}></Col>
+        </Row>
+      </Header>
+
+      {menuOpened && (
+        <Row>
+          <Col xs={24} md={0}>
+            <StyledItem>
+              <Link href="/login">
+                <Atag>로그인</Atag>
+              </Link>
+            </StyledItem>
+          </Col>
+          <Col xs={24} md={0}>
+            <StyledItem>
+              <Link href="/free">
+                <Atag>자유</Atag>
+              </Link>
+              <Link href="/humor">
+                <Atag>유머</Atag>
+              </Link>
+              <Link href="/transfer">
+                <Atag>이적시장</Atag>
+              </Link>
+              <Link href="/forecast">
+                <Atag>경기 예측</Atag>
+              </Link>
+              <Link href="/examine">
+                <Atag>경기 분석</Atag>
+              </Link>
+              <Link href="/debate">
+                <Atag>경기 토론</Atag>
+              </Link>
+            </StyledItem>
+          </Col>
+        </Row>
+      )}
       <Row>
-        <Col xs={0} sm={0} md={3}></Col>
-        <Col xs={0} sm={5} md={5}>
+        <Col xs={0} md={24}>
+          <HeaderBg />
+        </Col>
+      </Row>
+      <Row>
+        <Col flex="auto"></Col>
+        <Col flex="400px">
           <SideMenu />
         </Col>
-        <Col xs={24} sm={19} md={10}>
+        <Col flex="800px">
           <Funcbar />
-
-          <Menu mode="horizontal">
-            <Menu.Item>
-              <Link href="/popular">
-                <a>인기</a>
-              </Link>
-            </Menu.Item>
-            <Menu.Item>
-              <Link href="/latest">
-                <a>최신</a>
-              </Link>
-            </Menu.Item>
-            <Menu.Item>
-              <Link href="/respect">
-                <a>축잘</a>
-              </Link>
-            </Menu.Item>
-          </Menu>
-
+          <MainMenu />
           {children}
         </Col>
-        <Col sm={0} md={6}></Col>
+        <Col flex="auto"></Col>
       </Row>
     </div>
   );

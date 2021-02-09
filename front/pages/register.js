@@ -1,9 +1,12 @@
 import { Button, Col, Divider, Input, Row } from 'antd';
 import Form from 'antd/lib/form/Form';
+import Router from 'next/router';
 import Link from 'next/link';
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import styled, { createGlobalStyle } from 'styled-components';
 import useInput from '../hooks/useInput';
+import { REGISTER_REQUEST } from '../reducers/types';
 
 const FormWrapper = styled(Form)`
   text-align: center;
@@ -39,6 +42,23 @@ const ErrorMessage = styled.div`
 `;
 
 const register = () => {
+  const dispatch = useDispatch();
+  const { registerLoading, registerDone, registerError } = useSelector(
+    (state) => state.user
+  );
+  /// 회원가입완료시 로그인페이지로 푸시
+  useEffect(() => {
+    if (registerDone) {
+      Router.push('/login');
+    }
+  }, [registerDone]);
+
+  useEffect(() => {
+    if (registerError) {
+      alert(registerError);
+    }
+  }, [registerError]);
+
   const [email, onChangeEmail] = useInput('');
   const [nickname, onChangeNickname] = useInput('');
   const [password, onChangePassword] = useInput('');
@@ -54,13 +74,23 @@ const register = () => {
     [password]
   );
 
+  const onSubmit = useCallback(() => {
+    if (password !== passwordCheck) {
+      return setPasswordError(true);
+    }
+    dispatch({
+      type: REGISTER_REQUEST,
+      data: { email, password, nickname },
+    });
+  }, [email, password, passwordCheck]);
+
   return (
     <>
       <Global />
       <Row>
         <Col flex="auto"></Col>
         <Col xs={24} sm={24} md={6}>
-          <FormWrapper>
+          <FormWrapper onFinish={onSubmit}>
             <Link href="/">
               <h1>Gunners</h1>
             </Link>
@@ -103,7 +133,13 @@ const register = () => {
             {passwordError && (
               <ErrorMessage>비밀번호가 일치하지 않습니다</ErrorMessage>
             )}
-            <StyledButton3>가입하기</StyledButton3>
+            <StyledButton3
+              type="primary"
+              htmlType="submit"
+              loading={registerLoading}
+            >
+              가입하기
+            </StyledButton3>
 
             <p>이미 회원이신가요?</p>
             <Link href="/login">로그인하기</Link>

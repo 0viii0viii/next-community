@@ -3,12 +3,15 @@ import {
   LOGIN_FAILURE,
   LOGIN_REQUEST,
   LOGIN_SUCCESS,
+  LOGOUT_FAILURE,
+  LOGOUT_REQUEST,
+  LOGOUT_SUCCESS,
   REGISTER_FAILURE,
   REGISTER_REQUEST,
   REGISTER_SUCCESS,
 } from '../reducers/types';
 import axios from 'axios';
-
+//회원가입
 function registerAPI(data) {
   return axios.post('/user/register', data);
 }
@@ -27,14 +30,14 @@ function* register(action) {
     });
   }
 }
-
+//로그인
 function loginAPI(data) {
   return axios.post('/user/login', data);
 }
 
 function* login(action) {
   try {
-    const result = yield call(loginAPI, action.data); // call,fork 둘다 함수실행 fork 비동기, call 동기
+    const result = yield call(loginAPI, action.data);
     console.log(result);
     yield put({
       type: LOGIN_SUCCESS,
@@ -48,13 +51,36 @@ function* login(action) {
   }
 }
 
+//로그아웃
+function logoutAPI() {
+  return axios.post('/user/logout');
+}
+
+function* logout() {
+  try {
+    const result = yield call(logoutAPI);
+    console.log(result);
+    yield put({
+      type: LOGOUT_SUCCESS,
+    });
+  } catch (e) {
+    yield put({
+      type: LOGOUT_FAILURE,
+      error: e.response.data,
+    });
+  }
+}
+
 function* watchRegister() {
   yield takeLatest(REGISTER_REQUEST, register);
 }
 function* watchLogin() {
   yield takeLatest(LOGIN_REQUEST, login);
 }
+function* watchLogout() {
+  yield takeLatest(LOGOUT_REQUEST, logout);
+}
 
 export default function* userSaga() {
-  yield all([fork(watchRegister), fork(watchLogin)]);
+  yield all([fork(watchRegister), fork(watchLogin), fork(watchLogout)]);
 }

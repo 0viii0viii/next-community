@@ -1,7 +1,8 @@
 import { Button, Col, Divider, Input, Row } from 'antd';
 import Form from 'antd/lib/form/Form';
 import Link from 'next/link';
-import { useCallback } from 'react';
+import Router from 'next/router';
+import { useCallback, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled, { createGlobalStyle } from 'styled-components';
 import useInput from '../hooks/useInput';
@@ -53,9 +54,24 @@ const StyledInput = styled(Input)`
 
 const login = () => {
   const dispatch = useDispatch();
-  const { loginLoading } = useSelector((state) => state.user);
+  const { loginLoading, loginDone, loginError } = useSelector(
+    (state) => state.user
+  );
   const [email, onChangeEmail] = useInput('');
   const [password, onChangePassword] = useInput('');
+
+  /// 회원가입완료시 로그인페이지로 푸시
+  useEffect(() => {
+    if (loginDone) {
+      Router.push('/');
+    }
+  }, [loginDone]);
+  //로그인 오류시 오류 알림
+  useEffect(() => {
+    if (loginError) {
+      alert(loginError);
+    }
+  }, [loginError]);
 
   const onSubmitLogin = useCallback(() => {
     dispatch({

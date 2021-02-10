@@ -27,6 +27,14 @@ router.post('/login', (req, res, next) => {
   })(req, res, next);
 });
 
+// POST /user/logout
+// @desc 로그아웃
+router.post('/logout', (req, res) => {
+  req.logout();
+  req.session.destroy();
+  res.send('done');
+});
+
 // POST /user
 // @desc 회원가입
 router.post('/register', async (req, res, next) => {

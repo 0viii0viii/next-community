@@ -2,6 +2,9 @@ const express = require('express');
 const cors = require('cors');
 const userRouter = require('./routes/user');
 const app = express();
+//Passport 연결
+const passportConfig = require('./passport');
+passportConfig();
 
 //Database 연결
 const db = require('./models');

@@ -17,12 +17,12 @@ router.post('/login', (req, res, next) => {
       return res.status(401).send(clierr.reason);
     }
     return req.login(user, async (loginErr) => {
-      //passport 로그인실행
+      //passport 로그인실행 (index/ serializeUser실행)
       if (loginErr) {
         console.error(loginErr);
         return next(loginErr);
       }
-      return res.json(user); // 로그인 완료 사용자 정보를  front로
+      return res.status(200).json(user); // 로그인 완료 사용자 정보를  front로
     });
   })(req, res, next);
 });

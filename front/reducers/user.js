@@ -15,6 +15,7 @@ export const initialState = {
   loginLoading: false, //로그인
   loginDone: false,
   loginError: null,
+  me: null,
 };
 
 const reducer = (state = initialState, action) => {
@@ -40,6 +41,7 @@ const reducer = (state = initialState, action) => {
         break;
       case LOGIN_SUCCESS:
         draft.loginDone = true;
+        draft.me = action.data;
         draft.loginLoading = false;
         break;
       case LOGIN_FAILURE:

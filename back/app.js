@@ -1,11 +1,17 @@
 const express = require('express');
 const cors = require('cors');
+const session = require('express-session');
+const dotenv = require('dotenv');
+const cookieParser = require('cookie-parser');
 const userRouter = require('./routes/user');
-const app = express();
 //Passport 연결
 const passportConfig = require('./passport');
-passportConfig();
+const passport = require('passport');
 
+passportConfig();
+dotenv.config();
+
+const app = express();
 //Database 연결
 const db = require('./models');
 db.sequelize
@@ -23,6 +29,18 @@ app.use(
     origin: '*',
   })
 );
+//로그인 related 미들웨어
+app.use(
+  session({
+    saveUninitialized: false,
+    resave: false,
+    secret: process.env.COOKIE_SECRET,
+  })
+);
+app.use(passport.initialize());
+app.use(passport.session());
+app.use(cookieParser(process.env.COOKIE_SECRET));
+
 app.get('/', (req, res) => {
   res.send('ㅎㅇ');
 });

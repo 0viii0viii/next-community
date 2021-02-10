@@ -1,10 +1,15 @@
 import styled from 'styled-components';
-
 import { Button, Card } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
 import Avatar from 'antd/lib/avatar/avatar';
 import { useCallback } from 'react';
 import { LOGOUT_REQUEST } from '../reducers/types';
+import Link from 'next/link';
+import Meta from 'antd/lib/card/Meta';
+
+const BtnContainer = styled.div`
+  margin-top: 10px;
+`;
 
 const Profile = () => {
   const dispatch = useDispatch();
@@ -18,14 +23,22 @@ const Profile = () => {
   return (
     <>
       <Card>
-        <Avatar>레벨</Avatar>
-        <p>{me.nickname}</p>
-        <Button>글쓰기</Button>
-        <Button>내 글</Button>
-        <Button>레전드</Button>
-        <Button onClick={onLogout} loading={logoutLoading}>
-          로그아웃
-        </Button>
+        <Meta
+          avatar={<Avatar>벵거</Avatar>}
+          title={me.nickname}
+          description="LV.레전드"
+        />
+
+        <BtnContainer>
+          <Button>글쓰기</Button>
+          <Button>내 글</Button>
+          <Button>
+            <Link href="/profile">프로필</Link>
+          </Button>
+          <Button onClick={onLogout} loading={logoutLoading}>
+            로그아웃
+          </Button>
+        </BtnContainer>
       </Card>
     </>
   );

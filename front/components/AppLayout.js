@@ -9,6 +9,7 @@ import SideMenu from './SideMenu';
 import Funcbar from './FuncBar';
 import MainMenu from './MainMenu';
 import { MenuOutlined } from '@ant-design/icons';
+import { useSelector } from 'react-redux';
 
 const Header = styled.header`
   background: blue;
@@ -18,7 +19,11 @@ const Header = styled.header`
 const StyledLink = styled(Link)`
   margin-top: 15px;
 `;
-const StyledButton = styled(Button)``;
+const StyledButton = styled(Button)`
+  position: absolute;
+  right: 0;
+  top: 15px;
+`;
 
 const StyledMenuOutlined = styled(MenuOutlined)`
   font-size: 30px;
@@ -48,6 +53,7 @@ const Global = createGlobalStyle`
 `;
 
 const AppLayout = ({ children }) => {
+  const { me } = useSelector((state) => state.user);
   const [menuOpened, setmenuOpened] = useState(false);
 
   const handleMenuClick = useCallback(() => {
@@ -62,15 +68,15 @@ const AppLayout = ({ children }) => {
         <Row>
           <Col xs={0} md={4}></Col>
           <Col xs={12} md={7}>
-            <StyledLink href="/">
+            {/* <StyledLink href="/">
               <a>아스날</a>
-            </StyledLink>
+            </StyledLink> */}
           </Col>
           <Col xs={12} md={0}>
             <StyledMenuOutlined onClick={handleMenuClick} />
           </Col>
           <Col xs={0} md={8}>
-            <StyledButton>로그인</StyledButton>
+            {/* <StyledButton>로그인</StyledButton> */}
           </Col>
           <Col xs={0} md={4}></Col>
         </Row>
@@ -79,11 +85,19 @@ const AppLayout = ({ children }) => {
       {menuOpened && (
         <Row>
           <Col xs={24} md={0}>
-            <StyledItem>
-              <Link href="/login">
-                <Atag>로그인</Atag>
-              </Link>
-            </StyledItem>
+            {me ? (
+              <StyledItem>
+                <Link href="/profile">
+                  <Atag>{me.nickname}내 프로필</Atag>
+                </Link>
+              </StyledItem>
+            ) : (
+              <StyledItem>
+                <Link href="/login">
+                  <Atag>로그인</Atag>
+                </Link>
+              </StyledItem>
+            )}
           </Col>
           <Col xs={24} md={0}>
             <StyledItem>

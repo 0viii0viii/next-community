@@ -72,7 +72,7 @@ const AppLayout = ({ children }) => {
               <a>아스날</a>
             </StyledLink> */}
           </Col>
-          <Col xs={12} md={0}>
+          <Col xs={12} lg={12} xl={0}>
             <StyledMenuOutlined onClick={handleMenuClick} />
           </Col>
           <Col xs={0} md={8}>
@@ -84,7 +84,7 @@ const AppLayout = ({ children }) => {
 
       {menuOpened && (
         <Row>
-          <Col xs={24} md={0}>
+          <Col xs={24} lg={24} xl={0}>
             {me ? (
               <StyledItem>
                 <Link href="/profile">
@@ -99,7 +99,7 @@ const AppLayout = ({ children }) => {
               </StyledItem>
             )}
           </Col>
-          <Col xs={24} md={0}>
+          <Col xs={24} lg={24} xl={0}>
             <StyledItem>
               <Link href="/free">
                 <Atag>자유</Atag>
@@ -124,7 +124,7 @@ const AppLayout = ({ children }) => {
         </Row>
       )}
       <Row>
-        <Col xs={0} md={24}>
+        <Col xs={0} lg={0} xl={24}>
           <HeaderBg />
         </Col>
       </Row>

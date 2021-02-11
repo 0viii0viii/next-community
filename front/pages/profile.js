@@ -1,9 +1,18 @@
 import { Button, Card, Col, Divider, Input, Row } from 'antd';
+import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
+import Router from 'next/router';
 import AppLayout from '../components/AppLayout';
 
 const Profile = () => {
   const { me } = useSelector((state) => state.user);
+
+  useEffect(() => {
+    if (!me) {
+      Router.push('/');
+    }
+  }, [me]);
+
   return (
     <AppLayout>
       <Card>

@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { Col, Menu, Row } from 'antd';
 
 const StyledMenuTest = styled(Menu)`
-  width: 1200px;
+  width: 100%;
 `;
 
 const MainMenu = () => {

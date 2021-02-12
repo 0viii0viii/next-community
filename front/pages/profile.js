@@ -9,9 +9,13 @@ const Profile = () => {
 
   useEffect(() => {
     if (!me) {
-      Router.push('/');
+      Router.push('/login');
     }
   }, [me]);
+
+  if (!me) {
+    return null;
+  }
 
   return (
     <AppLayout>

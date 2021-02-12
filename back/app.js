@@ -26,7 +26,8 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(
   cors({
-    origin: '*',
+    origin: 'http://localhost:3000',
+    credentials: true, // 쿠키 전달하기 위함 ->saga index에 withCredential:true적용
   })
 );
 //로그인 related 미들웨어

@@ -1,5 +1,8 @@
 import { all, put, fork, call, takeLatest } from 'redux-saga/effects';
 import {
+  LOAD_ME_FAILURE,
+  LOAD_ME_REQUEST,
+  LOAD_ME_SUCCESS,
   LOGIN_FAILURE,
   LOGIN_REQUEST,
   LOGIN_SUCCESS,
@@ -71,6 +74,29 @@ function* logout() {
   }
 }
 
+//유저 정보 가져오기
+function loadMeAPI() {
+  return axios.get('/user');
+}
+
+function* loadMe() {
+  try {
+    const result = yield call(loadMeAPI);
+    yield put({
+      type: LOAD_ME_SUCCESS,
+      data: result.data,
+    });
+  } catch (e) {
+    yield put({
+      type: LOAD_ME_FAILURE,
+      error: e.response.data,
+    });
+  }
+}
+
+function* watchLoadMe() {
+  yield takeLatest(LOAD_ME_REQUEST, loadMe);
+}
 function* watchRegister() {
   yield takeLatest(REGISTER_REQUEST, register);
 }
@@ -82,5 +108,10 @@ function* watchLogout() {
 }
 
 export default function* userSaga() {
-  yield all([fork(watchRegister), fork(watchLogin), fork(watchLogout)]);
+  yield all([
+    fork(watchRegister),
+    fork(watchLogin),
+    fork(watchLogout),
+    fork(watchLoadMe),
+  ]);
 }

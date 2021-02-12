@@ -36,7 +36,7 @@ router.post('/logout', isLoggedIn, (req, res) => {
   res.send('done');
 });
 
-// POST /user
+// POST /user/register
 // @desc 회원가입
 router.post('/register', isNotLoggedIn, async (req, res, next) => {
   try {
@@ -63,6 +63,25 @@ router.post('/register', isNotLoggedIn, async (req, res, next) => {
   } catch (error) {
     console.error(error);
     next(error); //status 500
+  }
+});
+// GET /user
+// @desc 유저정보
+router.get('/', async (req, res, next) => {
+  console.log(req.headers);
+  try {
+    if (req.user) {
+      const user = await User.findOne({
+        where: { id: req.user.id },
+      });
+
+      res.status(200).json(user);
+    } else {
+      res.status(200).json(null);
+    }
+  } catch (error) {
+    console.error(error);
+    next(error);
   }
 });
 

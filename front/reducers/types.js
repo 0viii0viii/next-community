@@ -12,3 +12,8 @@ export const LOGIN_FAILURE = 'LOGIN_FAILURE';
 export const LOGOUT_REQUEST = 'LOGOUT_REQUEST';
 export const LOGOUT_SUCCESS = 'LOGOUT_SUCCESS';
 export const LOGOUT_FAILURE = 'LOGOUT_FAILURE';
+
+//내정보 가져오기
+export const LOAD_ME_REQUEST = 'LOAD_ME_REQUEST';
+export const LOAD_ME_SUCCESS = 'LOAD_ME_SUCCESS';
+export const LOAD_ME_FAILURE = 'LOAD_ME_FAILURE';

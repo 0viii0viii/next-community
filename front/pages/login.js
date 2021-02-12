@@ -54,7 +54,7 @@ const StyledInput = styled(Input)`
 
 const login = () => {
   const dispatch = useDispatch();
-  const { loginLoading, loginDone, loginError } = useSelector(
+  const { me, loginLoading, loginDone, loginError } = useSelector(
     (state) => state.user
   );
   const [email, onChangeEmail] = useInput('');

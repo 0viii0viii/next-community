@@ -9,6 +9,9 @@ import {
   LOGOUT_REQUEST,
   LOGOUT_SUCCESS,
   LOGOUT_FAILURE,
+  LOAD_ME_REQUEST,
+  LOAD_ME_SUCCESS,
+  LOAD_ME_FAILURE,
 } from './types';
 
 export const initialState = {
@@ -21,6 +24,9 @@ export const initialState = {
   logoutLoading: false, //로그아웃
   logoutDone: false,
   logoutError: null,
+  loadMeLoading: false, //유저정보 가져오기
+  loadMeDone: false,
+  loadMeError: null,
   me: null,
 };
 
@@ -67,6 +73,20 @@ const reducer = (state = initialState, action) => {
       case LOGOUT_FAILURE:
         draft.logoutLoading = false;
         draft.logoutError = action.error;
+        break;
+      case LOAD_ME_REQUEST:
+        draft.loadMeLoading = true;
+        draft.loadMeError = null;
+        draft.loadMeDone = false;
+        break;
+      case LOAD_ME_SUCCESS:
+        draft.loadMeLoading = false;
+        draft.me = action.data;
+        draft.loadMeDone = true;
+        break;
+      case LOAD_ME_FAILURE:
+        draft.loadMeLoading = false;
+        draft.loadMeError = action.error;
         break;
     }
   });

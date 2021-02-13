@@ -12,6 +12,12 @@ import {
   LOAD_ME_REQUEST,
   LOAD_ME_SUCCESS,
   LOAD_ME_FAILURE,
+  EDIT_NICKNAME_REQUEST,
+  EDIT_NICKNAME_SUCCESS,
+  EDIT_NICKNAME_FAILURE,
+  EDIT_PASSWORD_REQUEST,
+  EDIT_PASSWORD_SUCCESS,
+  EDIT_PASSWORD_FAILURE,
 } from './types';
 
 export const initialState = {
@@ -27,6 +33,12 @@ export const initialState = {
   loadMeLoading: false, //유저정보 가져오기
   loadMeDone: false,
   loadMeError: null,
+  editNicknameLoading: false, //닉네임 변경
+  editNicknameDone: false,
+  editNicknameError: null,
+  editPasswordLoading: false, //비밀번호 변경
+  editPasswordDone: false,
+  editPasswordError: null,
   me: null,
 };
 
@@ -87,6 +99,34 @@ const reducer = (state = initialState, action) => {
       case LOAD_ME_FAILURE:
         draft.loadMeLoading = false;
         draft.loadMeError = action.error;
+        break;
+      case EDIT_NICKNAME_REQUEST:
+        draft.editNicknameLoading = true;
+        draft.editNicknameError = null;
+        draft.editNicknameDone = false;
+        break;
+      case EDIT_NICKNAME_SUCCESS:
+        draft.me.nickname = action.data.nickname;
+        draft.editNicknameLoading = false;
+        draft.editNicknameDone = true;
+        break;
+      case EDIT_NICKNAME_FAILURE:
+        draft.editNicknameLoading = false;
+        draft.editNicknameError = action.error;
+        break;
+      case EDIT_PASSWORD_REQUEST:
+        draft.editPasswordLoading = true;
+        draft.editPasswordError = null;
+        draft.editPasswordDone = false;
+        break;
+      case EDIT_PASSWORD_SUCCESS:
+        draft.editPasswordLoading = false;
+        draft.me.password = action.data.password;
+        draft.editPasswordDone = true;
+        break;
+      case EDIT_PASSWORD_FAILURE:
+        draft.editPasswordLoading = false;
+        draft.editPasswordError = action.error;
         break;
     }
   });

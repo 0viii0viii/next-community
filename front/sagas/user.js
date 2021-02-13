@@ -1,5 +1,11 @@
 import { all, put, fork, call, takeLatest } from 'redux-saga/effects';
 import {
+  EDIT_NICKNAME_FAILURE,
+  EDIT_NICKNAME_REQUEST,
+  EDIT_NICKNAME_SUCCESS,
+  EDIT_PASSWORD_FAILURE,
+  EDIT_PASSWORD_REQUEST,
+  EDIT_PASSWORD_SUCCESS,
   LOAD_ME_FAILURE,
   LOAD_ME_REQUEST,
   LOAD_ME_SUCCESS,
@@ -94,6 +100,53 @@ function* loadMe() {
   }
 }
 
+//닉네임 변경
+function editNicknameAPI(data) {
+  return axios.patch('/user/nickname', { nickname: data });
+}
+
+function* editNickname(action) {
+  try {
+    const result = yield call(editNicknameAPI, action.data);
+
+    yield put({
+      type: EDIT_NICKNAME_SUCCESS,
+      data: result.data,
+    });
+  } catch (e) {
+    yield put({
+      type: EDIT_NICKNAME_FAILURE,
+      error: e.response.data,
+    });
+  }
+}
+//비밀번호 변경
+function editPasswordAPI(data) {
+  return axios.patch('/user/password', data);
+}
+
+function* editPassword(action) {
+  try {
+    const result = yield call(editPasswordAPI, action.data);
+
+    yield put({
+      type: EDIT_PASSWORD_SUCCESS,
+      data: result.data,
+    });
+  } catch (e) {
+    yield put({
+      type: EDIT_PASSWORD_FAILURE,
+      error: e.response.data,
+    });
+  }
+}
+
+function* watchEditPassword() {
+  yield takeLatest(EDIT_PASSWORD_REQUEST, editPassword);
+}
+function* watchEditNickname() {
+  yield takeLatest(EDIT_NICKNAME_REQUEST, editNickname);
+}
 function* watchLoadMe() {
   yield takeLatest(LOAD_ME_REQUEST, loadMe);
 }
@@ -113,5 +166,7 @@ export default function* userSaga() {
     fork(watchLogin),
     fork(watchLogout),
     fork(watchLoadMe),
+    fork(watchEditNickname),
+    fork(watchEditPassword),
   ]);
 }

@@ -11,6 +11,9 @@ const sequelize = new Sequelize(
 );
 
 db.User = require('./user')(sequelize, Sequelize); //실행, 생성
+db.Post = require('./post')(sequelize, Sequelize);
+db.Comment = require('./comment')(sequelize, Sequelize);
+db.Image = require('./image')(sequelize, Sequelize);
 
 Object.keys(db).forEach((modelName) => {
   if (db[modelName].associate) {

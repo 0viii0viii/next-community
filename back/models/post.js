@@ -3,13 +3,12 @@ module.exports = (sequelize, DataTypes) => {
     'Post',
     {
       title: { type: DataTypes.TEXT, allowNull: false },
+      content: { type: DataTypes.TEXT, allowNull: false },
+      category: { type: DataTypes.TEXT, allowNull: false },
+      fileUrl: { type: DataTypes.TEXT },
+      creator: { type: DataTypes.TEXT },
     },
-    {
-      content: {
-        type: DataTypes.TEXT,
-        allowNull: false,
-      },
-    },
+
     {
       charset: 'utf8mb4', // =이모티콘 사용가능
       collate: 'utf8mb4_general_ci', //한글 저장
@@ -18,7 +17,6 @@ module.exports = (sequelize, DataTypes) => {
   Post.associate = (db) => {
     db.Post.belongsTo(db.User);
     db.Post.hasMany(db.Comment);
-    db.Post.hasMany(db.Image);
     db.Post.belongsToMany(db.User, { through: 'Save', as: 'Saved' }); //게시물 저장
     db.Post.belongsToMany(db.User, { through: 'Like', as: 'Likers' });
     db.Post.belongsToMany(db.User, { through: 'Hate', as: 'Haters' });

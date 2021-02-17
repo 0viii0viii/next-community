@@ -2,6 +2,7 @@ import { HYDRATE } from 'next-redux-wrapper';
 import { combineReducers } from 'redux';
 
 import user from './user';
+import post from './post';
 
 //hydrate-> 서버사이드 렌더링
 const rootReducer = (state, action) => {
@@ -12,6 +13,7 @@ const rootReducer = (state, action) => {
     default: {
       const combinedReducer = combineReducers({
         user,
+        post,
       });
       return combinedReducer(state, action);
     }

@@ -2,6 +2,7 @@ import { Row, Col } from 'antd';
 import { FormOutlined } from '@ant-design/icons';
 import styled from 'styled-components';
 import Search from 'antd/lib/input/Search';
+import Link from 'next/link';
 
 const FuncWrapper = styled.div`
   height: 50px;
@@ -38,13 +39,17 @@ const Funcbar = () => {
         <Col xs={0} sm={0} md={0} lg={0} xl={24}>
           <FuncWrapper>
             <StyledSearch placeholder="검색" />
-            <StyledPost />
+            <Link href="/post">
+              <StyledPost />
+            </Link>
           </FuncWrapper>
         </Col>
         <Col xs={24} sm={24} md={24} lg={24} xl={0}>
           <FuncWrapperTest>
             <StyledSearch placeholder="검색" />
-            <StyledPost />
+            <Link href="/post">
+              <StyledPost />
+            </Link>
           </FuncWrapperTest>
         </Col>
       </Row>

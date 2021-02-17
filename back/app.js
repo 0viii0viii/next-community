@@ -4,6 +4,7 @@ const session = require('express-session');
 const dotenv = require('dotenv');
 const cookieParser = require('cookie-parser');
 const userRouter = require('./routes/user');
+const postRouter = require('./routes/post');
 //Passport 연결
 const passportConfig = require('./passport');
 const passport = require('passport');
@@ -47,6 +48,7 @@ app.get('/', (req, res) => {
 });
 
 app.use('/user', userRouter);
+app.use('/post', postRouter);
 
 app.listen(5000, () => {
   console.log('실행완료');

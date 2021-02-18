@@ -1,5 +1,14 @@
 import { all, call, fork, put, takeLatest } from 'redux-saga/effects';
 import {
+  CATEGORY_POST_LOAD_FAILURE,
+  CATEGORY_POST_LOAD_REQUEST,
+  CATEGORY_POST_LOAD_SUCCESS,
+  POST_DETAIL_LOAD_FAILURE,
+  POST_DETAIL_LOAD_REQUEST,
+  POST_DETAIL_LOAD_SUCCESS,
+  POST_LOAD_FAILURE,
+  POST_LOAD_REQUEST,
+  POST_LOAD_SUCCESS,
   POST_UPLOAD_FAILURE,
   POST_UPLOAD_REQUEST,
   POST_UPLOAD_SUCCESS,
@@ -29,10 +38,88 @@ function* postUpload(action) {
   }
 }
 
+//카테고리 게시글 로드
+function categoryFindAPI(data) {
+  console.log(data);
+  return axios.get(`/post/${encodeURIComponent(data)}`);
+}
+
+function* categoryFind(action) {
+  try {
+    const result = yield call(categoryFindAPI, action.data);
+    console.log(result);
+    yield put({
+      type: CATEGORY_POST_LOAD_SUCCESS,
+      data: result.data,
+    });
+  } catch (e) {
+    yield put({
+      type: CATEGORY_POST_LOAD_FAILURE,
+      error: e.response.data,
+    });
+  }
+}
+
+//게시글 로드
+function postLoadAPI() {
+  return axios.get('/post');
+}
+
+function* postLoad(action) {
+  try {
+    const result = yield call(postLoadAPI, action);
+    console.log(result);
+    yield put({
+      type: POST_LOAD_SUCCESS,
+      data: result.data,
+    });
+  } catch (e) {
+    yield put({
+      type: POST_LOAD_FAILURE,
+      error: e.response.data,
+    });
+  }
+}
+
+//게시글 내용 로드
+function postDetailLoadAPI(data) {
+  return axios.get(`/post/detail/${data}`);
+}
+
+function* postDetailLoad(action) {
+  try {
+    const result = yield call(postDetailLoadAPI, action.data);
+    console.log(result);
+    yield put({
+      type: POST_DETAIL_LOAD_SUCCESS,
+      data: result.data,
+    });
+  } catch (e) {
+    yield put({
+      type: POST_DETAIL_LOAD_FAILURE,
+      error: e.response.data,
+    });
+  }
+}
+
+function* watchpostDetailLoad() {
+  yield takeLatest(POST_DETAIL_LOAD_REQUEST, postDetailLoad);
+}
+function* watchpostLoad() {
+  yield takeLatest(POST_LOAD_REQUEST, postLoad);
+}
+function* watchcategoryFind() {
+  yield takeLatest(CATEGORY_POST_LOAD_REQUEST, categoryFind);
+}
 function* watchpostUpload() {
   yield takeLatest(POST_UPLOAD_REQUEST, postUpload);
 }
 
 export default function* postSaga() {
-  yield all([fork(watchpostUpload)]);
+  yield all([
+    fork(watchpostUpload),
+    fork(watchcategoryFind),
+    fork(watchpostLoad),
+    fork(watchpostDetailLoad),
+  ]);
 }

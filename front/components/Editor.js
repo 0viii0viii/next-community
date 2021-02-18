@@ -3,23 +3,28 @@ import 'codemirror/lib/codemirror.css'; // Editor's Dependency Style
 import '@toast-ui/editor/dist/toastui-editor.css'; // Editor's Style
 
 import { Editor } from '@toast-ui/react-editor';
-import { useCallback, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import axios from 'axios';
 import { POST_UPLOAD_REQUEST } from '../reducers/types';
+import Router from 'next/router';
 
 const PostEditor = () => {
   const dispatch = useDispatch();
-  // const { me } = useSelector((state) => state.user);
-
+  const { me } = useSelector((state) => state.user);
+  const { postUploadDone } = useSelector((state) => state.post);
+  useEffect(() => {
+    if (postUploadDone) {
+      Router.replace('/');
+    }
+  });
   const editorRef = useRef();
   const [form, setValues] = useState({
     title: '',
     category: '',
     content: '',
     fileUrl: '',
-    creator: '',
-    // creator: me.id,
+    creator: me.nickname,
   });
 
   const onChange = (e) => {
@@ -30,10 +35,9 @@ const PostEditor = () => {
   };
 
   const onClickSubmit = useCallback(() => {
-    const { title, content, fileUrl, category } = form;
-    const body = { title, content, fileUrl, category };
-    console.log(body);
-    console.log('마크다운');
+    const { title, content, fileUrl, category, creator } = form;
+    const body = { title, content, fileUrl, category, creator };
+
     dispatch({
       type: POST_UPLOAD_REQUEST,
       data: body,

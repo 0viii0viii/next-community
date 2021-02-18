@@ -37,23 +37,27 @@ const SideMenu = () => {
           )}
 
           <StyledCard title="커뮤니티" bordered={true}>
-            <Link href="/free">
+            <Link href="/">
+              <Atag>전체 </Atag>
+            </Link>
+            <Divider />
+            <Link href="/category/free">
               <Atag>자유 </Atag>
             </Link>
-            <Link href="/humor">
+            <Link href="/category/humor">
               <Atag>유머 </Atag>
             </Link>
             <Divider />
-            <Link href="/transfer">
+            <Link href="/category/transfer">
               <Atag>이적 시장</Atag>
             </Link>
-            <Link href="/forecast">
+            <Link href="/category/forecast">
               <Atag>경기 예측</Atag>
             </Link>
-            <Link href="/examine">
+            <Link href="/category/examine">
               <Atag>경기 분석</Atag>
             </Link>
-            <Link href="/debate">
+            <Link href="/category/debate">
               <Atag>경기 토론</Atag>
             </Link>
           </StyledCard>

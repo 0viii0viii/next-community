@@ -54,12 +54,139 @@ router.post('/', uploadS3.none(), async (req, res, next) => {
       category,
       fileUrl,
       creator,
+      UserId: req.user.id,
     });
-    return res.send('성공');
+    console.log('하이');
+    return res.redirect('/');
   } catch (error) {
     console.error(error);
     next(error);
   }
 });
+
+// GET /
+//@desc 모든 게시글
+router.get('/', async (req, res, next) => {
+  try {
+    const postResult = await Post.findAll({});
+    console.log(postResult);
+    res.json(postResult);
+  } catch (error) {
+    console.error(error);
+    next(error);
+  }
+});
+// GET /
+//@desc 모든 게시글
+router.get('/detail/:id', async (req, res, next) => {
+  try {
+    const post = await Post.findOne({
+      where: { id: req.params.id },
+    });
+    console.log(post);
+    res.json(post);
+  } catch (error) {
+    console.error(error);
+    next(error);
+  }
+});
+// category ---------------------------------------------
+// GET  /category/free
+// @desc  GET Posts 자유게시판
+router.get('/free', async (req, res, next) => {
+  try {
+    const categoryLoadPosts = await Post.findAll({
+      attributes: ['id', 'title', 'content', 'creator', 'createdAt'],
+      where: { category: '자유' },
+    });
+    console.log(categoryLoadPosts);
+    res.json(categoryLoadPosts);
+  } catch (error) {
+    console.error(error);
+    next(error);
+  }
+});
+
+// GET  /category/humor
+// @desc  GET Posts 유머게시판
+router.get('/humor', async (req, res, next) => {
+  try {
+    const categoryLoadPosts = await Post.findAll({
+      attributes: ['id', 'title', 'content', 'creator', 'createdAt'],
+      where: { category: '유머' },
+    });
+    console.log(categoryLoadPosts);
+    res.json(categoryLoadPosts);
+  } catch (error) {
+    console.error(error);
+    next(error);
+  }
+});
+
+// GET  /category/transfer
+// @desc  GET Posts 이적시장
+router.get('/transfer', async (req, res, next) => {
+  try {
+    const categoryLoadPosts = await Post.findAll({
+      attributes: ['id', 'title', 'content', 'creator', 'createdAt'],
+      where: { category: '이적시장' },
+    });
+    console.log(categoryLoadPosts);
+    res.json(categoryLoadPosts);
+  } catch (error) {
+    console.error(error);
+    next(error);
+  }
+});
+
+// GET  /category/forecast
+// @desc  GET Post forecast
+router.get('/forecast', async (req, res, next) => {
+  try {
+    const categoryLoadPosts = await Post.findAll({
+      attributes: ['id', 'title', 'content', 'creator', 'createdAt'],
+      where: { category: '경기 예측' },
+    });
+    console.log(categoryLoadPosts);
+    res.json(categoryLoadPosts);
+  } catch (error) {
+    console.error(error);
+    next(error);
+  }
+});
+
+// GET  /category/examine
+// @desc  GET Post examine
+router.get('/examine', async (req, res, next) => {
+  try {
+    const categoryLoadPosts = await Post.findAll({
+      attributes: ['id', 'title', 'content', 'creator', 'createdAt'],
+      where: { category: '경기 분석' },
+    });
+    console.log(categoryLoadPosts);
+    res.json(categoryLoadPosts);
+  } catch (error) {
+    console.error(error);
+    next(error);
+  }
+});
+
+// GET  /category/debate
+// @desc  GET Post debate
+router.get('/debate', async (req, res, next) => {
+  try {
+    const categoryLoadPosts = await Post.findAll({
+      attributes: ['id', 'title', 'content', 'creator', 'createdAt'],
+      where: { category: '경기 토론' },
+    });
+    console.log(categoryLoadPosts);
+    res.json(categoryLoadPosts);
+  } catch (error) {
+    console.error(error);
+    next(error);
+  }
+});
+
+//-------category------------
 
 module.exports = router;

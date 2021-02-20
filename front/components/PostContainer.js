@@ -6,13 +6,15 @@ import moment from 'moment';
 moment.locale('ko'); //한글로
 const PostContainer = () => {
   const { posts } = useSelector((state) => state.post);
+  console.log(posts, '하잉');
   return (
     <>
-      {posts.map((post) => {
+      {posts.map(({ id, title, creator, createdAt, Comments }) => {
         return (
-          <Link href={`/posts/${post.id}`}>
+          <Link href={`/posts/${id}`}>
             <Card>
-              {post.title} {post.creator} {moment(post.createdAt).fromNow()}
+              {title} {creator} {moment(createdAt).fromNow()}
+              {Comments.length}
             </Card>
           </Link>
         );

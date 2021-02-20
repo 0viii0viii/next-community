@@ -3,8 +3,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import AppLayout from '../components/AppLayout';
 import PostContainer from '../components/PostContainer';
 import { LOAD_ME_REQUEST, POST_LOAD_REQUEST } from '../reducers/types';
-import Link from 'next/link';
-import { Card } from 'antd';
 
 const Home = () => {
   const dispatch = useDispatch();

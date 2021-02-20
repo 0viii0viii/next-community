@@ -3,6 +3,12 @@ import {
   CATEGORY_POST_LOAD_FAILURE,
   CATEGORY_POST_LOAD_REQUEST,
   CATEGORY_POST_LOAD_SUCCESS,
+  POST_COMMENT_FAILURE,
+  POST_COMMENT_REQUEST,
+  POST_COMMENT_SUCCESS,
+  POST_DELETE_FAILURE,
+  POST_DELETE_REQUEST,
+  POST_DELETE_SUCCESS,
   POST_DETAIL_LOAD_FAILURE,
   POST_DETAIL_LOAD_REQUEST,
   POST_DETAIL_LOAD_SUCCESS,
@@ -15,7 +21,7 @@ import {
 } from '../reducers/types';
 import axios from 'axios';
 
-//비밀번호 변경
+//게시글 업로드
 function postUploadAPI(data) {
   console.log(data);
   return axios.post('/post', data);
@@ -33,6 +39,29 @@ function* postUpload(action) {
   } catch (e) {
     yield put({
       type: POST_UPLOAD_FAILURE,
+      error: e.response.data,
+    });
+  }
+}
+
+//댓글 업로드
+
+function postCommentAPI(data) {
+  return axios.post(`/post/${data.postId}/comment`, data);
+}
+
+function* postComment(action) {
+  try {
+    const result = yield call(postCommentAPI, action.data);
+    console.log(result);
+    yield put({
+      type: POST_COMMENT_SUCCESS,
+      data: result.data,
+    });
+  } catch (e) {
+    console.error(e);
+    yield put({
+      type: POST_COMMENT_FAILURE,
       error: e.response.data,
     });
   }
@@ -89,7 +118,6 @@ function postDetailLoadAPI(data) {
 function* postDetailLoad(action) {
   try {
     const result = yield call(postDetailLoadAPI, action.data);
-    console.log(result);
     yield put({
       type: POST_DETAIL_LOAD_SUCCESS,
       data: result.data,
@@ -101,7 +129,32 @@ function* postDetailLoad(action) {
     });
   }
 }
+//게시글 삭제
+function postDeleteAPI(data) {
+  return axios.delete(`/post/${data}`);
+}
 
+function* postDelete(action) {
+  try {
+    const result = yield call(postDeleteAPI, action.data);
+    console.log(result, '사가 삭제result');
+    yield put({
+      type: POST_DELETE_SUCCESS,
+      data: result.data,
+    });
+  } catch (e) {
+    yield put({
+      type: POST_DELETE_FAILURE,
+      error: e.response.data,
+    });
+  }
+}
+function* watchpostDelete() {
+  yield takeLatest(POST_DELETE_REQUEST, postDelete);
+}
+function* watchpostComment() {
+  yield takeLatest(POST_COMMENT_REQUEST, postComment);
+}
 function* watchpostDetailLoad() {
   yield takeLatest(POST_DETAIL_LOAD_REQUEST, postDetailLoad);
 }
@@ -121,5 +174,7 @@ export default function* postSaga() {
     fork(watchcategoryFind),
     fork(watchpostLoad),
     fork(watchpostDetailLoad),
+    fork(watchpostComment),
+    fork(watchpostDelete),
   ]);
 }

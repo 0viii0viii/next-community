@@ -32,6 +32,7 @@ const Category = () => {
               <Card>
                 {post.title} {post.creator}
                 {moment(post.createdAt).fromNow()}
+                {post.Comments.length}
               </Card>
             </Link>
           );

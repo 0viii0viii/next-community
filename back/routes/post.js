@@ -8,6 +8,8 @@ dotenv.config();
 
 const express = require('express');
 const { Post } = require('../models');
+const { Comment } = require('../models');
+const { User } = require('../models');
 const router = express.Router();
 
 const s3 = new AWS.S3({
@@ -64,11 +66,48 @@ router.post('/', uploadS3.none(), async (req, res, next) => {
   }
 });
 
+// POST /post/:id/comment
+router.post('/:postId/comment', async (req, res, next) => {
+  try {
+    const post = await Post.findOne({
+      where: { id: req.params.postId },
+    });
+    if (!post) {
+      return res.status(403).send('게시글이 존재하지 않습니다.');
+    }
+    const comment = await Comment.create({
+      content: req.body.content,
+      PostId: parseInt(req.params.postId, 10),
+      UserId: req.user.id,
+    });
+    const fullComment = await Comment.findOne({
+      where: { id: comment.id },
+      include: [
+        {
+          model: User,
+          attributes: ['id', 'nickname'],
+        },
+      ],
+    });
+    console.log(fullComment);
+    res.status(201).json(fullComment);
+  } catch (error) {
+    console.error(error);
+    next(error);
+  }
+});
 // GET /
 //@desc 모든 게시글
 router.get('/', async (req, res, next) => {
   try {
-    const postResult = await Post.findAll({});
+    const postResult = await Post.findAll({
+      include: [
+        {
+          model: Comment,
+          attributes: ['id'],
+        },
+      ],
+    });
     console.log(postResult);
     res.json(postResult);
   } catch (error) {
@@ -77,14 +116,40 @@ router.get('/', async (req, res, next) => {
   }
 });
 // GET /
-//@desc 모든 게시글
+//@desc 포스트 디테일
 router.get('/detail/:id', async (req, res, next) => {
   try {
     const post = await Post.findOne({
       where: { id: req.params.id },
+      include: [
+        {
+          model: Comment,
+          include: [
+            {
+              model: User,
+              attributes: ['id', 'nickname'],
+              order: [['createdAt', 'DESC']],
+            },
+          ],
+        },
+      ],
     });
     console.log(post);
     res.json(post);
+  } catch (error) {
+    console.error(error);
+    next(error);
+  }
+});
+
+// GET /
+//@desc 포스트 디테일
+router.delete('/:postId', async (req, res, next) => {
+  try {
+    await Post.destroy({
+      where: { id: req.params.postId, UserId: req.user.id },
+    });
+    res.json({ PostId: parseInt(req.params.postId, 10) });
   } catch (error) {
     console.error(error);
     next(error);
@@ -98,6 +163,12 @@ router.get('/free', async (req, res, next) => {
     const categoryLoadPosts = await Post.findAll({
       attributes: ['id', 'title', 'content', 'creator', 'createdAt'],
       where: { category: '자유' },
+      include: [
+        {
+          model: Comment,
+          attributes: ['id'],
+        },
+      ],
     });
     console.log(categoryLoadPosts);
     res.json(categoryLoadPosts);
@@ -114,6 +185,12 @@ router.get('/humor', async (req, res, next) => {
     const categoryLoadPosts = await Post.findAll({
       attributes: ['id', 'title', 'content', 'creator', 'createdAt'],
       where: { category: '유머' },
+      include: [
+        {
+          model: Comment,
+          attributes: ['id'],
+        },
+      ],
     });
     console.log(categoryLoadPosts);
     res.json(categoryLoadPosts);
@@ -130,6 +207,12 @@ router.get('/transfer', async (req, res, next) => {
     const categoryLoadPosts = await Post.findAll({
       attributes: ['id', 'title', 'content', 'creator', 'createdAt'],
       where: { category: '이적시장' },
+      include: [
+        {
+          model: Comment,
+          attributes: ['id'],
+        },
+      ],
     });
     console.log(categoryLoadPosts);
     res.json(categoryLoadPosts);
@@ -146,6 +229,12 @@ router.get('/forecast', async (req, res, next) => {
     const categoryLoadPosts = await Post.findAll({
       attributes: ['id', 'title', 'content', 'creator', 'createdAt'],
       where: { category: '경기 예측' },
+      include: [
+        {
+          model: Comment,
+          attributes: ['id'],
+        },
+      ],
     });
     console.log(categoryLoadPosts);
     res.json(categoryLoadPosts);
@@ -162,6 +251,12 @@ router.get('/examine', async (req, res, next) => {
     const categoryLoadPosts = await Post.findAll({
       attributes: ['id', 'title', 'content', 'creator', 'createdAt'],
       where: { category: '경기 분석' },
+      include: [
+        {
+          model: Comment,
+          attributes: ['id'],
+        },
+      ],
     });
     console.log(categoryLoadPosts);
     res.json(categoryLoadPosts);
@@ -178,6 +273,12 @@ router.get('/debate', async (req, res, next) => {
     const categoryLoadPosts = await Post.findAll({
       attributes: ['id', 'title', 'content', 'creator', 'createdAt'],
       where: { category: '경기 토론' },
+      include: [
+        {
+          model: Comment,
+          attributes: ['id'],
+        },
+      ],
     });
     console.log(categoryLoadPosts);
     res.json(categoryLoadPosts);

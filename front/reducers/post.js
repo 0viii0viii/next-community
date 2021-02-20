@@ -3,6 +3,12 @@ import {
   CATEGORY_POST_LOAD_FAILURE,
   CATEGORY_POST_LOAD_REQUEST,
   CATEGORY_POST_LOAD_SUCCESS,
+  POST_COMMENT_FAILURE,
+  POST_COMMENT_REQUEST,
+  POST_COMMENT_SUCCESS,
+  POST_DELETE_FAILURE,
+  POST_DELETE_REQUEST,
+  POST_DELETE_SUCCESS,
   POST_DETAIL_LOAD_FAILURE,
   POST_DETAIL_LOAD_REQUEST,
   POST_DETAIL_LOAD_SUCCESS,
@@ -18,18 +24,24 @@ export const initialState = {
   postUploadDone: false,
   postUploadError: null,
   postUploadLoading: false,
+  postCommentDone: false,
+  postCommentError: null,
+  postCommentLoading: false,
   postDetailloadDone: false,
   postDetailloadError: null,
   postDetailloadLoading: false,
   postLoadDone: false,
   postLoadError: null,
   postLoadLoading: false,
+  postDeleteDone: false,
+  postDeleteError: null,
+  postDeleteLoading: false,
   categoryLoadDone: false,
   categoryLoadError: null,
   categoryLoadLoading: false,
   posts: [],
   categoryLoadPosts: [],
-  postDetail: '',
+  postDetail: [],
 };
 
 const reducer = (state = initialState, action) => {
@@ -42,13 +54,29 @@ const reducer = (state = initialState, action) => {
         break;
       case POST_UPLOAD_SUCCESS:
         draft.postUploadLoading = false;
-        draft.posts = action.payload;
+        draft.posts.unshift(action.payload);
         draft.postUploadDone = true;
         break;
       case POST_UPLOAD_FAILURE:
         draft.postUploadLoading = false;
         draft.postUploadDone = false;
         draft.postUploadError = action.error;
+        break;
+      case POST_COMMENT_REQUEST:
+        draft.postCommentLoading = true;
+        draft.postCommentDone = false;
+        draft.postCommentError = null;
+        break;
+      case POST_COMMENT_SUCCESS:
+        const post = draft.posts.find((v) => v.id === action.data.PostId);
+        post.Comments.unshift(action.data);
+        draft.postCommentLoading = false;
+        draft.postCommentDone = true;
+        break;
+      case POST_COMMENT_FAILURE:
+        draft.postCommentLoading = false;
+        draft.postCommentDone = false;
+        draft.postCommentError = action.error;
         break;
       case CATEGORY_POST_LOAD_REQUEST:
         draft.categoryLoadLoading = true;
@@ -94,6 +122,21 @@ const reducer = (state = initialState, action) => {
         draft.postDetailLoadLoading = false;
         draft.postDetailLoadDone = false;
         draft.postDetailLoadError = action.error;
+        break;
+      case POST_DELETE_REQUEST:
+        draft.postDeleteLoading = true;
+        draft.postDeleteDone = false;
+        draft.postDeleteError = null;
+        break;
+      case POST_DELETE_SUCCESS:
+        draft.postDeleteLoading = false;
+        draft.posts = draft.posts.filter((v) => v.id !== action.data.PostId);
+        draft.postDeleteDone = true;
+        break;
+      case POST_DELETE_FAILURE:
+        draft.postDeleteLoading = false;
+        draft.postDeleteDone = false;
+        draft.postDeleteError = action.error;
         break;
     }
   });

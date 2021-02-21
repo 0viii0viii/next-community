@@ -15,7 +15,7 @@ const PostEditor = () => {
   const { postUploadDone } = useSelector((state) => state.post);
   useEffect(() => {
     if (postUploadDone) {
-      Router.replace('/');
+      Router.push('/');
     }
   });
   const editorRef = useRef();

@@ -90,6 +90,7 @@ const reducer = (state = initialState, action) => {
         draft.loadMeLoading = true;
         draft.loadMeError = null;
         draft.loadMeDone = false;
+        draft.editPasswordDone = false;
         break;
       case LOAD_ME_SUCCESS:
         draft.loadMeLoading = false;

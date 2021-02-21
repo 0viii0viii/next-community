@@ -1,18 +1,25 @@
 import { useDispatch, useSelector } from 'react-redux';
 import AppLayout from '../../components/AppLayout';
-import { useRouter } from 'next/router';
 import { useCallback, useEffect } from 'react';
 import {
   LOAD_ME_REQUEST,
   POST_COMMENT_REQUEST,
   POST_DETAIL_LOAD_REQUEST,
   POST_DELETE_REQUEST,
+  POST_UP_REQUEST,
+  POST_DOWN_REQUEST,
+  POST_SAVE_REQUEST,
 } from '../../reducers/types';
 import moment from 'moment';
 import ReactHtmlParser from 'react-html-parser';
 import { Card, Divider, Form, Input, Button } from 'antd';
-import Router from 'next/router';
+import Router, { useRouter } from 'next/router';
 import useInput from '../../hooks/useInput';
+import {
+  CaretDownOutlined,
+  CaretUpOutlined,
+  SaveOutlined,
+} from '@ant-design/icons';
 
 moment.locale('ko');
 const Posts = () => {
@@ -68,10 +75,41 @@ const Posts = () => {
     });
   });
 
+  const onClickUp = useCallback(() => {
+    dispatch({
+      type: POST_DOWN_REQUEST,
+    });
+  });
+  const onClickDown = useCallback(() => {
+    dispatch({
+      type: POST_UP_REQUEST,
+    });
+  });
+  const onClickSave = useCallback(() => {
+    dispatch({
+      type: POST_SAVE_REQUEST,
+    });
+  });
+
   return (
     <>
       <AppLayout>
-        <Card title={postDetail.title}>
+        <Card
+          title={postDetail.title}
+          actions={[
+            <>
+              <Button onClick={onClickUp}>
+                <CaretUpOutlined /> 0
+              </Button>
+              <Button onClick={onClickDown}>
+                <CaretDownOutlined /> 0
+              </Button>
+              <Button onClick={onClickSave}>
+                <SaveOutlined />
+              </Button>
+            </>,
+          ]}
+        >
           {postDetail.creator}
           {postDetail.category}
           {moment(postDetail.createdAt).fromNow()}
@@ -82,9 +120,10 @@ const Posts = () => {
               <Button onClick={onClickDeletePost} loading={postDeleteLoading}>
                 삭제
               </Button>
+              <Button onClick={() => router.back()}>이전</Button>
             </Button.Group>
           ) : (
-            ''
+            <Button onClick={() => router.back()}>이전</Button>
           )}
           <Divider />
           {/* <Viewer initialValue={postDetail.content} /> */}

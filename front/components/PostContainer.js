@@ -1,24 +1,34 @@
-import { Card } from 'antd';
+import { Card, Col, Row } from 'antd';
 import Link from 'next/link';
-import { useSelector } from 'react-redux';
+
 import moment from 'moment';
+import { PictureOutlined } from '@ant-design/icons';
 
 moment.locale('ko'); //한글로
-const PostContainer = () => {
-  const { posts } = useSelector((state) => state.post);
+const PostContainer = ({ posts }) => {
   console.log(posts, '하잉');
   return (
     <>
-      {posts.map(({ id, title, creator, createdAt, Comments }) => {
-        return (
-          <Link href={`/posts/${id}`}>
-            <Card>
-              {title} {creator} {moment(createdAt).fromNow()}
-              {Comments.length}
-            </Card>
-          </Link>
-        );
-      })}
+      {posts.map(
+        ({ id, title, creator, category, createdAt, fileUrl, Comments }) => {
+          return (
+            <Link href={`/posts/${id}`}>
+              <Card>
+                <Row>
+                  <Col xs={12}>
+                    {title} {fileUrl ? <PictureOutlined /> : ''}[
+                    {Comments.length}]
+                  </Col>
+
+                  <Col xs={12}>
+                    {category} {creator} {moment(createdAt).fromNow()}
+                  </Col>
+                </Row>
+              </Card>
+            </Link>
+          );
+        }
+      )}
     </>
   );
 };

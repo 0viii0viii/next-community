@@ -142,9 +142,22 @@ router.get('/detail/:id', async (req, res, next) => {
   }
 });
 
-// GET /
-//@desc 포스트 디테일
+// DELETE  /post/:postId
+//@desc 게시글 삭제
 router.delete('/:postId', async (req, res, next) => {
+  try {
+    await Post.destroy({
+      where: { id: req.params.postId, UserId: req.user.id },
+    });
+    res.json({ PostId: parseInt(req.params.postId, 10) });
+  } catch (error) {
+    console.error(error);
+    next(error);
+  }
+});
+
+// POST /post/:postId/score
+router.delete('/:postId/score', async (req, res, next) => {
   try {
     await Post.destroy({
       where: { id: req.params.postId, UserId: req.user.id },
@@ -161,7 +174,15 @@ router.delete('/:postId', async (req, res, next) => {
 router.get('/free', async (req, res, next) => {
   try {
     const categoryLoadPosts = await Post.findAll({
-      attributes: ['id', 'title', 'content', 'creator', 'createdAt'],
+      attributes: [
+        'id',
+        'title',
+        'content',
+        'category',
+        'fileUrl',
+        'creator',
+        'createdAt',
+      ],
       where: { category: '자유' },
       include: [
         {
@@ -183,7 +204,15 @@ router.get('/free', async (req, res, next) => {
 router.get('/humor', async (req, res, next) => {
   try {
     const categoryLoadPosts = await Post.findAll({
-      attributes: ['id', 'title', 'content', 'creator', 'createdAt'],
+      attributes: [
+        'id',
+        'title',
+        'content',
+        'category',
+        'fileUrl',
+        'creator',
+        'createdAt',
+      ],
       where: { category: '유머' },
       include: [
         {
@@ -205,7 +234,15 @@ router.get('/humor', async (req, res, next) => {
 router.get('/transfer', async (req, res, next) => {
   try {
     const categoryLoadPosts = await Post.findAll({
-      attributes: ['id', 'title', 'content', 'creator', 'createdAt'],
+      attributes: [
+        'id',
+        'title',
+        'content',
+        'category',
+        'fileUrl',
+        'creator',
+        'createdAt',
+      ],
       where: { category: '이적시장' },
       include: [
         {
@@ -227,7 +264,15 @@ router.get('/transfer', async (req, res, next) => {
 router.get('/forecast', async (req, res, next) => {
   try {
     const categoryLoadPosts = await Post.findAll({
-      attributes: ['id', 'title', 'content', 'creator', 'createdAt'],
+      attributes: [
+        'id',
+        'title',
+        'content',
+        'category',
+        'fileUrl',
+        'creator',
+        'createdAt',
+      ],
       where: { category: '경기 예측' },
       include: [
         {
@@ -249,7 +294,15 @@ router.get('/forecast', async (req, res, next) => {
 router.get('/examine', async (req, res, next) => {
   try {
     const categoryLoadPosts = await Post.findAll({
-      attributes: ['id', 'title', 'content', 'creator', 'createdAt'],
+      attributes: [
+        'id',
+        'title',
+        'content',
+        'category',
+        'fileUrl',
+        'creator',
+        'createdAt',
+      ],
       where: { category: '경기 분석' },
       include: [
         {
@@ -271,7 +324,15 @@ router.get('/examine', async (req, res, next) => {
 router.get('/debate', async (req, res, next) => {
   try {
     const categoryLoadPosts = await Post.findAll({
-      attributes: ['id', 'title', 'content', 'creator', 'createdAt'],
+      attributes: [
+        'id',
+        'title',
+        'content',
+        'category',
+        'fileUrl',
+        'creator',
+        'createdAt',
+      ],
       where: { category: '경기 토론' },
       include: [
         {

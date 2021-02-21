@@ -47,6 +47,22 @@ export const initialState = {
 const reducer = (state = initialState, action) => {
   return produce(state, (draft) => {
     switch (action.type) {
+      case POST_LOAD_REQUEST:
+        draft.postLoadLoading = true;
+        draft.postDeleteDone = false;
+        draft.postLoadDone = false;
+        draft.postLoadError = null;
+        break;
+      case POST_LOAD_SUCCESS:
+        draft.postLoadLoading = false;
+        draft.posts = action.data;
+        draft.postLoadDone = true;
+        break;
+      case POST_LOAD_FAILURE:
+        draft.postLoadLoading = false;
+        draft.postLoadDone = false;
+        draft.postLoadError = action.error;
+        break;
       case POST_UPLOAD_REQUEST:
         draft.postUploadLoading = true;
         draft.postUploadDone = false;
@@ -92,21 +108,6 @@ const reducer = (state = initialState, action) => {
         draft.categoryLoadLoading = false;
         draft.categoryLoadDone = false;
         draft.categoryLoadError = action.error;
-        break;
-      case POST_LOAD_REQUEST:
-        draft.postLoadLoading = true;
-        draft.postLoadDone = false;
-        draft.postLoadError = null;
-        break;
-      case POST_LOAD_SUCCESS:
-        draft.postLoadLoading = false;
-        draft.posts = action.data;
-        draft.postLoadDone = true;
-        break;
-      case POST_LOAD_FAILURE:
-        draft.postLoadLoading = false;
-        draft.postLoadDone = false;
-        draft.postLoadError = action.error;
         break;
       case POST_DETAIL_LOAD_REQUEST:
         draft.postDetailLoadLoading = true;

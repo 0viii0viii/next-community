@@ -115,6 +115,7 @@ const Posts = () => {
           {postDetail.creator}
           {postDetail.category}
           {moment(postDetail.createdAt).fromNow()}
+          <div>조회{postDetail.view}</div>
 
           {uid === postDetail.UserId ? (
             <Button.Group>

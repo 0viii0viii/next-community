@@ -181,6 +181,8 @@ router.get('/detail/:id', async (req, res, next) => {
         },
       ],
     });
+    post.view += 1;
+    post.save();
     console.log(post);
     res.json(post);
   } catch (error) {
@@ -324,7 +326,7 @@ router.get('/forecast', async (req, res, next) => {
         'creator',
         'createdAt',
       ],
-      where: { category: '경기 예측' },
+      where: { category: '경기예측' },
       include: [
         {
           model: Comment,
@@ -355,7 +357,7 @@ router.get('/examine', async (req, res, next) => {
         'creator',
         'createdAt',
       ],
-      where: { category: '경기 분석' },
+      where: { category: '경기분석' },
       include: [
         {
           model: Comment,
@@ -386,7 +388,7 @@ router.get('/debate', async (req, res, next) => {
         'creator',
         'createdAt',
       ],
-      where: { category: '경기 토론' },
+      where: { category: '경기토론' },
       include: [
         {
           model: Comment,

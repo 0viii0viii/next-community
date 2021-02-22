@@ -7,6 +7,7 @@ module.exports = (sequelize, DataTypes) => {
       category: { type: DataTypes.TEXT, allowNull: false },
       fileUrl: { type: DataTypes.TEXT },
       creator: { type: DataTypes.TEXT },
+      view: { type: DataTypes.INTEGER, defaultValue: 0 },
     },
 
     {

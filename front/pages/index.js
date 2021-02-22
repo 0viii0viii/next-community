@@ -46,7 +46,7 @@ const Home = () => {
       />
     </AppLayout>
   );
-  return <>{postLoadLoading === true ? '로딩중' : Body}</>;
+  return <>{posts ? Body : '게시글이 존재하지 않습니다'}</>;
 };
 
 export default Home;

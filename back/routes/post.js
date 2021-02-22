@@ -66,6 +66,28 @@ router.post('/', uploadS3.none(), async (req, res, next) => {
   }
 });
 
+// POST  /post
+// @desc  Edit A Post
+router.patch('/:id/edit', uploadS3.none(), async (req, res, next) => {
+  try {
+    const { title, content, fileUrl, category } = req.body;
+    const newPost = await Post.update(
+      {
+        title,
+        content,
+        category,
+        fileUrl,
+      },
+      { where: { id: req.params.id } }
+    );
+    console.log('하이');
+    return res.status(201).json(newPost);
+  } catch (error) {
+    console.error(error);
+    next(error);
+  }
+});
+
 // POST /post/:id/comment
 router.post('/:postId/comment', async (req, res, next) => {
   try {
@@ -101,6 +123,7 @@ router.post('/:postId/comment', async (req, res, next) => {
 router.get('/', async (req, res, next) => {
   try {
     const postResult = await Post.findAll({
+      order: [['createdAt', 'DESC']],
       include: [
         {
           model: Comment,

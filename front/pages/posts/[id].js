@@ -20,6 +20,7 @@ import {
   CaretUpOutlined,
   SaveOutlined,
 } from '@ant-design/icons';
+import Link from 'next/link';
 
 moment.locale('ko');
 const Posts = () => {
@@ -116,7 +117,9 @@ const Posts = () => {
 
           {uid === postDetail.UserId ? (
             <Button.Group>
-              <Button>수정</Button>
+              <Button>
+                <Link href={`/posts/${id}/edit`}>수정</Link>
+              </Button>
               <Button onClick={onClickDeletePost} loading={postDeleteLoading}>
                 삭제
               </Button>

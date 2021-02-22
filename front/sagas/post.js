@@ -12,6 +12,9 @@ import {
   POST_DETAIL_LOAD_FAILURE,
   POST_DETAIL_LOAD_REQUEST,
   POST_DETAIL_LOAD_SUCCESS,
+  POST_EDIT_FAILURE,
+  POST_EDIT_REQUEST,
+  POST_EDIT_SUCCESS,
   POST_LOAD_FAILURE,
   POST_LOAD_REQUEST,
   POST_LOAD_SUCCESS,
@@ -149,6 +152,28 @@ function* postDelete(action) {
     });
   }
 }
+//게시글 수정
+function postEditAPI(data) {
+  return axios.patch(`/post/${data.id}/edit`, data);
+}
+
+function* postEdit(action) {
+  try {
+    const result = yield call(postEditAPI, action.data);
+    yield put({
+      type: POST_EDIT_SUCCESS,
+      data: result.data,
+    });
+  } catch (e) {
+    yield put({
+      type: POST_EDIT_FAILURE,
+      error: e.response.data,
+    });
+  }
+}
+function* watchpostEdit() {
+  yield takeLatest(POST_EDIT_REQUEST, postEdit);
+}
 function* watchpostDelete() {
   yield takeLatest(POST_DELETE_REQUEST, postDelete);
 }
@@ -176,5 +201,6 @@ export default function* postSaga() {
     fork(watchpostDetailLoad),
     fork(watchpostComment),
     fork(watchpostDelete),
+    fork(watchpostEdit),
   ]);
 }

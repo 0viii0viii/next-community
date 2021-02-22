@@ -12,6 +12,9 @@ import {
   POST_DETAIL_LOAD_FAILURE,
   POST_DETAIL_LOAD_REQUEST,
   POST_DETAIL_LOAD_SUCCESS,
+  POST_EDIT_FAILURE,
+  POST_EDIT_REQUEST,
+  POST_EDIT_SUCCESS,
   POST_LOAD_FAILURE,
   POST_LOAD_REQUEST,
   POST_LOAD_SUCCESS,
@@ -33,6 +36,9 @@ export const initialState = {
   postLoadDone: false,
   postLoadError: null,
   postLoadLoading: false,
+  postEditDone: false,
+  postEditError: null,
+  postEditLoading: false,
   postDeleteDone: false,
   postDeleteError: null,
   postDeleteLoading: false,
@@ -51,6 +57,7 @@ const reducer = (state = initialState, action) => {
         draft.postLoadLoading = true;
         draft.postDeleteDone = false;
         draft.postLoadDone = false;
+        draft.postEditDone = false;
         draft.postLoadError = null;
         break;
       case POST_LOAD_SUCCESS:
@@ -138,6 +145,21 @@ const reducer = (state = initialState, action) => {
         draft.postDeleteLoading = false;
         draft.postDeleteDone = false;
         draft.postDeleteError = action.error;
+        break;
+      case POST_EDIT_REQUEST:
+        draft.postEditLoading = true;
+        draft.postEditDone = false;
+        draft.postEditError = null;
+        break;
+      case POST_EDIT_SUCCESS:
+        draft.postEditLoading = false;
+        draft.postDetail = action.data;
+        draft.postEditDone = true;
+        break;
+      case POST_EDIT_FAILURE:
+        draft.postEditLoading = false;
+        draft.postEditDone = false;
+        draft.postEditError = action.error;
         break;
     }
   });

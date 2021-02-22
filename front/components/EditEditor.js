@@ -17,7 +17,7 @@ const EditEditor = () => {
     if (postEditDone) {
       Router.push('/');
     }
-  }, []);
+  }, [postEditDone]);
   const dispatch = useDispatch();
   const editorRef = useRef();
   const [form, setValues] = useState({

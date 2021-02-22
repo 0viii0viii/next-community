@@ -17,7 +17,7 @@ const PostEditor = () => {
     if (postUploadDone) {
       Router.push('/');
     }
-  });
+  }, [postUploadDone]);
   const editorRef = useRef();
   const [form, setValues] = useState({
     title: '',

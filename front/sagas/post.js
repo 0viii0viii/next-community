@@ -3,6 +3,9 @@ import {
   CATEGORY_POST_LOAD_FAILURE,
   CATEGORY_POST_LOAD_REQUEST,
   CATEGORY_POST_LOAD_SUCCESS,
+  MYPOST_LOAD_FAILURE,
+  MYPOST_LOAD_REQUEST,
+  MYPOST_LOAD_SUCCESS,
   POST_COMMENT_FAILURE,
   POST_COMMENT_REQUEST,
   POST_COMMENT_SUCCESS,
@@ -171,9 +174,33 @@ function* postEdit(action) {
     });
   }
 }
+//내 게시글 로드
+function myPostLoadAPI(data) {
+  console.log(data, '사가용');
+  return axios.get(`/post/myposts/${data}`);
+}
+
+function* myPostLoad(action) {
+  try {
+    const result = yield call(myPostLoadAPI, action.data);
+    yield put({
+      type: MYPOST_LOAD_SUCCESS,
+      data: result.data,
+    });
+  } catch (e) {
+    yield put({
+      type: MYPOST_LOAD_FAILURE,
+      error: e.response.data,
+    });
+  }
+}
+function* watchmyPostLoad() {
+  yield takeLatest(MYPOST_LOAD_REQUEST, myPostLoad);
+}
 function* watchpostEdit() {
   yield takeLatest(POST_EDIT_REQUEST, postEdit);
 }
+
 function* watchpostDelete() {
   yield takeLatest(POST_DELETE_REQUEST, postDelete);
 }
@@ -202,5 +229,6 @@ export default function* postSaga() {
     fork(watchpostComment),
     fork(watchpostDelete),
     fork(watchpostEdit),
+    fork(watchmyPostLoad),
   ]);
 }

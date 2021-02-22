@@ -3,6 +3,9 @@ import {
   CATEGORY_POST_LOAD_FAILURE,
   CATEGORY_POST_LOAD_REQUEST,
   CATEGORY_POST_LOAD_SUCCESS,
+  MYPOST_LOAD_FAILURE,
+  MYPOST_LOAD_REQUEST,
+  MYPOST_LOAD_SUCCESS,
   POST_COMMENT_FAILURE,
   POST_COMMENT_REQUEST,
   POST_COMMENT_SUCCESS,
@@ -36,6 +39,9 @@ export const initialState = {
   postLoadDone: false,
   postLoadError: null,
   postLoadLoading: false,
+  mypostLoadDone: false,
+  mypostLoadError: null,
+  mypostLoadLoading: false,
   postEditDone: false,
   postEditError: null,
   postEditLoading: false,
@@ -48,6 +54,7 @@ export const initialState = {
   posts: [],
   categoryLoadPosts: [],
   postDetail: [],
+  myposts: [],
 };
 
 const reducer = (state = initialState, action) => {
@@ -160,6 +167,21 @@ const reducer = (state = initialState, action) => {
         draft.postEditLoading = false;
         draft.postEditDone = false;
         draft.postEditError = action.error;
+        break;
+      case MYPOST_LOAD_REQUEST:
+        draft.mypostLoadLoading = true;
+        draft.mypostLoadDone = false;
+        draft.mypostLoadError = null;
+        break;
+      case MYPOST_LOAD_SUCCESS:
+        draft.mypostLoadLoading = false;
+        draft.myposts = action.data;
+        draft.mypostLoadDone = true;
+        break;
+      case MYPOST_LOAD_FAILURE:
+        draft.mypostLoadLoading = false;
+        draft.mypostLoadDone = false;
+        draft.mypostLoadError = action.error;
         break;
     }
   });

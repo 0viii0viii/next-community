@@ -33,7 +33,7 @@ const Profile = () => {
           <Button>
             <Link href="/post">글쓰기</Link>
           </Button>
-          <Button>내 글</Button>
+          <Button href={`/myposts/${me.id}`}>내 글</Button>
           <Button>
             <Link href="/profile">프로필</Link>
           </Button>

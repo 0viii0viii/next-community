@@ -101,22 +101,22 @@ const AppLayout = ({ children }) => {
           </Col>
           <Col xs={24} lg={24} xl={0}>
             <StyledItem>
-              <Link href="/free">
+              <Link href="/category/free">
                 <Atag>자유</Atag>
               </Link>
-              <Link href="/humor">
+              <Link href="/category/humor">
                 <Atag>유머</Atag>
               </Link>
-              <Link href="/transfer">
+              <Link href="/category/transfer">
                 <Atag>이적시장</Atag>
               </Link>
-              <Link href="/forecast">
+              <Link href="/category/forecast">
                 <Atag>경기 예측</Atag>
               </Link>
-              <Link href="/examine">
+              <Link href="/category/examine">
                 <Atag>경기 분석</Atag>
               </Link>
-              <Link href="/debate">
+              <Link href="/category/debate">
                 <Atag>경기 토론</Atag>
               </Link>
             </StyledItem>

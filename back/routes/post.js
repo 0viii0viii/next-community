@@ -138,6 +138,30 @@ router.get('/', async (req, res, next) => {
     next(error);
   }
 });
+
+// GET /myposts/:id
+//@desc 내 게시글
+router.get('/myposts/:id', async (req, res, next) => {
+  try {
+    const post = await Post.findAll({
+      where: { UserId: req.params.id },
+      order: [['createdAt', 'DESC']],
+      include: [
+        {
+          model: Comment,
+          attributes: ['id'],
+        },
+      ],
+    });
+
+    console.log(req.params.id);
+    console.log(post, '외질');
+    res.json(post);
+  } catch (error) {
+    console.error(error);
+    next(error);
+  }
+});
 // GET /
 //@desc 포스트 디테일
 router.get('/detail/:id', async (req, res, next) => {
@@ -197,6 +221,7 @@ router.delete('/:postId/score', async (req, res, next) => {
 router.get('/free', async (req, res, next) => {
   try {
     const categoryLoadPosts = await Post.findAll({
+      order: [['createdAt', 'DESC']],
       attributes: [
         'id',
         'title',
@@ -227,6 +252,7 @@ router.get('/free', async (req, res, next) => {
 router.get('/humor', async (req, res, next) => {
   try {
     const categoryLoadPosts = await Post.findAll({
+      order: [['createdAt', 'DESC']],
       attributes: [
         'id',
         'title',
@@ -257,6 +283,7 @@ router.get('/humor', async (req, res, next) => {
 router.get('/transfer', async (req, res, next) => {
   try {
     const categoryLoadPosts = await Post.findAll({
+      order: [['createdAt', 'DESC']],
       attributes: [
         'id',
         'title',
@@ -287,6 +314,7 @@ router.get('/transfer', async (req, res, next) => {
 router.get('/forecast', async (req, res, next) => {
   try {
     const categoryLoadPosts = await Post.findAll({
+      order: [['createdAt', 'DESC']],
       attributes: [
         'id',
         'title',
@@ -317,6 +345,7 @@ router.get('/forecast', async (req, res, next) => {
 router.get('/examine', async (req, res, next) => {
   try {
     const categoryLoadPosts = await Post.findAll({
+      order: [['createdAt', 'DESC']],
       attributes: [
         'id',
         'title',
@@ -347,6 +376,7 @@ router.get('/examine', async (req, res, next) => {
 router.get('/debate', async (req, res, next) => {
   try {
     const categoryLoadPosts = await Post.findAll({
+      order: [['createdAt', 'DESC']],
       attributes: [
         'id',
         'title',

@@ -34,7 +34,7 @@ const Home = () => {
     dispatch({
       type: POST_LOAD_REQUEST,
     });
-  }, [postDeleteDone]);
+  }, []);
 
   const Body = (
     <AppLayout>

@@ -36,6 +36,7 @@ const Posts = () => {
     postDeleteLoading,
     postDeleteDone,
   } = useSelector((state) => state.post);
+
   useEffect(() => {
     dispatch({
       type: POST_DETAIL_LOAD_REQUEST,

@@ -21,6 +21,9 @@ import {
   POST_LOAD_FAILURE,
   POST_LOAD_REQUEST,
   POST_LOAD_SUCCESS,
+  POST_SEARCH_LOAD_FAILURE,
+  POST_SEARCH_LOAD_REQUEST,
+  POST_SEARCH_LOAD_SUCCESS,
   POST_UPLOAD_FAILURE,
   POST_UPLOAD_REQUEST,
   POST_UPLOAD_SUCCESS,
@@ -51,10 +54,14 @@ export const initialState = {
   categoryLoadDone: false,
   categoryLoadError: null,
   categoryLoadLoading: false,
+  postSearchLoadLoading: false,
+  postSearchLoadDone: false,
+  postSearchLoadError: null,
   posts: [],
   categoryLoadPosts: [],
   postDetail: [],
   myposts: [],
+  searchLoadPosts: [],
 };
 
 const reducer = (state = initialState, action) => {
@@ -182,6 +189,21 @@ const reducer = (state = initialState, action) => {
         draft.mypostLoadLoading = false;
         draft.mypostLoadDone = false;
         draft.mypostLoadError = action.error;
+        break;
+      case POST_SEARCH_LOAD_REQUEST:
+        draft.postSearchLoadLoading = true;
+        draft.postSearchLoadDone = false;
+        draft.postSearchLoadError = null;
+        break;
+      case POST_SEARCH_LOAD_SUCCESS:
+        draft.postSearchLoadLoading = false;
+        draft.searchLoadPosts = action.data;
+        draft.postSearchLoadDone = true;
+        break;
+      case POST_SEARCH_LOAD_FAILURE:
+        draft.postSearchLoadLoading = false;
+        draft.postSearchLoadDone = false;
+        draft.postSearchLoadError = action.error;
         break;
     }
   });

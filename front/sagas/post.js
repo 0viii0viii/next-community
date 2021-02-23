@@ -1,4 +1,4 @@
-import { all, call, fork, put, takeLatest } from 'redux-saga/effects';
+import { all, call, fork, put, takeLatest, throttle } from 'redux-saga/effects';
 import {
   CATEGORY_POST_LOAD_FAILURE,
   CATEGORY_POST_LOAD_REQUEST,
@@ -21,6 +21,9 @@ import {
   POST_LOAD_FAILURE,
   POST_LOAD_REQUEST,
   POST_LOAD_SUCCESS,
+  POST_SEARCH_LOAD_FAILURE,
+  POST_SEARCH_LOAD_REQUEST,
+  POST_SEARCH_LOAD_SUCCESS,
   POST_UPLOAD_FAILURE,
   POST_UPLOAD_REQUEST,
   POST_UPLOAD_SUCCESS,
@@ -194,6 +197,29 @@ function* myPostLoad(action) {
     });
   }
 }
+//검색 포스트 로드
+function searchPostLoadAPI(data) {
+  console.log(data, '사가용');
+  return axios.get(`/search/${encodeURIComponent(data)}`);
+}
+
+function* searchPostLoad(action) {
+  try {
+    const result = yield call(searchPostLoadAPI, action.data);
+    yield put({
+      type: POST_SEARCH_LOAD_SUCCESS,
+      data: result.data,
+    });
+  } catch (e) {
+    yield put({
+      type: POST_SEARCH_LOAD_FAILURE,
+      error: e.response.data,
+    });
+  }
+}
+function* watchsearchPostLoad() {
+  yield takeLatest(POST_SEARCH_LOAD_REQUEST, searchPostLoad);
+}
 function* watchmyPostLoad() {
   yield takeLatest(MYPOST_LOAD_REQUEST, myPostLoad);
 }
@@ -230,5 +256,6 @@ export default function* postSaga() {
     fork(watchpostDelete),
     fork(watchpostEdit),
     fork(watchmyPostLoad),
+    fork(watchsearchPostLoad),
   ]);
 }

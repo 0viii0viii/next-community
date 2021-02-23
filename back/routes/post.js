@@ -217,6 +217,7 @@ router.delete('/:postId/score', async (req, res, next) => {
     next(error);
   }
 });
+
 // category ---------------------------------------------
 // GET  /category/free
 // @desc  GET Posts 자유게시판

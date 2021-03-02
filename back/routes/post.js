@@ -59,7 +59,7 @@ router.post('/', uploadS3.none(), async (req, res, next) => {
       UserId: req.user.id,
     });
     console.log('하이');
-    return res.redirect('/');
+    return res.json(newPost);
   } catch (error) {
     console.error(error);
     next(error);
@@ -153,9 +153,7 @@ router.get('/myposts/:id', async (req, res, next) => {
         },
       ],
     });
-
-    console.log(req.params.id);
-    console.log(post, '외질');
+    console.log(post, '내가실행됨');
     res.json(post);
   } catch (error) {
     console.error(error);

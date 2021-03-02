@@ -76,42 +76,11 @@ const Posts = () => {
       data: id,
     });
   });
-
-  const onClickUp = useCallback(() => {
-    dispatch({
-      type: POST_DOWN_REQUEST,
-    });
-  });
-  const onClickDown = useCallback(() => {
-    dispatch({
-      type: POST_UP_REQUEST,
-    });
-  });
-  const onClickSave = useCallback(() => {
-    dispatch({
-      type: POST_SAVE_REQUEST,
-    });
-  });
-
+  console.log(postDetail.Comments);
   return (
     <>
       <AppLayout>
-        <Card
-          title={postDetail.title}
-          actions={[
-            <>
-              <Button onClick={onClickUp}>
-                <CaretUpOutlined /> 0
-              </Button>
-              <Button onClick={onClickDown}>
-                <CaretDownOutlined /> 0
-              </Button>
-              <Button onClick={onClickSave}>
-                <SaveOutlined />
-              </Button>
-            </>,
-          ]}
-        >
+        <Card title={postDetail.title}>
           {postDetail.creator}
           {postDetail.category}
           {moment(postDetail.createdAt).fromNow()}
@@ -152,7 +121,7 @@ const Posts = () => {
                 {User.nickname} {content} {moment(createdAt).fromNow()}
               </Card>
             ))
-          : '없네'}
+          : ''}
       </AppLayout>
     </>
   );

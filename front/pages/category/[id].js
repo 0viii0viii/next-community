@@ -14,8 +14,6 @@ import { END } from 'redux-saga';
 import { Pagination } from 'antd';
 import styled from 'styled-components';
 
-import Link from 'next/link';
-import { Card } from 'antd';
 import moment from 'moment';
 import PostContainer from '../../components/PostContainer';
 

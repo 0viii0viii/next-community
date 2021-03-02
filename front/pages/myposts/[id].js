@@ -8,10 +8,13 @@ import { END } from 'redux-saga';
 import { Pagination } from 'antd';
 import styled from 'styled-components';
 
-import { useRouter } from 'next/router';
 import PostContainer from '../../components/PostContainer';
 import AppLayout from '../../components/AppLayout';
 import { LOAD_ME_REQUEST, MYPOST_LOAD_REQUEST } from '../../reducers/types';
+import useSWR from 'swr';
+
+const fetcher = (url) =>
+  axios.get(url, { withCredentials: true }).then((result) => result.data);
 
 const StyledPagination = styled(Pagination)`
   display: flex;
@@ -19,29 +22,31 @@ const StyledPagination = styled(Pagination)`
   margin-top: 10px;
 `;
 
-const Myposts = () => {
+const Myposts = (props) => {
   const dispatch = useDispatch();
-  const router = useRouter();
-  const { id } = router.query;
-  const { myposts, mypostLoadLoading } = useSelector((state) => state.post);
+
+  // const { myposts, mypostLoadLoading } = useSelector((state) => state.post);
+  const initialData = props.data;
+  const { data, error } = useSWR('/post/myposts/:id', fetcher, { initialData });
   const [currentPage, setCurrentPage] = useState(1);
   const [postsPerPage] = useState(10);
   const indexOfLastPost = currentPage * postsPerPage;
   const indexOfFirstPost = indexOfLastPost - postsPerPage;
-  const currentPosts = myposts.slice(indexOfFirstPost, indexOfLastPost);
+  const currentPosts = data.slice(indexOfFirstPost, indexOfLastPost);
   const paginate = (page) => setCurrentPage(page);
 
-  const Body = (
-    <AppLayout>
-      <PostContainer posts={currentPosts} />
-      <StyledPagination
-        total={Math.ceil((myposts.length / postsPerPage) * 10)}
-        onChange={paginate}
-        current={currentPage}
-      />
-    </AppLayout>
+  return (
+    <>
+      <AppLayout>
+        <PostContainer posts={currentPosts} />
+        <StyledPagination
+          total={Math.ceil((data.length / postsPerPage) * 10)}
+          onChange={paginate}
+          current={currentPage}
+        />
+      </AppLayout>
+    </>
   );
-  return <>{mypostLoadLoading === true ? '로딩중' : Body}</>;
 };
 
 export const getServerSideProps = wrapper.getServerSideProps(
@@ -57,12 +62,10 @@ export const getServerSideProps = wrapper.getServerSideProps(
     context.store.dispatch({
       type: LOAD_ME_REQUEST,
     });
-    context.store.dispatch({
-      type: MYPOST_LOAD_REQUEST,
-      data: context.params.id,
-    });
     context.store.dispatch(END); //request를 보내고 성공을 받지못하고 종료되는것을 막아줌
     await context.store.sagaTask.toPromise();
+    const data = await fetcher(`/post/myposts/${context.params.id}`, fetcher);
+    return { props: { data } };
   }
 );
 

@@ -40,7 +40,7 @@ const EditPassword = () => {
 
   return (
     <>
-      <label>{me.nickname} 님의 프로필 | Lv.레전드</label>
+      <label>{me.nickname} 님의 프로필</label>
       <Divider />
       <Form onFinish={onSubmit}>
         <label>새 비밀번호</label>

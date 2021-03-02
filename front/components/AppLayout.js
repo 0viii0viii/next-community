@@ -7,7 +7,6 @@ import styled, { createGlobalStyle } from 'styled-components';
 import HeaderBg from './HeaderBg';
 import SideMenu from './SideMenu';
 import Funcbar from './FuncBar';
-import MainMenu from './MainMenu';
 import { MenuOutlined } from '@ant-design/icons';
 import { useSelector } from 'react-redux';
 
@@ -135,7 +134,6 @@ const AppLayout = ({ children }) => {
         </Col>
         <Col flex="800px">
           <Funcbar />
-          <MainMenu />
           {children}
         </Col>
         <Col flex="auto"></Col>

@@ -23,11 +23,7 @@ const Profile = () => {
   return (
     <>
       <Card>
-        <Meta
-          avatar={<Avatar>벵거</Avatar>}
-          title={me.nickname}
-          description="LV.레전드"
-        />
+        <Meta avatar={<Avatar>벵거</Avatar>} title={me.nickname} />
 
         <BtnContainer>
           <Button>

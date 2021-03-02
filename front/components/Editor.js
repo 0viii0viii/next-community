@@ -13,11 +13,6 @@ const PostEditor = () => {
   const dispatch = useDispatch();
   const { me } = useSelector((state) => state.user);
   const { postUploadDone } = useSelector((state) => state.post);
-  useEffect(() => {
-    if (postUploadDone) {
-      Router.push('/');
-    }
-  }, [postUploadDone]);
 
   const editorRef = useRef();
   const [form, setValues] = useState({

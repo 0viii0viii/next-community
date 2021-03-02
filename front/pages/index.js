@@ -47,7 +47,7 @@ export const getServerSideProps = wrapper.getServerSideProps(
       // 쿠키를 지웠다가 넣었다가 해야 쿠키가 다른사용자와 공유가되지않음
       axios.defaults.headers.Cookie = cookie;
     }
-    //결과를 reducer의 hydrate로 보냄
+
     context.store.dispatch({
       type: LOAD_ME_REQUEST,
     });

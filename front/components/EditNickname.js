@@ -19,7 +19,7 @@ const EditNickname = () => {
 
   return (
     <>
-      <label>{me.nickname} 님의 프로필 | Lv.레전드</label>
+      <label>{me.nickname} 님의 프로필 </label>
       <Divider />
       <label>이메일</label>
       <Input placeholder={me.email} disabled></Input>

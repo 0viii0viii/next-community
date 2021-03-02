@@ -1,4 +1,4 @@
-import { all, call, fork, put, takeLatest, throttle } from 'redux-saga/effects';
+import { all, call, fork, put, takeLatest } from 'redux-saga/effects';
 import {
   CATEGORY_POST_LOAD_FAILURE,
   CATEGORY_POST_LOAD_REQUEST,
@@ -29,6 +29,7 @@ import {
   POST_UPLOAD_SUCCESS,
 } from '../reducers/types';
 import axios from 'axios';
+import Router from 'next/router';
 
 //게시글 업로드
 function postUploadAPI(data) {
@@ -45,6 +46,8 @@ function* postUpload(action) {
       type: POST_UPLOAD_SUCCESS,
       data: result.data,
     });
+    console.log(result.data.id, '사가');
+    yield call(Router.push, `/posts/${result.data.id}`);
   } catch (e) {
     yield put({
       type: POST_UPLOAD_FAILURE,
@@ -217,6 +220,7 @@ function* searchPostLoad(action) {
     });
   }
 }
+
 function* watchsearchPostLoad() {
   yield takeLatest(POST_SEARCH_LOAD_REQUEST, searchPostLoad);
 }

@@ -115,6 +115,7 @@ const reducer = (state = initialState, action) => {
         draft.postCommentDone = false;
         draft.postCommentError = action.error;
         break;
+
       case CATEGORY_POST_LOAD_REQUEST:
         draft.categoryLoadLoading = true;
         draft.categoryLoadDone = false;

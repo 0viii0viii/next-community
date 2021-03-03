@@ -45,13 +45,15 @@ const Posts = (props) => {
 
   useEffect(() => {
     if (postCommentDone) {
+      // 댓글 업로드 완료시 입력창 초기화
       setComment('');
-      router.reload();
+      router.reload(); //새로고침해서 re-rendering
     }
   }, [postCommentDone]);
 
   useEffect(() => {
     if (commentDeleteDone) {
+      //댓글 삭제 완료 -> 리렌더링
       router.reload();
     }
   }, [commentDeleteDone]);
@@ -70,7 +72,7 @@ const Posts = (props) => {
     });
   }, [comment, uid]);
 
-  const onClickDeletePost = useCallback((id) => {
+  const onClickDeletePost = useCallback(() => {
     dispatch({
       type: POST_DELETE_REQUEST,
       data: id,
@@ -107,7 +109,7 @@ const Posts = (props) => {
             <Button onClick={() => router.back()}>이전</Button>
           )}
           <Divider />
-          {/* <Viewer initialValue={postDetail.content} /> */}
+
           {ReactHtmlParser(data.content)}
         </Card>
         <Form onFinish={onSubmitComment}>
@@ -124,7 +126,7 @@ const Posts = (props) => {
         </Form>
         {data.Comments.map(({ id, User, content, createdAt, UserId }) => (
           <Card>
-            {User.nickname} {content} {moment(createdAt).fromNow()} {id}
+            {User.nickname} {content} {moment(createdAt).fromNow()}
             {uid === UserId ? (
               <Button onClick={onClickDeleteComment(id)}>삭제</Button>
             ) : (

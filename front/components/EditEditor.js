@@ -5,27 +5,30 @@ import { Editor } from '@toast-ui/react-editor';
 import 'codemirror/lib/codemirror.css'; // Editor's Dependency Style
 import '@toast-ui/editor/dist/toastui-editor.css'; // Editor's Style
 import Router, { useRouter } from 'next/router';
-import axios from 'axios';
 import { POST_EDIT_REQUEST } from '../reducers/types';
+import axios from 'axios';
 
-const EditEditor = () => {
-  const { postDetail, postEditDone } = useSelector((state) => state.post);
+const fetcher = (url) =>
+  axios.get(url, { withCredentials: true }).then((result) => result.data);
+
+const EditEditor = ({ data }) => {
+  const dispatch = useDispatch();
+  const { postEditDone } = useSelector((state) => state.post);
   const { me } = useSelector((state) => state.user);
   const router = useRouter();
   const { id } = router.query;
+  console.log(me.id);
   useEffect(() => {
     if (postEditDone) {
       Router.push('/');
     }
   }, [postEditDone]);
-  const dispatch = useDispatch();
   const editorRef = useRef();
   const [form, setValues] = useState({
     title: '',
     category: '',
     content: '',
     fileUrl: '',
-    creator: me.nickname,
   });
   const onChange = (e) => {
     setValues({
@@ -33,10 +36,10 @@ const EditEditor = () => {
       [e.target.name]: e.target.value,
     });
   };
-  const onClickSubmit = useCallback(() => {
-    const { title, content, fileUrl, category, creator } = form;
-    const body = { id, title, content, fileUrl, category, creator };
 
+  const onClickSubmit = useCallback(() => {
+    const { title, content, fileUrl, category } = form;
+    const body = { id, title, content, fileUrl, category };
     dispatch({
       type: POST_EDIT_REQUEST,
       data: body,
@@ -45,29 +48,29 @@ const EditEditor = () => {
 
   const getDataFromEditor = (e) => {
     const Instance = editorRef.current.getInstance();
-    const data = Instance.getHtml();
+    const datas = Instance.getHtml();
 
-    if (data && data.match('<img src=')) {
-      const whereImg_start = data.indexOf('<img src=');
+    if (datas && datas.match('<img src=')) {
+      const whereImg_start = datas.indexOf('<img src=');
       let whereImg_end = '';
       let ext_name_find = '';
       let result_Img_Url = '';
       const ext_name = ['jpeg', 'png', 'jpg', 'gif'];
 
       for (let i = 0; i < ext_name.length; i++) {
-        if (data.match(ext_name[i])) {
-          console.log(data.indexOf(`${ext_name[i]}`));
+        if (datas.match(ext_name[i])) {
+          console.log(datas.indexOf(`${ext_name[i]}`));
           ext_name_find = ext_name[i];
-          whereImg_end = data.indexOf(`${ext_name[i]}`);
+          whereImg_end = datas.indexOf(`${ext_name[i]}`);
         }
       }
       console.log(ext_name_find);
       console.log(whereImg_end);
 
       if (ext_name_find === 'jpeg') {
-        result_Img_Url = data.substring(whereImg_start + 10, whereImg_end + 4);
+        result_Img_Url = datas.substring(whereImg_start + 10, whereImg_end + 4);
       } else {
-        result_Img_Url = data.substring(whereImg_start + 10, whereImg_end + 3);
+        result_Img_Url = datas.substring(whereImg_start + 10, whereImg_end + 3);
       }
 
       console.log(result_Img_Url, 'result_img_Url'); //저장 backend
@@ -75,13 +78,13 @@ const EditEditor = () => {
       setValues({
         ...form,
         fileUrl: result_Img_Url,
-        content: data,
+        content: datas,
       });
     } else {
       setValues({
         ...form,
         fileUrl: null,
-        content: data,
+        content: datas,
       });
     }
   };
@@ -119,12 +122,12 @@ const EditEditor = () => {
           <Input
             type="text"
             name="title"
-            placeholder={postDetail.title}
+            placeholder={data.title}
             onChange={onChange}
           />
           <Editor
             initialEditType="wysiwyg"
-            initialValue={postDetail.content}
+            initialValue={data.content}
             previewStyle="tab"
             height="600px"
             useCommandShortcut={true}

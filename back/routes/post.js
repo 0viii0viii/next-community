@@ -70,6 +70,7 @@ router.post('/', uploadS3.none(), async (req, res, next) => {
 // @desc  Edit A Post
 router.patch('/:id/edit', uploadS3.none(), async (req, res, next) => {
   try {
+    console.log(req.params.id, '파람스');
     const { title, content, fileUrl, category } = req.body;
     const newPost = await Post.update(
       {
@@ -152,6 +153,19 @@ router.get('/myposts/:id', async (req, res, next) => {
           attributes: ['id'],
         },
       ],
+    });
+    res.json(post);
+  } catch (error) {
+    console.error(error);
+    next(error);
+  }
+});
+// GET /myposts/:id
+//@desc 내 게시글
+router.get('/test', async (req, res, next) => {
+  try {
+    const post = await Post.findOne({
+      where: { id: 40 },
     });
     console.log(post, '내가실행됨');
     res.json(post);

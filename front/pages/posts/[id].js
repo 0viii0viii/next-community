@@ -2,59 +2,59 @@ import { useDispatch, useSelector } from 'react-redux';
 import AppLayout from '../../components/AppLayout';
 import { useCallback, useEffect } from 'react';
 import {
+  COMMENT_DELETE_REQUEST,
   LOAD_ME_REQUEST,
   POST_COMMENT_REQUEST,
-  POST_DETAIL_LOAD_REQUEST,
   POST_DELETE_REQUEST,
-  POST_UP_REQUEST,
-  POST_DOWN_REQUEST,
-  POST_SAVE_REQUEST,
 } from '../../reducers/types';
+//SSR
+import wrapper from '../../store/configureStore';
+import axios from 'axios';
+import { END } from 'redux-saga';
+
+import useSWR from 'swr';
+
 import moment from 'moment';
 import ReactHtmlParser from 'react-html-parser';
 import { Card, Divider, Form, Input, Button } from 'antd';
 import Router, { useRouter } from 'next/router';
 import useInput from '../../hooks/useInput';
-import {
-  CaretDownOutlined,
-  CaretUpOutlined,
-  SaveOutlined,
-} from '@ant-design/icons';
 import Link from 'next/link';
+import { ReloadOutlined } from '@ant-design/icons';
 
 moment.locale('ko');
-const Posts = () => {
+const fetcher = (url) =>
+  axios.get(url, { withCredentials: true }).then((result) => result.data);
+const Posts = (props) => {
+  const initialData = props.data;
+  const { data, error } = useSWR('/post/detail/:id', fetcher, { initialData });
   const dispatch = useDispatch();
   const router = useRouter();
   const { id } = router.query;
   const uid = useSelector((state) => state.user.me?.id);
   const [comment, onChangeComment, setComment] = useInput('');
   const {
-    postDetail,
     postCommentDone,
     postCommentLoading,
     postDeleteLoading,
     postDeleteDone,
+    commentDeleteDone,
   } = useSelector((state) => state.post);
 
-  useEffect(() => {
-    dispatch({
-      type: POST_DETAIL_LOAD_REQUEST,
-      data: id,
-    });
-  }, [id, postCommentDone]);
-
-  useEffect(() => {
-    dispatch({
-      type: LOAD_ME_REQUEST,
-    });
-  }, []);
+  console.log(data.Comments.id, '데코아이디');
 
   useEffect(() => {
     if (postCommentDone) {
       setComment('');
+      router.reload();
     }
   }, [postCommentDone]);
+
+  useEffect(() => {
+    if (commentDeleteDone) {
+      router.reload();
+    }
+  }, [commentDeleteDone]);
 
   useEffect(() => {
     if (postDeleteDone) {
@@ -63,30 +63,37 @@ const Posts = () => {
   }, [postDeleteDone]);
 
   const onSubmitComment = useCallback(() => {
-    console.log(postDetail.id, comment);
+    console.log(data.id, comment);
     dispatch({
       type: POST_COMMENT_REQUEST,
-      data: { content: comment, postId: postDetail.id, userId: id },
+      data: { content: comment, postId: data.id, userId: id },
     });
   }, [comment, uid]);
 
-  const onClickDeletePost = useCallback(() => {
+  const onClickDeletePost = useCallback((id) => {
     dispatch({
       type: POST_DELETE_REQUEST,
       data: id,
     });
   });
-  console.log(postDetail.Comments);
+
+  const onClickDeleteComment = (id) =>
+    useCallback(() => {
+      dispatch({
+        type: COMMENT_DELETE_REQUEST,
+        data: id,
+      });
+    });
   return (
     <>
       <AppLayout>
-        <Card title={postDetail.title}>
-          {postDetail.creator}
-          {postDetail.category}
-          {moment(postDetail.createdAt).fromNow()}
-          <div>조회{postDetail.view}</div>
+        <Card title={data.title}>
+          {data.creator}
+          {data.category}
+          {moment(data.createdAt).fromNow()}
+          <div>조회{data.view}</div>
 
-          {uid === postDetail.UserId ? (
+          {uid === data.UserId ? (
             <Button.Group>
               <Button>
                 <Link href={`/posts/${id}/edit`}>수정</Link>
@@ -101,7 +108,7 @@ const Posts = () => {
           )}
           <Divider />
           {/* <Viewer initialValue={postDetail.content} /> */}
-          {ReactHtmlParser(postDetail.content)}
+          {ReactHtmlParser(data.content)}
         </Card>
         <Form onFinish={onSubmitComment}>
           <Card title="댓글">
@@ -115,16 +122,39 @@ const Posts = () => {
             </Button>
           </Card>
         </Form>
-        {Array.isArray(postDetail.Comments)
-          ? postDetail.Comments.map(({ User, content, createdAt }) => (
-              <Card>
-                {User.nickname} {content} {moment(createdAt).fromNow()}
-              </Card>
-            ))
-          : ''}
+        {data.Comments.map(({ id, User, content, createdAt, UserId }) => (
+          <Card>
+            {User.nickname} {content} {moment(createdAt).fromNow()} {id}
+            {uid === UserId ? (
+              <Button onClick={onClickDeleteComment(id)}>삭제</Button>
+            ) : (
+              ''
+            )}
+          </Card>
+        ))}
       </AppLayout>
     </>
   );
 };
+
+export const getServerSideProps = wrapper.getServerSideProps(
+  async (context) => {
+    // cookie front -> backend 공유
+    const cookie = context.req ? context.req.headers.cookie : '';
+    axios.defaults.headers.Cookie = '';
+    if (context.req && cookie) {
+      // 쿠키를 지웠다가 넣었다가 해야 쿠키가 다른사용자와 공유가되지않음
+      axios.defaults.headers.Cookie = cookie;
+    }
+    //결과를 reducer의 hydrate로 보냄
+    context.store.dispatch({
+      type: LOAD_ME_REQUEST,
+    });
+    context.store.dispatch(END); //request를 보내고 성공을 받지못하고 종료되는것을 막아줌
+    await context.store.sagaTask.toPromise();
+    const data = await fetcher(`/post/detail/${context.params.id}`, fetcher);
+    return { props: { data } };
+  }
+);
 
 export default Posts;

@@ -3,18 +3,15 @@ import {
   CATEGORY_POST_LOAD_FAILURE,
   CATEGORY_POST_LOAD_REQUEST,
   CATEGORY_POST_LOAD_SUCCESS,
-  MYPOST_LOAD_FAILURE,
-  MYPOST_LOAD_REQUEST,
-  MYPOST_LOAD_SUCCESS,
+  COMMENT_DELETE_FAILURE,
+  COMMENT_DELETE_REQUEST,
+  COMMENT_DELETE_SUCCESS,
   POST_COMMENT_FAILURE,
   POST_COMMENT_REQUEST,
   POST_COMMENT_SUCCESS,
   POST_DELETE_FAILURE,
   POST_DELETE_REQUEST,
   POST_DELETE_SUCCESS,
-  POST_DETAIL_LOAD_FAILURE,
-  POST_DETAIL_LOAD_REQUEST,
-  POST_DETAIL_LOAD_SUCCESS,
   POST_EDIT_FAILURE,
   POST_EDIT_REQUEST,
   POST_EDIT_SUCCESS,
@@ -36,15 +33,9 @@ export const initialState = {
   postCommentDone: false,
   postCommentError: null,
   postCommentLoading: false,
-  postDetailloadDone: false,
-  postDetailloadError: null,
-  postDetailloadLoading: false,
   postLoadDone: false,
   postLoadError: null,
   postLoadLoading: false,
-  mypostLoadDone: false,
-  mypostLoadError: null,
-  mypostLoadLoading: false,
   postEditDone: false,
   postEditError: null,
   postEditLoading: false,
@@ -54,13 +45,14 @@ export const initialState = {
   categoryLoadDone: false,
   categoryLoadError: null,
   categoryLoadLoading: false,
+  commentDeleteDone: false,
+  commentDeleteError: null,
+  commentDeleteLoading: false,
   postSearchLoadLoading: false,
   postSearchLoadDone: false,
   postSearchLoadError: null,
   posts: [],
   categoryLoadPosts: [],
-  postDetail: [],
-  myposts: [],
   searchLoadPosts: [],
 };
 
@@ -105,8 +97,6 @@ const reducer = (state = initialState, action) => {
         draft.postCommentError = null;
         break;
       case POST_COMMENT_SUCCESS:
-        const post = draft.posts.find((v) => v.id === action.data.PostId);
-        post.Comments.unshift(action.data);
         draft.postCommentLoading = false;
         draft.postCommentDone = true;
         break;
@@ -115,7 +105,20 @@ const reducer = (state = initialState, action) => {
         draft.postCommentDone = false;
         draft.postCommentError = action.error;
         break;
-
+      case COMMENT_DELETE_REQUEST:
+        draft.commentDeleteLoading = true;
+        draft.commentDeleteDone = false;
+        draft.commentDeleteError = null;
+        break;
+      case COMMENT_DELETE_SUCCESS:
+        draft.commentDeleteLoading = false;
+        draft.commentDeleteDone = true;
+        break;
+      case COMMENT_DELETE_FAILURE:
+        draft.commentDeleteLoading = false;
+        draft.commentDeleteDone = false;
+        draft.commentDeleteError = action.error;
+        break;
       case CATEGORY_POST_LOAD_REQUEST:
         draft.categoryLoadLoading = true;
         draft.categoryLoadDone = false;
@@ -130,21 +133,6 @@ const reducer = (state = initialState, action) => {
         draft.categoryLoadLoading = false;
         draft.categoryLoadDone = false;
         draft.categoryLoadError = action.error;
-        break;
-      case POST_DETAIL_LOAD_REQUEST:
-        draft.postDetailLoadLoading = true;
-        draft.postDetailLoadDone = false;
-        draft.postDetailLoadError = null;
-        break;
-      case POST_DETAIL_LOAD_SUCCESS:
-        draft.postDetailLoadLoading = false;
-        draft.postDetail = action.data;
-        draft.postLoadDone = true;
-        break;
-      case POST_DETAIL_LOAD_FAILURE:
-        draft.postDetailLoadLoading = false;
-        draft.postDetailLoadDone = false;
-        draft.postDetailLoadError = action.error;
         break;
       case POST_DELETE_REQUEST:
         draft.postDeleteLoading = true;
@@ -175,21 +163,6 @@ const reducer = (state = initialState, action) => {
         draft.postEditLoading = false;
         draft.postEditDone = false;
         draft.postEditError = action.error;
-        break;
-      case MYPOST_LOAD_REQUEST:
-        draft.mypostLoadLoading = true;
-        draft.mypostLoadDone = false;
-        draft.mypostLoadError = null;
-        break;
-      case MYPOST_LOAD_SUCCESS:
-        draft.mypostLoadLoading = false;
-        draft.myposts = action.data;
-        draft.mypostLoadDone = true;
-        break;
-      case MYPOST_LOAD_FAILURE:
-        draft.mypostLoadLoading = false;
-        draft.mypostLoadDone = false;
-        draft.mypostLoadError = action.error;
         break;
       case POST_SEARCH_LOAD_REQUEST:
         draft.postSearchLoadLoading = true;

@@ -203,6 +203,20 @@ router.delete('/:postId', async (req, res, next) => {
   }
 });
 
+// DELETE  /post/:id
+//@desc 게시글 삭제
+router.delete('/comment/:id', async (req, res, next) => {
+  try {
+    await Comment.destroy({
+      where: { id: req.params.id },
+    });
+    res.json();
+  } catch (error) {
+    console.error(error);
+    next(error);
+  }
+});
+
 // POST /post/:postId/score
 router.delete('/:postId/score', async (req, res, next) => {
   try {

@@ -10,7 +10,7 @@ import styled from 'styled-components';
 
 import PostContainer from '../../components/PostContainer';
 import AppLayout from '../../components/AppLayout';
-import { LOAD_ME_REQUEST, MYPOST_LOAD_REQUEST } from '../../reducers/types';
+import { LOAD_ME_REQUEST } from '../../reducers/types';
 import useSWR from 'swr';
 
 const fetcher = (url) =>

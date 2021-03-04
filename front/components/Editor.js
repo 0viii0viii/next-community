@@ -6,13 +6,12 @@ import { Editor } from '@toast-ui/react-editor';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import axios from 'axios';
-import { POST_UPLOAD_REQUEST } from '../reducers/types';
+import { LOAD_ME_REQUEST, POST_UPLOAD_REQUEST } from '../reducers/types';
 import Router from 'next/router';
 
 const PostEditor = () => {
   const dispatch = useDispatch();
   const { me } = useSelector((state) => state.user);
-  const { postUploadDone } = useSelector((state) => state.post);
 
   const editorRef = useRef();
   const [form, setValues] = useState({

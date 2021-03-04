@@ -41,8 +41,6 @@ const Posts = (props) => {
     commentDeleteDone,
   } = useSelector((state) => state.post);
 
-  console.log(data.Comments.id, '데코아이디');
-
   useEffect(() => {
     if (postCommentDone) {
       // 댓글 업로드 완료시 입력창 초기화

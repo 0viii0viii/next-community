@@ -5,7 +5,7 @@ import wrapper from '../../store/configureStore';
 import axios from 'axios';
 import { END } from 'redux-saga';
 //Style
-import { Pagination } from 'antd';
+import { Card, Pagination } from 'antd';
 import styled from 'styled-components';
 
 import PostContainer from '../../components/PostContainer';
@@ -35,9 +35,16 @@ const Myposts = (props) => {
   const currentPosts = data.slice(indexOfFirstPost, indexOfLastPost);
   const paginate = (page) => setCurrentPage(page);
 
+  if (error) {
+    console.error(error);
+    return '게시글 로딩 중 에러가 발생했습니다.';
+  }
   return (
     <>
       <AppLayout>
+        <Card>
+          <h2>{data[1].creator}</h2>님의 게시글 {data.length} 개
+        </Card>
         <PostContainer posts={currentPosts} />
         <StyledPagination
           total={Math.ceil((data.length / postsPerPage) * 10)}

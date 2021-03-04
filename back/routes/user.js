@@ -2,6 +2,7 @@ const express = require('express');
 const bcrypt = require('bcrypt');
 const passport = require('passport');
 const { User } = require('../models');
+const { Post } = require('../models');
 const { isNotLoggedIn, isLoggedIn } = require('./middlewares');
 const router = express.Router();
 
@@ -118,6 +119,10 @@ router.patch('/nickname', isLoggedIn, async (req, res, next) => {
       {
         where: { id: req.user.id },
       }
+    );
+    await Post.update(
+      { creator: req.body.nickname },
+      { where: { UserId: req.user.id } }
     );
     res.status(200).json({ nickname: req.body.nickname });
   } catch (error) {

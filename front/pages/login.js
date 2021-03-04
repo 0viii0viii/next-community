@@ -22,21 +22,6 @@ const Global = createGlobalStyle`
  }
 `;
 
-const StyledButton1 = styled(Button)`
-  width: 100%;
-  border-radius: 5px;
-  margin-top: 10px;
-  background: white;
-  height: 50px;
-`;
-const StyledButton2 = styled(Button)`
-  width: 100%;
-  border-radius: 5px;
-  margin-top: 10px;
-  background: yellow;
-
-  height: 50px;
-`;
 const StyledButton3 = styled(Button)`
   width: 100%;
   border-radius: 5px;
@@ -90,10 +75,7 @@ const login = () => {
             <Link href="/">
               <h1>Gunners</h1>
             </Link>
-            <StyledButton1>구글로 로그인</StyledButton1>
-            <br />
-            <StyledButton2>카카오톡으로 로그인</StyledButton2>
-            <Divider>OR</Divider>
+
             <h3>이메일로 로그인</h3>
             <StyledInput
               type="email"

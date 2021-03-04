@@ -90,7 +90,7 @@ const Posts = (props) => {
     <>
       <AppLayout>
         <Card title={data.title}>
-          {data.creator}
+          <Link href={`/myposts/${data.UserId}`}>{data.creator}</Link>
           {data.category}
           {moment(data.createdAt).fromNow()}
           <div>조회{data.view}</div>
@@ -152,6 +152,7 @@ export const getServerSideProps = wrapper.getServerSideProps(
     context.store.dispatch({
       type: LOAD_ME_REQUEST,
     });
+
     context.store.dispatch(END); //request를 보내고 성공을 받지못하고 종료되는것을 막아줌
     await context.store.sagaTask.toPromise();
     const data = await fetcher(`/post/detail/${context.params.id}`, fetcher);

@@ -150,6 +150,7 @@ function* postEdit(action) {
       type: POST_EDIT_SUCCESS,
       data: result.data,
     });
+    yield call(Router.push, `/posts/${action.data.id}`);
   } catch (e) {
     yield put({
       type: POST_EDIT_FAILURE,

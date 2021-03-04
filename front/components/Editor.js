@@ -1,13 +1,12 @@
-import { Button, Form, Input, Result, Select } from 'antd';
+import { Button, Form, Input } from 'antd';
 import 'codemirror/lib/codemirror.css'; // Editor's Dependency Style
 import '@toast-ui/editor/dist/toastui-editor.css'; // Editor's Style
 
 import { Editor } from '@toast-ui/react-editor';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import axios from 'axios';
-import { LOAD_ME_REQUEST, POST_UPLOAD_REQUEST } from '../reducers/types';
-import Router from 'next/router';
+import { POST_UPLOAD_REQUEST } from '../reducers/types';
 
 const PostEditor = () => {
   const dispatch = useDispatch();
@@ -32,7 +31,15 @@ const PostEditor = () => {
   const onClickSubmit = useCallback(() => {
     const { title, content, fileUrl, category, creator } = form;
     const body = { title, content, fileUrl, category, creator };
-
+    if (!category) {
+      return alert('카테고리를 선택하십시오.');
+    }
+    if (!title) {
+      return alert('제목을 입력하십시오.');
+    }
+    if (!content) {
+      return alert('내용을 입력하십시오.');
+    }
     dispatch({
       type: POST_UPLOAD_REQUEST,
       data: body,
@@ -106,6 +113,7 @@ const PostEditor = () => {
       <div>
         <Form onFinish={onClickSubmit}>
           <select name="category" onChange={onChange}>
+            <option>선택 안함</option>
             <option value="자유">자유</option>
             <option value="유머">유머</option>
             <option value="이적 시장">이적 시장</option>

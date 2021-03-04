@@ -8,21 +8,13 @@ import Router, { useRouter } from 'next/router';
 import { POST_EDIT_REQUEST } from '../reducers/types';
 import axios from 'axios';
 
-const fetcher = (url) =>
-  axios.get(url, { withCredentials: true }).then((result) => result.data);
-
 const EditEditor = ({ data }) => {
   const dispatch = useDispatch();
   const { postEditDone } = useSelector((state) => state.post);
   const { me } = useSelector((state) => state.user);
   const router = useRouter();
   const { id } = router.query;
-  console.log(me.id);
-  useEffect(() => {
-    if (postEditDone) {
-      Router.push('/');
-    }
-  }, [postEditDone]);
+
   const editorRef = useRef();
   const [form, setValues] = useState({
     title: '',
@@ -40,6 +32,15 @@ const EditEditor = ({ data }) => {
   const onClickSubmit = useCallback(() => {
     const { title, content, fileUrl, category } = form;
     const body = { id, title, content, fileUrl, category };
+    if (!category) {
+      return alert('카테고리를 선택하십시오.');
+    }
+    if (!title) {
+      return alert('제목을 입력하십시오.');
+    }
+    if (!content) {
+      return alert('내용을 입력하십시오.');
+    }
     dispatch({
       type: POST_EDIT_REQUEST,
       data: body,
@@ -111,6 +112,7 @@ const EditEditor = ({ data }) => {
       <div>
         <Form onFinish={onClickSubmit}>
           <select name="category" onChange={onChange}>
+            <option>선택 안함</option>
             <option value="자유">자유</option>
             <option value="유머">유머</option>
             <option value="이적 시장">이적 시장</option>

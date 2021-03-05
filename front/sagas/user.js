@@ -20,6 +20,7 @@ import {
   REGISTER_SUCCESS,
 } from '../reducers/types';
 import axios from 'axios';
+import Router from 'next/router';
 //회원가입
 function registerAPI(data) {
   return axios.post('/user/register', data);
@@ -32,6 +33,7 @@ function* register(action) {
     yield put({
       type: REGISTER_SUCCESS,
     });
+    yield call(Router.push, `/login`);
   } catch (e) {
     yield put({
       type: REGISTER_FAILURE,
@@ -52,6 +54,7 @@ function* login(action) {
       type: LOGIN_SUCCESS,
       data: result.data,
     });
+    yield call(Router.push, '/');
   } catch (e) {
     yield put({
       type: LOGIN_FAILURE,

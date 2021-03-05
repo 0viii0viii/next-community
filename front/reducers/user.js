@@ -39,7 +39,7 @@ export const initialState = {
   editPasswordLoading: false, //비밀번호 변경
   editPasswordDone: false,
   editPasswordError: null,
-  me: null,
+  me: null, //내 정보
 };
 
 const reducer = (state = initialState, action) => {

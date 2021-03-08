@@ -3,6 +3,7 @@ import Link from 'next/link';
 
 import moment from 'moment';
 import { PictureOutlined } from '@ant-design/icons';
+import { PostDetail, P } from '../components/style/styles';
 
 moment.locale('ko'); //한글로
 const PostContainer = ({ posts }) => {
@@ -15,13 +16,16 @@ const PostContainer = ({ posts }) => {
             <Link href={`/posts/${id}`}>
               <Card>
                 <Row>
-                  <Col xs={12}>
+                  <Col xs={24}>
                     {title} {fileUrl ? <PictureOutlined /> : ''}[
                     {Comments.length}]
                   </Col>
-
-                  <Col xs={12}>
-                    {category} {creator} {moment(createdAt).fromNow()}
+                  <Col xs={24}>
+                    <PostDetail>
+                      <P>{category} </P>
+                      <P>{moment(createdAt).fromNow()} </P>
+                      <P>{creator}</P>
+                    </PostDetail>
                   </Col>
                 </Row>
               </Card>

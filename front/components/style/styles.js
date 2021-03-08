@@ -122,3 +122,15 @@ export const Background = styled.div`
   text-align: center;
   font-size: 50px;
 `;
+
+//PostContainer.js
+
+export const PostDetail = styled.div`
+  margin-top: 5px;
+`;
+
+export const P = styled.p`
+  display: inline;
+  padding: 10px;
+  color: gray;
+`;

@@ -9,6 +9,7 @@ import SideMenu from './SideMenu';
 import Funcbar from './FuncBar';
 import { MenuOutlined } from '@ant-design/icons';
 import { useSelector } from 'react-redux';
+import HeaderBar from './HeaderBar';
 
 const Header = styled.header`
   background: blue;
@@ -52,76 +53,10 @@ const Global = createGlobalStyle`
 `;
 
 const AppLayout = ({ children }) => {
-  const { me } = useSelector((state) => state.user);
-  const [menuOpened, setmenuOpened] = useState(false);
-
-  const handleMenuClick = useCallback(() => {
-    setmenuOpened((prev) => !prev);
-  });
-
   return (
     <div>
       <Global />
-
-      <Header>
-        <Row>
-          <Col xs={0} md={4}></Col>
-          <Col xs={12} md={7}>
-            {/* <StyledLink href="/">
-              <a>아스날</a>
-            </StyledLink> */}
-          </Col>
-          <Col xs={12} lg={12} xl={0}>
-            <StyledMenuOutlined onClick={handleMenuClick} />
-          </Col>
-          <Col xs={0} md={8}>
-            {/* <StyledButton>로그인</StyledButton> */}
-          </Col>
-          <Col xs={0} md={4}></Col>
-        </Row>
-      </Header>
-
-      {menuOpened && (
-        <Row>
-          <Col xs={24} lg={24} xl={0}>
-            {me ? (
-              <StyledItem>
-                <Link href="/profile">
-                  <Atag>{me.nickname}내 프로필</Atag>
-                </Link>
-              </StyledItem>
-            ) : (
-              <StyledItem>
-                <Link href="/login">
-                  <Atag>로그인</Atag>
-                </Link>
-              </StyledItem>
-            )}
-          </Col>
-          <Col xs={24} lg={24} xl={0}>
-            <StyledItem>
-              <Link href="/category/free">
-                <Atag>자유</Atag>
-              </Link>
-              <Link href="/category/humor">
-                <Atag>유머</Atag>
-              </Link>
-              <Link href="/category/transfer">
-                <Atag>이적시장</Atag>
-              </Link>
-              <Link href="/category/forecast">
-                <Atag>경기 예측</Atag>
-              </Link>
-              <Link href="/category/examine">
-                <Atag>경기 분석</Atag>
-              </Link>
-              <Link href="/category/debate">
-                <Atag>경기 토론</Atag>
-              </Link>
-            </StyledItem>
-          </Col>
-        </Row>
-      )}
+      <HeaderBar />
       <Row>
         <Col xs={0} lg={0} xl={24}>
           <HeaderBg />

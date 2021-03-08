@@ -1,17 +1,11 @@
-import styled from 'styled-components';
-import img from '../img/logo.jpg';
-
-const Background = styled.div`
-  background-image: url(${img});
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-position: center;
-
-  height: 200px;
-`;
+import { Background } from '../components/style/styles';
 
 const HeaderBg = () => {
-  return <Background />;
+  return (
+    <Background>
+      <h1>ARSENAL </h1>
+    </Background>
+  );
 };
 
 export default HeaderBg;

@@ -10,6 +10,7 @@ const express = require('express');
 const { Post } = require('../models');
 const { Comment } = require('../models');
 const { User } = require('../models');
+const { isLoggedIn } = require('./middlewares');
 const router = express.Router();
 
 const s3 = new AWS.S3({
@@ -34,20 +35,25 @@ const uploadS3 = multer({
 
 // POST  /post/image
 // @desc post image on editor
-router.post('/image', uploadS3.array('upload', 5), async (req, res, next) => {
-  try {
-    console.log(req.files.map((v) => v.location));
-    console.log(req.file);
-    res.json({ uploaded: true, url: req.files.map((v) => v.location) });
-  } catch (error) {
-    console.error(error);
-    res.json({ uploaded: false, url: null });
+router.post(
+  '/image',
+  isLoggedIn,
+  uploadS3.array('upload', 5),
+  async (req, res, next) => {
+    try {
+      console.log(req.files.map((v) => v.location));
+      console.log(req.file);
+      res.json({ uploaded: true, url: req.files.map((v) => v.location) });
+    } catch (error) {
+      console.error(error);
+      res.json({ uploaded: false, url: null });
+    }
   }
-});
+);
 
 // POST  /post
 // @desc  Upload A Post
-router.post('/', uploadS3.none(), async (req, res, next) => {
+router.post('/', isLoggedIn, uploadS3.none(), async (req, res, next) => {
   try {
     const { title, content, fileUrl, category, creator } = req.body;
     const newPost = await Post.create({
@@ -68,29 +74,34 @@ router.post('/', uploadS3.none(), async (req, res, next) => {
 
 // POST  /post
 // @desc  Edit A Post
-router.patch('/:id/edit', uploadS3.none(), async (req, res, next) => {
-  try {
-    console.log(req.params.id, '파람스');
-    const { title, content, fileUrl, category } = req.body;
-    const newPost = await Post.update(
-      {
-        title,
-        content,
-        category,
-        fileUrl,
-      },
-      { where: { id: req.params.id } }
-    );
-    console.log('하이');
-    return res.status(201).json(newPost);
-  } catch (error) {
-    console.error(error);
-    next(error);
+router.patch(
+  '/:id/edit',
+  isLoggedIn,
+  uploadS3.none(),
+  async (req, res, next) => {
+    try {
+      console.log(req.params.id, '파람스');
+      const { title, content, fileUrl, category } = req.body;
+      const newPost = await Post.update(
+        {
+          title,
+          content,
+          category,
+          fileUrl,
+        },
+        { where: { id: req.params.id } }
+      );
+      console.log('하이');
+      return res.status(201).json(newPost);
+    } catch (error) {
+      console.error(error);
+      next(error);
+    }
   }
-});
+);
 
 // POST /post/:id/comment
-router.post('/:postId/comment', async (req, res, next) => {
+router.post('/:postId/comment', isLoggedIn, async (req, res, next) => {
   try {
     const post = await Post.findOne({
       where: { id: req.params.postId },
@@ -182,20 +193,6 @@ router.get('/myposts/:id', async (req, res, next) => {
     next(error);
   }
 });
-// GET /myposts/:id
-//@desc 내 게시글
-router.get('/test', async (req, res, next) => {
-  try {
-    const post = await Post.findOne({
-      where: { id: 40 },
-    });
-    console.log(post, '내가실행됨');
-    res.json(post);
-  } catch (error) {
-    console.error(error);
-    next(error);
-  }
-});
 // GET /
 //@desc 포스트 디테일
 router.get('/detail/:id', async (req, res, next) => {
@@ -227,7 +224,7 @@ router.get('/detail/:id', async (req, res, next) => {
 
 // DELETE  /post/:postId
 //@desc 게시글 삭제
-router.delete('/:postId', async (req, res, next) => {
+router.delete('/:postId', isLoggedIn, async (req, res, next) => {
   try {
     await Post.destroy({
       where: { id: req.params.postId, UserId: req.user.id },
@@ -239,27 +236,14 @@ router.delete('/:postId', async (req, res, next) => {
   }
 });
 
-// DELETE  /post/:id
-//@desc 게시글 삭제
-router.delete('/comment/:id', async (req, res, next) => {
+// DELETE  /post/comment/:id
+//@desc 댓글 삭제
+router.delete('/comment/:id', isLoggedIn, async (req, res, next) => {
   try {
     await Comment.destroy({
       where: { id: req.params.id },
     });
     res.json();
-  } catch (error) {
-    console.error(error);
-    next(error);
-  }
-});
-
-// POST /post/:postId/score
-router.delete('/:postId/score', async (req, res, next) => {
-  try {
-    await Post.destroy({
-      where: { id: req.params.postId, UserId: req.user.id },
-    });
-    res.json({ PostId: parseInt(req.params.postId, 10) });
   } catch (error) {
     console.error(error);
     next(error);

@@ -41,6 +41,10 @@ const Posts = (props) => {
     commentDeleteDone,
   } = useSelector((state) => state.post);
 
+  if (error) {
+    console.error('데이터를 불러오지 못했습니다.');
+  }
+
   useEffect(() => {
     if (postCommentDone) {
       // 댓글 업로드 완료시 입력창 초기화
@@ -155,6 +159,7 @@ export const getServerSideProps = wrapper.getServerSideProps(
 
     context.store.dispatch(END); //request를 보내고 성공을 받지못하고 종료되는것을 막아줌
     await context.store.sagaTask.toPromise();
+
     const data = await fetcher(`/post/detail/${context.params.id}`, fetcher);
     return { props: { data } };
   }

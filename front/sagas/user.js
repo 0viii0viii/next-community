@@ -75,6 +75,7 @@ function* logout() {
     yield put({
       type: LOGOUT_SUCCESS,
     });
+    yield call(Router.push, '/');
   } catch (e) {
     yield put({
       type: LOGOUT_FAILURE,

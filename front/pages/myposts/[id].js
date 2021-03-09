@@ -42,10 +42,18 @@ export const getServerSideProps = wrapper.getServerSideProps(
     const query = context.query;
     const page = query.page || 1;
     let data = null;
-    const res = await fetch(
-      `http://localhost:5000/post/myposts/${context.params.id}?page=${page}`
-    );
-    data = await res.json();
+
+    try {
+      const res = await fetch(
+        `http://localhost:5000/post/myposts/${context.params.id}?page=${page}`
+      );
+      if (res.status != 200) {
+        throw new Error('Failed to Fetch');
+      }
+      data = await res.json();
+    } catch (error) {
+      data = { error: { message: error.message } };
+    }
     return { props: { data } };
   }
 );

@@ -1,7 +1,6 @@
 import styled, { createGlobalStyle } from 'styled-components';
 import { Form, Button, Input, Col, Row, Card } from 'antd';
 import { MenuOutlined, FormOutlined } from '@ant-design/icons';
-import Link from 'next/link';
 import img from '../../img/logo2.jpg';
 
 // Login.js & Register.js
@@ -51,6 +50,9 @@ export const SideMenuButton = styled(Button)`
   width: 100%;
   background: red;
   color: white;
+  &:hover {
+    background: yellow;
+  }
 `;
 
 export const SideMenuWrapper = styled(Col)`
@@ -80,11 +82,17 @@ export const HeaderA = styled.a`
   color: white;
   font-size: 30px;
   font-family: 'Roboto', sans-serif;
+  &: hover {
+    color: yellow;
+  }
 `;
 
 export const HeaderLoginButton = styled(Button)`
   float: right;
   margin-top: 0.25rem;
+  &:hover {
+    background: yellow;
+  }
   @media screen and (max-width: 1200px) {
     display: none;
   }

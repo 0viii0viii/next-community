@@ -7,10 +7,10 @@ import '@toast-ui/editor/dist/toastui-editor.css'; // Editor's Style
 import Router, { useRouter } from 'next/router';
 import { POST_EDIT_REQUEST } from '../reducers/types';
 import axios from 'axios';
+import { MenuItem } from './style/styles';
 
 const EditEditor = ({ data }) => {
   const dispatch = useDispatch();
-  const { postEditDone } = useSelector((state) => state.post);
   const { me } = useSelector((state) => state.user);
   const router = useRouter();
   const { id } = router.query;
@@ -22,6 +22,13 @@ const EditEditor = ({ data }) => {
     content: '',
     fileUrl: '',
   });
+  //로그인된 사용자의 id와 게시글의 id를 비교하여 일치하지않으면 알리고, 뒤로가기
+  if (me.id != data.UserId) {
+    alert('접근할 수 없습니다.');
+    router.back();
+    return null;
+  }
+
   const onChange = (e) => {
     setValues({
       ...form,

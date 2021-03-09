@@ -2,7 +2,7 @@ import AppLayout from '../../../components/AppLayout';
 import dynamic from 'next/dynamic';
 import axios from 'axios';
 import useSWR from 'swr';
-import { useRouter } from 'next/router';
+import { Router, useRouter } from 'next/router';
 const EditEditor = dynamic(() => import('../../../components/EditEditor'), {
   ssr: false,
 });
@@ -10,6 +10,7 @@ const EditEditor = dynamic(() => import('../../../components/EditEditor'), {
 import wrapper from '../../../store/configureStore';
 import { END } from 'redux-saga';
 import { LOAD_ME_REQUEST } from '../../../reducers/types';
+import { useSelector } from 'react-redux';
 
 const fetcher = (url) =>
   axios.get(url, { withCredentials: true }).then((result) => result.data);
@@ -17,7 +18,10 @@ const Edit = () => {
   const router = useRouter();
   const { id } = router.query;
   const { data, error } = useSWR(`/post/detail/${id}`, fetcher);
-  console.log(data, '하이');
+  if (error) {
+    console.error('데이터를 불러오지 못했습니다.');
+  }
+
   return (
     <>
       <AppLayout>

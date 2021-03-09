@@ -121,9 +121,14 @@ router.post('/:postId/comment', async (req, res, next) => {
 });
 // GET /
 //@desc 모든 게시글
-router.get('/', async (req, res, next) => {
+router.get('/posts', async (req, res, next) => {
+  const curPage = req.query.page || 1;
+  const perPage = 10;
+  console.log(curPage, '컬페이지');
   try {
-    const postResult = await Post.findAll({
+    const posts = await Post.findAll({
+      offset: (curPage - 1) * perPage,
+      limit: perPage,
       order: [['createdAt', 'DESC']],
       include: [
         {
@@ -132,8 +137,15 @@ router.get('/', async (req, res, next) => {
         },
       ],
     });
-    console.log(postResult);
-    res.json(postResult);
+    const totalPosts = await Post.count();
+    console.log(posts);
+    console.log(totalPosts);
+    res.status(200).json({
+      message: 'Fetched posts',
+      posts: posts,
+      curPage: curPage,
+      maxPage: Math.ceil(totalPosts / perPage),
+    });
   } catch (error) {
     console.error(error);
     next(error);

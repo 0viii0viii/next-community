@@ -3,7 +3,6 @@ import { Col, Row } from 'antd';
 import HeaderBg from './HeaderBg';
 import SideMenu from './SideMenu';
 import Funcbar from './FuncBar';
-
 import HeaderBar from './HeaderBar';
 import { Global } from './style/styles';
 

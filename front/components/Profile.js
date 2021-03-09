@@ -6,10 +6,7 @@ import { useCallback } from 'react';
 import { LOGOUT_REQUEST } from '../reducers/types';
 import Link from 'next/link';
 import Meta from 'antd/lib/card/Meta';
-
-const BtnContainer = styled.div`
-  margin-top: 10px;
-`;
+import { BtnContainer, ProfileBtn } from '../components/style/styles';
 
 const Profile = () => {
   const dispatch = useDispatch();
@@ -26,16 +23,16 @@ const Profile = () => {
         <Meta avatar={<Avatar>벵거</Avatar>} title={me.nickname} />
 
         <BtnContainer>
-          <Button>
+          <ProfileBtn>
             <Link href="/post">글쓰기</Link>
-          </Button>
-          <Button href={`/myposts/${me.id}`}>내 글</Button>
-          <Button>
+          </ProfileBtn>
+          <ProfileBtn href={`/myposts/${me.id}`}>내 글</ProfileBtn>
+          <ProfileBtn>
             <Link href="/profile">프로필</Link>
-          </Button>
-          <Button onClick={onLogout} loading={logoutLoading}>
+          </ProfileBtn>
+          <ProfileBtn onClick={onLogout} loading={logoutLoading}>
             로그아웃
-          </Button>
+          </ProfileBtn>
         </BtnContainer>
       </Card>
     </>

@@ -2,6 +2,7 @@ import styled, { createGlobalStyle } from 'styled-components';
 import { Form, Button, Input, Col, Row } from 'antd';
 import { MenuOutlined } from '@ant-design/icons';
 import Link from 'next/link';
+import ReactPaginate from 'react-paginate';
 // Login.js & Register.js
 export const FormWrapper = styled(Form)`
   text-align: center;
@@ -133,4 +134,67 @@ export const P = styled.p`
   display: inline;
   padding: 10px;
   color: gray;
+`;
+
+//Profile.js
+export const BtnContainer = styled.div`
+  margin-top: 10px;
+`;
+
+export const ProfileBtn = styled(Button)`
+  width: 25%;
+`;
+
+//index.js
+export const PaginationWrapper = styled.div`
+  .paginate-wrap {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    list-style: none;
+
+    margin-left: auto;
+    margin-right: auto;
+    width: 100%;
+    border-radius: 3px;
+    max-width: 100%;
+    flex-wrap: wrap;
+    background: white;
+  }
+  .paginate-a {
+    color: black;
+    &:hover {
+      color: #1890ff;
+    }
+  }
+  .paginate-li {
+    padding: 0.5rem 1rem;
+    border: 1px solid #d9d9d9;
+    &:hover {
+      border: 1px solid #1890ff;
+    }
+  }
+  .paginate-next-a {
+    padding: 0.5rem 1rem;
+    border: 1px solid #d9d9d9;
+    color: black;
+    &:hover {
+      border: 1px solid #1890ff;
+      color: #1890ff;
+    }
+  }
+  .paginate-prev-a {
+    padding: 0.5rem 1rem;
+    border: 1px solid #d9d9d9;
+    color: black;
+    &:hover {
+      border: 1px solid #1890ff;
+      color: #1890ff;
+    }
+  }
+  .paginate-active {
+    border: 1px solid #1890ff;
+
+    color: #1890ff;
+  }
 `;

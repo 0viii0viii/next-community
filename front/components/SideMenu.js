@@ -27,7 +27,7 @@ const SideMenu = () => {
           )}
 
           <Card title="커뮤니티" bordered={true}>
-            <Link href="/">
+            <Link href="/?page=1">
               <Atag>전체 </Atag>
             </Link>
             <Divider />

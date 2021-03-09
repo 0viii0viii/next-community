@@ -20,7 +20,7 @@ import { Card, Divider, Form, Input, Button } from 'antd';
 import Router, { useRouter } from 'next/router';
 import useInput from '../../hooks/useInput';
 import Link from 'next/link';
-import { ReloadOutlined } from '@ant-design/icons';
+import { PostDetail, P } from '../../components/style/styles';
 
 moment.locale('ko');
 const fetcher = (url) =>
@@ -89,9 +89,11 @@ const Posts = (props) => {
       <AppLayout>
         <Card title={data.title}>
           <Link href={`/myposts/${data.UserId}`}>{data.creator}</Link>
-          {data.category}
-          {moment(data.createdAt).fromNow()}
-          <div>조회{data.view}</div>
+          <PostDetail>
+            <P>{data.category}</P>
+            <P>{moment(data.createdAt).fromNow()}</P>
+            <P>조회{data.view}</P>
+          </PostDetail>
 
           {uid === data.UserId ? (
             <Button.Group>

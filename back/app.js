@@ -6,6 +6,7 @@ const cookieParser = require('cookie-parser');
 const userRouter = require('./routes/user');
 const postRouter = require('./routes/post');
 const searchRouter = require('./routes/search');
+const categoryRouter = require('./routes/category');
 //Passport 연결
 const passportConfig = require('./passport');
 const passport = require('passport');
@@ -51,6 +52,7 @@ app.get('/', (req, res) => {
 app.use('/user', userRouter);
 app.use('/post', postRouter);
 app.use('/search', searchRouter);
+app.use('/category', categoryRouter);
 
 app.listen(5000, () => {
   console.log('실행완료');

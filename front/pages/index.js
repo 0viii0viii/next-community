@@ -35,7 +35,7 @@ export const getServerSideProps = wrapper.getServerSideProps(
     const query = context.query;
     const page = query.page || 1;
     let data = null;
-    const res = await fetch(`http://localhost:5000/post/posts?page=${page}`);
+    const res = await fetch(`http://localhost:5000/post/all?page=${page}`);
     data = await res.json();
     return { props: { data } };
   }

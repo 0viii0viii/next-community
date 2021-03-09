@@ -1,53 +1,20 @@
-import { useDispatch, useSelector } from 'react-redux';
 import AppLayout from '../../components/AppLayout';
-import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
-import {
-  CATEGORY_POST_LOAD_REQUEST,
-  LOAD_ME_REQUEST,
-} from '../../reducers/types';
+import PostContainer from '../../components/PostContainer';
+import { LOAD_ME_REQUEST } from '../../reducers/types';
 //SSR
 import wrapper from '../../store/configureStore';
 import axios from 'axios';
 import { END } from 'redux-saga';
 
-import { Pagination } from 'antd';
-import styled from 'styled-components';
-
 import moment from 'moment';
-import PostContainer from '../../components/PostContainer';
 
 moment.locale('ko');
 
-const StyledPagination = styled(Pagination)`
-  display: flex;
-  justify-content: center;
-  margin-top: 10px;
-`;
-const Category = () => {
-  const dispatch = useDispatch();
-  const router = useRouter();
-  const { id } = router.query;
-  const { categoryLoadPosts } = useSelector((state) => state.post);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [postsPerPage] = useState(10);
-  const indexOfLastPost = currentPage * postsPerPage;
-  const indexOfFirstPost = indexOfLastPost - postsPerPage;
-
-  const currentPosts = categoryLoadPosts.slice(
-    indexOfFirstPost,
-    indexOfLastPost
-  );
-  const paginate = (page) => setCurrentPage(page);
+const Category = ({ data }) => {
   return (
     <>
       <AppLayout>
-        <PostContainer posts={currentPosts} />
-        <StyledPagination
-          total={Math.ceil((categoryLoadPosts.length / postsPerPage) * 10)}
-          onChange={paginate}
-          current={currentPage}
-        />
+        <PostContainer data={data} />
       </AppLayout>
     </>
   );
@@ -66,12 +33,16 @@ export const getServerSideProps = wrapper.getServerSideProps(
     context.store.dispatch({
       type: LOAD_ME_REQUEST,
     });
-    context.store.dispatch({
-      type: CATEGORY_POST_LOAD_REQUEST,
-      data: context.params.id,
-    });
     context.store.dispatch(END); //request를 보내고 성공을 받지못하고 종료되는것을 막아줌
     await context.store.sagaTask.toPromise();
+    const query = context.query;
+    const page = query.page || 1;
+    let data = null;
+    const res = await fetch(
+      `http://localhost:5000/category/${context.params.id}?page=${page}`
+    );
+    data = await res.json();
+    return { props: { data } };
   }
 );
 

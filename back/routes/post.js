@@ -155,8 +155,12 @@ router.get('/all', async (req, res, next) => {
 // GET /myposts/:id
 //@desc 내 게시글
 router.get('/myposts/:id', async (req, res, next) => {
+  const curPage = req.query.page || 1;
+  const perPage = 10;
   try {
-    const post = await Post.findAll({
+    const posts = await Post.findAll({
+      offset: (curPage - 1) * perPage,
+      limit: perPage,
       where: { UserId: req.params.id },
       order: [['createdAt', 'DESC']],
       include: [
@@ -166,7 +170,13 @@ router.get('/myposts/:id', async (req, res, next) => {
         },
       ],
     });
-    res.json(post);
+    const totalPosts = await Post.count({ where: { UserId: req.params.id } });
+    res.status(200).json({
+      message: 'Fetched posts',
+      posts: posts,
+      curPage: curPage,
+      maxPage: Math.ceil(totalPosts / perPage),
+    });
   } catch (error) {
     console.error(error);
     next(error);

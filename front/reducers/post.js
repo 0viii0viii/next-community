@@ -1,8 +1,5 @@
 import produce from 'immer';
 import {
-  CATEGORY_POST_LOAD_FAILURE,
-  CATEGORY_POST_LOAD_REQUEST,
-  CATEGORY_POST_LOAD_SUCCESS,
   COMMENT_DELETE_FAILURE,
   COMMENT_DELETE_REQUEST,
   COMMENT_DELETE_SUCCESS,
@@ -15,9 +12,6 @@ import {
   POST_EDIT_FAILURE,
   POST_EDIT_REQUEST,
   POST_EDIT_SUCCESS,
-  POST_LOAD_FAILURE,
-  POST_LOAD_REQUEST,
-  POST_LOAD_SUCCESS,
   POST_SEARCH_LOAD_FAILURE,
   POST_SEARCH_LOAD_REQUEST,
   POST_SEARCH_LOAD_SUCCESS,
@@ -33,18 +27,12 @@ export const initialState = {
   postCommentDone: false,
   postCommentError: null,
   postCommentLoading: false,
-  postLoadDone: false,
-  postLoadError: null,
-  postLoadLoading: false,
   postEditDone: false,
   postEditError: null,
   postEditLoading: false,
   postDeleteDone: false,
   postDeleteError: null,
   postDeleteLoading: false,
-  categoryLoadDone: false,
-  categoryLoadError: null,
-  categoryLoadLoading: false,
   commentDeleteDone: false,
   commentDeleteError: null,
   commentDeleteLoading: false,
@@ -52,30 +40,12 @@ export const initialState = {
   postSearchLoadDone: false,
   postSearchLoadError: null,
   posts: [],
-  categoryLoadPosts: [],
   searchLoadPosts: [],
 };
 
 const reducer = (state = initialState, action) => {
   return produce(state, (draft) => {
     switch (action.type) {
-      case POST_LOAD_REQUEST:
-        draft.postLoadLoading = true;
-        draft.postDeleteDone = false;
-        draft.postLoadDone = false;
-        draft.postEditDone = false;
-        draft.postLoadError = null;
-        break;
-      case POST_LOAD_SUCCESS:
-        draft.postLoadLoading = false;
-        draft.posts = action.data;
-        draft.postLoadDone = true;
-        break;
-      case POST_LOAD_FAILURE:
-        draft.postLoadLoading = false;
-        draft.postLoadDone = false;
-        draft.postLoadError = action.error;
-        break;
       case POST_UPLOAD_REQUEST:
         draft.postUploadLoading = true;
         draft.postUploadDone = false;
@@ -118,21 +88,6 @@ const reducer = (state = initialState, action) => {
         draft.commentDeleteLoading = false;
         draft.commentDeleteDone = false;
         draft.commentDeleteError = action.error;
-        break;
-      case CATEGORY_POST_LOAD_REQUEST:
-        draft.categoryLoadLoading = true;
-        draft.categoryLoadDone = false;
-        draft.categoryLoadError = null;
-        break;
-      case CATEGORY_POST_LOAD_SUCCESS:
-        draft.categoryLoadLoading = false;
-        draft.categoryLoadPosts = action.data;
-        draft.categoryLoadDone = true;
-        break;
-      case CATEGORY_POST_LOAD_FAILURE:
-        draft.categoryLoadLoading = false;
-        draft.categoryLoadDone = false;
-        draft.categoryLoadError = action.error;
         break;
       case POST_DELETE_REQUEST:
         draft.postDeleteLoading = true;

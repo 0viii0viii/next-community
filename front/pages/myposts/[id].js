@@ -1,56 +1,24 @@
-import { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 //SSR
 import wrapper from '../../store/configureStore';
 import axios from 'axios';
 import { END } from 'redux-saga';
 //Style
-import { Card, Pagination } from 'antd';
-import styled from 'styled-components';
+import { Card } from 'antd';
 
 import PostContainer from '../../components/PostContainer';
 import AppLayout from '../../components/AppLayout';
 import { LOAD_ME_REQUEST } from '../../reducers/types';
-import useSWR from 'swr';
+import { useSelector } from 'react-redux';
 
-const fetcher = (url) =>
-  axios.get(url, { withCredentials: true }).then((result) => result.data);
-
-const StyledPagination = styled(Pagination)`
-  display: flex;
-  justify-content: center;
-  margin-top: 10px;
-`;
-
-const Myposts = (props) => {
-  const dispatch = useDispatch();
-
-  // const { myposts, mypostLoadLoading } = useSelector((state) => state.post);
-  const initialData = props.data;
-  const { data, error } = useSWR('/post/myposts/:id', fetcher, { initialData });
-  const [currentPage, setCurrentPage] = useState(1);
-  const [postsPerPage] = useState(10);
-  const indexOfLastPost = currentPage * postsPerPage;
-  const indexOfFirstPost = indexOfLastPost - postsPerPage;
-  const currentPosts = data.slice(indexOfFirstPost, indexOfLastPost);
-  const paginate = (page) => setCurrentPage(page);
-
-  if (error) {
-    console.error(error);
-    return '게시글 로딩 중 에러가 발생했습니다.';
-  }
+const Myposts = ({ data }) => {
+  const { me } = useSelector((state) => state.user);
   return (
     <>
       <AppLayout>
         <Card>
-          <h2>{data[1].creator}</h2>님의 게시글 {data.length} 개
+          <h2>{me.nickname}</h2>님의 게시글 {data.posts.length}개
         </Card>
-        <PostContainer posts={currentPosts} />
-        <StyledPagination
-          total={Math.ceil((data.length / postsPerPage) * 10)}
-          onChange={paginate}
-          current={currentPage}
-        />
+        <PostContainer data={data} />
       </AppLayout>
     </>
   );
@@ -71,7 +39,13 @@ export const getServerSideProps = wrapper.getServerSideProps(
     });
     context.store.dispatch(END); //request를 보내고 성공을 받지못하고 종료되는것을 막아줌
     await context.store.sagaTask.toPromise();
-    const data = await fetcher(`/post/myposts/${context.params.id}`, fetcher);
+    const query = context.query;
+    const page = query.page || 1;
+    let data = null;
+    const res = await fetch(
+      `http://localhost:5000/post/myposts/${context.params.id}?page=${page}`
+    );
+    data = await res.json();
     return { props: { data } };
   }
 );

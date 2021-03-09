@@ -1,28 +1,18 @@
-import { useRouter } from 'next/router';
-import { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import AppLayout from '../../components/AppLayout';
 import PostContainer from '../../components/PostContainer';
-import {
-  LOAD_ME_REQUEST,
-  POST_SEARCH_LOAD_REQUEST,
-} from '../../reducers/types';
+import { LOAD_ME_REQUEST } from '../../reducers/types';
 //SSR
 import wrapper from '../../store/configureStore';
 import axios from 'axios';
 import { END } from 'redux-saga';
 
-const Search = () => {
-  const router = useRouter();
-  const { id } = router.query;
-  const { searchLoadPosts } = useSelector((state) => state.post);
-  console.log(searchLoadPosts.length);
-
+const Search = ({ data }) => {
+  console.log(data);
   return (
     <>
-      {searchLoadPosts != 0 ? (
+      {data != null ? (
         <AppLayout>
-          <PostContainer posts={searchLoadPosts} />
+          <PostContainer data={data} />
         </AppLayout>
       ) : (
         <AppLayout>
@@ -46,12 +36,18 @@ export const getServerSideProps = wrapper.getServerSideProps(
     context.store.dispatch({
       type: LOAD_ME_REQUEST,
     });
-    context.store.dispatch({
-      type: POST_SEARCH_LOAD_REQUEST,
-      data: context.params.id,
-    });
     context.store.dispatch(END); //request를 보내고 성공을 받지못하고 종료되는것을 막아줌
     await context.store.sagaTask.toPromise();
+    const query = context.query;
+    const page = query.page || 1;
+    let data = null;
+    const res = await fetch(
+      `http://localhost:5000/search/${encodeURI(
+        context.params.id
+      )}?page=${page}`
+    );
+    data = await res.json();
+    return { props: { data } };
   }
 );
 

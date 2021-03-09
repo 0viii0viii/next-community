@@ -7,9 +7,12 @@ const { Op } = require('sequelize');
 const router = express.Router();
 /// GET /search/:search
 router.get('/:id', async (req, res, next) => {
-  console.log(req.params.id);
+  const curPage = req.query.page || 1;
+  const perPage = 10;
   try {
     const searchResult = await Post.findAll({
+      offset: (curPage - 1) * perPage,
+      limit: perPage,
       order: [['createdAt', 'DESC']],
       attributes: [
         'id',
@@ -28,8 +31,16 @@ router.get('/:id', async (req, res, next) => {
         },
       ],
     });
-    console.log(searchResult);
-    res.json(searchResult);
+    const totalPosts = await Post.count({
+      where: { title: { [Op.like]: '%' + req.params.id + '%' } },
+    });
+    console.log();
+    res.status(200).json({
+      message: 'Fetched posts',
+      posts: searchResult,
+      curPage: curPage,
+      maxPage: Math.ceil(totalPosts / perPage),
+    });
   } catch (error) {
     console.error(error);
     next(error);

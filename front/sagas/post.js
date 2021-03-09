@@ -12,9 +12,6 @@ import {
   POST_EDIT_FAILURE,
   POST_EDIT_REQUEST,
   POST_EDIT_SUCCESS,
-  POST_SEARCH_LOAD_FAILURE,
-  POST_SEARCH_LOAD_REQUEST,
-  POST_SEARCH_LOAD_SUCCESS,
   POST_UPLOAD_FAILURE,
   POST_UPLOAD_REQUEST,
   POST_UPLOAD_SUCCESS,
@@ -110,26 +107,6 @@ function* postEdit(action) {
     });
   }
 }
-//검색 포스트 로드
-function searchPostLoadAPI(data) {
-  console.log(data, '사가용');
-  return axios.get(`/search/${encodeURIComponent(data)}`);
-}
-
-function* searchPostLoad(action) {
-  try {
-    const result = yield call(searchPostLoadAPI, action.data);
-    yield put({
-      type: POST_SEARCH_LOAD_SUCCESS,
-      data: result.data,
-    });
-  } catch (e) {
-    yield put({
-      type: POST_SEARCH_LOAD_FAILURE,
-      error: e.response.data,
-    });
-  }
-}
 //댓글 삭제
 function commentDeleteAPI(data) {
   console.log(data, '사가용');
@@ -153,9 +130,6 @@ function* commentDelete(action) {
 function* watchcommentDelete() {
   yield takeLatest(COMMENT_DELETE_REQUEST, commentDelete);
 }
-function* watchsearchPostLoad() {
-  yield takeLatest(POST_SEARCH_LOAD_REQUEST, searchPostLoad);
-}
 function* watchpostEdit() {
   yield takeLatest(POST_EDIT_REQUEST, postEdit);
 }
@@ -176,7 +150,6 @@ export default function* postSaga() {
     fork(watchpostComment),
     fork(watchpostDelete),
     fork(watchpostEdit),
-    fork(watchsearchPostLoad),
     fork(watchcommentDelete),
   ]);
 }

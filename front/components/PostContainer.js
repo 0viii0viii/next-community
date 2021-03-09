@@ -3,7 +3,12 @@ import Link from 'next/link';
 
 import moment from 'moment';
 import { PictureOutlined } from '@ant-design/icons';
-import { PostDetail, P, PaginationWrapper } from '../components/style/styles';
+import {
+  PostDetail,
+  P,
+  PaginationWrapper,
+  PostContainerCard,
+} from '../components/style/styles';
 import { useEffect, useState } from 'react';
 import Router, { useRouter } from 'next/router';
 import ReactPaginate from 'react-paginate';
@@ -41,7 +46,7 @@ const PostContainer = ({ data }) => {
         ({ id, title, creator, category, createdAt, fileUrl, Comments }) => {
           return (
             <Link href={`/posts/${id}`}>
-              <Card>
+              <PostContainerCard>
                 <Row>
                   <Col xs={24}>
                     {title} {fileUrl ? <PictureOutlined /> : ''}[
@@ -55,7 +60,7 @@ const PostContainer = ({ data }) => {
                     </PostDetail>
                   </Col>
                 </Row>
-              </Card>
+              </PostContainerCard>
             </Link>
           );
         }

@@ -12,9 +12,6 @@ import {
   POST_EDIT_FAILURE,
   POST_EDIT_REQUEST,
   POST_EDIT_SUCCESS,
-  POST_SEARCH_LOAD_FAILURE,
-  POST_SEARCH_LOAD_REQUEST,
-  POST_SEARCH_LOAD_SUCCESS,
   POST_UPLOAD_FAILURE,
   POST_UPLOAD_REQUEST,
   POST_UPLOAD_SUCCESS,
@@ -36,9 +33,6 @@ export const initialState = {
   commentDeleteDone: false,
   commentDeleteError: null,
   commentDeleteLoading: false,
-  postSearchLoadLoading: false,
-  postSearchLoadDone: false,
-  postSearchLoadError: null,
   posts: [],
   searchLoadPosts: [],
 };
@@ -118,21 +112,6 @@ const reducer = (state = initialState, action) => {
         draft.postEditLoading = false;
         draft.postEditDone = false;
         draft.postEditError = action.error;
-        break;
-      case POST_SEARCH_LOAD_REQUEST:
-        draft.postSearchLoadLoading = true;
-        draft.postSearchLoadDone = false;
-        draft.postSearchLoadError = null;
-        break;
-      case POST_SEARCH_LOAD_SUCCESS:
-        draft.postSearchLoadLoading = false;
-        draft.searchLoadPosts = action.data;
-        draft.postSearchLoadDone = true;
-        break;
-      case POST_SEARCH_LOAD_FAILURE:
-        draft.postSearchLoadLoading = false;
-        draft.postSearchLoadDone = false;
-        draft.postSearchLoadError = action.error;
         break;
     }
   });

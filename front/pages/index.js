@@ -6,8 +6,6 @@ import wrapper from '../store/configureStore';
 import axios from 'axios';
 
 const Home = ({ data }) => {
-  console.log(data, '하윙');
-
   const Body = (
     <AppLayout>
       <PostContainer data={data} />
@@ -29,14 +27,21 @@ export const getServerSideProps = wrapper.getServerSideProps(
     context.store.dispatch({
       type: LOAD_ME_REQUEST,
     });
-
     context.store.dispatch(END); //request를 보내고 성공을 받지못하고 종료되는것을 막아줌
     await context.store.sagaTask.toPromise();
+    // 데이터 ssr 요청 후 받아서 props로 return해서 component에 넘겨준다
     const query = context.query;
     const page = query.page || 1;
     let data = null;
-    const res = await fetch(`http://localhost:5000/post/all?page=${page}`);
-    data = await res.json();
+    try {
+      const res = await fetch(`http://localhost:5000/post/all?page=${page}`);
+      if (res.status !== 200) {
+        throw new Error('Failed to fetch');
+      }
+      data = await res.json();
+    } catch (error) {
+      data = { error: { message: error.message } };
+    }
     return { props: { data } };
   }
 );

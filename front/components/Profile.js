@@ -20,7 +20,7 @@ const Profile = () => {
   return (
     <>
       <Card>
-        <Meta avatar={<Avatar>벵거</Avatar>} title={me.nickname} />
+        <Meta title={me.nickname} />
 
         <BtnContainer>
           <ProfileBtn>

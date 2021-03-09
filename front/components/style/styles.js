@@ -1,8 +1,9 @@
 import styled, { createGlobalStyle } from 'styled-components';
-import { Form, Button, Input, Col, Row } from 'antd';
-import { MenuOutlined } from '@ant-design/icons';
+import { Form, Button, Input, Col, Row, Card } from 'antd';
+import { MenuOutlined, FormOutlined } from '@ant-design/icons';
 import Link from 'next/link';
-import ReactPaginate from 'react-paginate';
+import img from '../../img/logo2.jpg';
+
 // Login.js & Register.js
 export const FormWrapper = styled(Form)`
   text-align: center;
@@ -15,6 +16,7 @@ export const FormWrapper = styled(Form)`
 export const Global = createGlobalStyle`
  body {
      background:#ebeef1;
+     font-family: 'Roboto', sans-serif;
  }
 `;
 
@@ -40,6 +42,9 @@ export const Atag = styled.a`
   color: black;
   display: flex;
   margin-bottom: 10px;
+  &: hover {
+    background: #d9d9d9;
+  }
 `;
 
 export const SideMenuButton = styled(Button)`
@@ -71,11 +76,15 @@ export const HeaderMenu = styled.div`
   margin-right: auto;
   width: 1200px;
 `;
-export const HeaderLink = styled(Link)``;
+export const HeaderA = styled.a`
+  color: white;
+  font-size: 30px;
+  font-family: 'Roboto', sans-serif;
+`;
 
 export const HeaderLoginButton = styled(Button)`
   float: right;
-
+  margin-top: 0.25rem;
   @media screen and (max-width: 1200px) {
     display: none;
   }
@@ -119,9 +128,10 @@ export const StyledCol = styled(Col)`
 
 export const Background = styled.div`
   height: 200px;
-  background: white;
-  text-align: center;
-  font-size: 50px;
+  background-image: url(${img});
+  background-repeat: no-repeat;
+  background-position: 50% 75%;
+  background-size: cover;
 `;
 
 //PostContainer.js
@@ -170,6 +180,7 @@ export const PaginationWrapper = styled.div`
   .paginate-li {
     padding: 0.5rem 1rem;
     border: 1px solid #d9d9d9;
+    cursor: pointer;
     &:hover {
       border: 1px solid #1890ff;
     }
@@ -197,4 +208,41 @@ export const PaginationWrapper = styled.div`
 
     color: #1890ff;
   }
+`;
+
+//PostContainer.js
+
+export const PostContainerCard = styled(Card)`
+  cursor: pointer;
+  &:hover {
+    background: #d9d9d9;
+  }
+`;
+// Funcbar.js
+export const FuncWrapper = styled.div`
+  height: 50px;
+  padding-top: 10px;
+  border-bottom: 1px;
+  background: white;
+`;
+
+export const FuncWrapperTest = styled.div`
+  width: 1200px;
+  height: 50px;
+  padding-top: 10px;
+  border-bottom: 1px;
+  background: white;
+`;
+
+export const StyledSearch = styled(Input.Search)`
+  width: auto;
+  margin-left: 20px;
+`;
+
+export const StyledPost = styled(FormOutlined)`
+  font-size: 30px;
+  color: blue;
+  position: absolute;
+  right: 0;
+  margin-right: 10px;
 `;

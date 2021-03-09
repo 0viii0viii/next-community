@@ -1,7 +1,7 @@
 import {
   StyledHeaderBar,
   HeaderMenu,
-  HeaderLink,
+  HeaderA,
   HeaderLoginButton,
   HeaderLogoutButton,
   StyledMenuOutlined,
@@ -31,7 +31,9 @@ const HeaderBar = () => {
     <>
       <StyledHeaderBar>
         <HeaderMenu>
-          <HeaderLink href="/">ARSENAL</HeaderLink>
+          <Link href="/">
+            <HeaderA>ARSENAL</HeaderA>
+          </Link>
           {me ? (
             <HeaderLogoutButton onClick={onLogout}>로그아웃</HeaderLogoutButton>
           ) : (

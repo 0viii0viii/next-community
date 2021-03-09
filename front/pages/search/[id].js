@@ -5,18 +5,19 @@ import { LOAD_ME_REQUEST } from '../../reducers/types';
 import wrapper from '../../store/configureStore';
 import axios from 'axios';
 import { END } from 'redux-saga';
+import { Card } from 'antd';
 
 const Search = ({ data }) => {
-  console.log(data);
   return (
     <>
-      {data != null ? (
+      {data.posts.length != 0 ? (
         <AppLayout>
+          <Card>게시글 {data.posts.length}개가 존재합니다.</Card>
           <PostContainer data={data} />
         </AppLayout>
       ) : (
         <AppLayout>
-          <h1> {id} : 해당 검색 게시물이 존재하지 않습니다</h1>
+          <Card> 해당 검색 게시물이 존재하지 않습니다</Card>
         </AppLayout>
       )}
     </>
@@ -41,12 +42,19 @@ export const getServerSideProps = wrapper.getServerSideProps(
     const query = context.query;
     const page = query.page || 1;
     let data = null;
-    const res = await fetch(
-      `http://localhost:5000/search/${encodeURI(
-        context.params.id
-      )}?page=${page}`
-    );
-    data = await res.json();
+    try {
+      const res = await fetch(
+        `http://localhost:5000/search/${encodeURI(
+          context.params.id
+        )}?page=${page}`
+      );
+      if (res.status != 200) {
+        throw new Error('Failed to Fetch');
+      }
+      data = await res.json();
+    } catch (error) {
+      data = { error: { message: error.message } };
+    }
     return { props: { data } };
   }
 );

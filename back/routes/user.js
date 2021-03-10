@@ -97,10 +97,10 @@ router.get('/', async (req, res, next) => {
           exclude: ['password'],
         },
       });
-
+      console.log('실행됨');
       res.status(200).json(user);
     } else {
-      res.status(200).json(null);
+      res.status(302).json(null);
     }
   } catch (error) {
     console.error(error);

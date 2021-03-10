@@ -25,7 +25,7 @@ const HeaderBar = () => {
     dispatch({
       type: LOGOUT_REQUEST,
     });
-  });
+  }, []);
 
   return (
     <>

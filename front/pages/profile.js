@@ -1,24 +1,21 @@
-import { Button, Card, Col, Divider, Input, Row } from 'antd';
-import { useCallback, useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import Router from 'next/router';
+import { Button, Card } from 'antd';
+import { useState } from 'react';
+import { useSelector } from 'react-redux';
+import { useRouter } from 'next/router';
 import AppLayout from '../components/AppLayout';
 import EditNickname from '../components/EditNickname';
 import EditPassword from '../components/EditPassword';
+import { RedirectCard } from '../components/style/styles';
+//SSR
+import { END } from 'redux-saga';
+import axios from 'axios';
+import { LOAD_ME_REQUEST } from '../reducers/types';
+import wrapper from '../store/configureStore';
 
 const Profile = () => {
   const { me } = useSelector((state) => state.user);
-
-  useEffect(() => {
-    if (!me) {
-      Router.push('/login');
-    }
-  }, [me]);
-
-  if (!me) {
-    return null;
-  }
-
+  const router = useRouter();
+  console.log(me);
   const tabList = [
     {
       key: 'tab1',
@@ -37,17 +34,48 @@ const Profile = () => {
     tab2: <EditPassword />,
   };
   return (
-    <AppLayout>
-      <Card
-        style={{ width: '100%' }}
-        tabList={tabList}
-        activeTabkey={key}
-        onTabChange={setKey}
-      >
-        {contentList[key]}
-      </Card>
-    </AppLayout>
+    <>
+      {!me ? (
+        <AppLayout>
+          <RedirectCard>
+            <h1>로그인한 사용자만 접근할 수 있습니다.</h1>
+            <Button onClick={() => router.replace('/')}>확인</Button>
+          </RedirectCard>
+        </AppLayout>
+      ) : (
+        <>
+          <AppLayout>
+            <Card
+              style={{ width: '100%' }}
+              tabList={tabList}
+              activeTabkey={key}
+              onTabChange={setKey}
+            >
+              {contentList[key]}
+            </Card>
+          </AppLayout>
+        </>
+      )}
+    </>
   );
 };
+
+export const getServerSideProps = wrapper.getServerSideProps(
+  async (context) => {
+    // cookie front -> backend 공유
+    const cookie = context.req ? context.req.headers.cookie : '';
+    axios.defaults.headers.Cookie = '';
+    if (context.req && cookie) {
+      // 쿠키를 지웠다가 넣었다가 해야 쿠키가 다른사용자와 공유가되지않음
+      axios.defaults.headers.Cookie = cookie;
+    }
+    //결과를 reducer의 hydrate로 보냄
+    context.store.dispatch({
+      type: LOAD_ME_REQUEST,
+    });
+    context.store.dispatch(END); //request를 보내고 성공을 받지못하고 종료되는것을 막아줌
+    await context.store.sagaTask.toPromise();
+  }
+);
 
 export default Profile;

@@ -7,14 +7,15 @@ import '@toast-ui/editor/dist/toastui-editor.css'; // Editor's Style
 import Router, { useRouter } from 'next/router';
 import { POST_EDIT_REQUEST } from '../reducers/types';
 import axios from 'axios';
-import { MenuItem } from './style/styles';
+import { RedirectCard } from './style/styles';
 
 const EditEditor = ({ data }) => {
   const dispatch = useDispatch();
-  const { me } = useSelector((state) => state.user);
   const router = useRouter();
   const { id } = router.query;
-
+  const { me } = useSelector((state) => state.user);
+  console.log(me.id);
+  console.log(data.UserId);
   const editorRef = useRef();
   const [form, setValues] = useState({
     title: '',
@@ -22,12 +23,6 @@ const EditEditor = ({ data }) => {
     content: '',
     fileUrl: '',
   });
-  //로그인된 사용자의 id와 게시글의 id를 비교하여 일치하지않으면 알리고, 뒤로가기
-  if (me.id != data.UserId) {
-    alert('접근할 수 없습니다.');
-    router.back();
-    return null;
-  }
 
   const onChange = (e) => {
     setValues({
@@ -116,44 +111,51 @@ const EditEditor = ({ data }) => {
   };
   return (
     <>
-      <div>
-        <Form onFinish={onClickSubmit}>
-          <select name="category" onChange={onChange}>
-            <option>선택 안함</option>
-            <option value="자유">자유</option>
-            <option value="유머">유머</option>
-            <option value="이적 시장">이적 시장</option>
-            <option value="경기 예측">경기 예측</option>
-            <option value="경기 분석">경기 분석</option>
-            <option value="경기 토론">경기 토론</option>
-          </select>
+      {me.id !== data.UserId ? (
+        <RedirectCard>
+          <h1> 다른 사람의 게시글은 수정할 수 없습니다.</h1>
+          <Button onClick={() => router.replace('/')}>확인</Button>
+        </RedirectCard>
+      ) : (
+        <div>
+          <Form onFinish={onClickSubmit}>
+            <select name="category" onChange={onChange}>
+              <option>선택 안함</option>
+              <option value="자유">자유</option>
+              <option value="유머">유머</option>
+              <option value="이적 시장">이적 시장</option>
+              <option value="경기 예측">경기 예측</option>
+              <option value="경기 분석">경기 분석</option>
+              <option value="경기 토론">경기 토론</option>
+            </select>
 
-          <Input
-            type="text"
-            name="title"
-            placeholder={data.title}
-            onChange={onChange}
-          />
-          <Editor
-            initialEditType="wysiwyg"
-            initialValue={data.content}
-            previewStyle="tab"
-            height="600px"
-            useCommandShortcut={true}
-            ref={editorRef}
-            hooks={{
-              addImageBlobHook: async (blob, callback) => {
-                const upload = await uploadImage(blob);
-                callback(upload, 'alt text');
-                return false;
-              },
-            }}
-            onBlur={getDataFromEditor}
-          />
-          <Button>취소</Button>
-          <Button htmlType="submit">작성 완료</Button>
-        </Form>
-      </div>
+            <Input
+              type="text"
+              name="title"
+              placeholder={data.title}
+              onChange={onChange}
+            />
+            <Editor
+              initialEditType="wysiwyg"
+              initialValue={data.content}
+              previewStyle="tab"
+              height="600px"
+              useCommandShortcut={true}
+              ref={editorRef}
+              hooks={{
+                addImageBlobHook: async (blob, callback) => {
+                  const upload = await uploadImage(blob);
+                  callback(upload, 'alt text');
+                  return false;
+                },
+              }}
+              onBlur={getDataFromEditor}
+            />
+            <Button>취소</Button>
+            <Button htmlType="submit">작성 완료</Button>
+          </Form>
+        </div>
+      )}
     </>
   );
 };

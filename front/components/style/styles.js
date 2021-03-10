@@ -36,6 +36,12 @@ export const StyledInput = styled(Input)`
 export const ErrorMessage = styled.div`
   color: red;
 `;
+
+export const RedirectCard = styled(Card)`
+  text-align: center;
+  justify-content: center;
+`;
+
 //SideMenu.js
 export const Atag = styled.a`
   color: black;

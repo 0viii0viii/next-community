@@ -2,7 +2,7 @@ import AppLayout from '../../../components/AppLayout';
 import dynamic from 'next/dynamic';
 import axios from 'axios';
 import useSWR from 'swr';
-import { Router, useRouter } from 'next/router';
+import Router, { useRouter } from 'next/router';
 const EditEditor = dynamic(() => import('../../../components/EditEditor'), {
   ssr: false,
 });
@@ -11,6 +11,8 @@ import wrapper from '../../../store/configureStore';
 import { END } from 'redux-saga';
 import { LOAD_ME_REQUEST } from '../../../reducers/types';
 import { useSelector } from 'react-redux';
+import { RedirectCard } from '../../../components/style/styles';
+import { Button } from 'antd';
 
 const fetcher = (url) =>
   axios.get(url, { withCredentials: true }).then((result) => result.data);
@@ -18,15 +20,27 @@ const Edit = () => {
   const router = useRouter();
   const { id } = router.query;
   const { data, error } = useSWR(`/post/detail/${id}`, fetcher);
+  const { me } = useSelector((state) => state.user);
   if (error) {
     console.error('데이터를 불러오지 못했습니다.');
   }
 
   return (
     <>
-      <AppLayout>
-        <EditEditor data={data} />
-      </AppLayout>
+      {me ? (
+        <>
+          <AppLayout>
+            <EditEditor data={data} />
+          </AppLayout>
+        </>
+      ) : (
+        <AppLayout>
+          <RedirectCard>
+            <h1> 접근 권한이 없는 페이지입니다.</h1>
+            <Button onClick={() => router.replace('/')}>확인</Button>
+          </RedirectCard>
+        </AppLayout>
+      )}
     </>
   );
 };

@@ -16,7 +16,7 @@ const Profile = () => {
     dispatch({
       type: LOGOUT_REQUEST,
     });
-  });
+  }, []);
   return (
     <>
       <Card>

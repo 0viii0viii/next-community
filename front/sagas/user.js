@@ -20,7 +20,7 @@ import {
   REGISTER_SUCCESS,
 } from '../reducers/types';
 import axios from 'axios';
-import Router from 'next/router';
+import Router, { useRouter } from 'next/router';
 //회원가입
 function registerAPI(data) {
   return axios.post('/user/register', data);
@@ -75,7 +75,6 @@ function* logout() {
     yield put({
       type: LOGOUT_SUCCESS,
     });
-    yield call(Router.push, '/');
   } catch (e) {
     yield put({
       type: LOGOUT_FAILURE,

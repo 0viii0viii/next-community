@@ -11,8 +11,8 @@ import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
 const SideMenu = () => {
-  const [position, setPosition] = useState('static');
   const { me } = useSelector((state) => state.user);
+  const [position, setPosition] = useState('static');
   useEffect(() => {
     function onScroll() {
       if (window.scrollY >= 200) {

@@ -25,6 +25,7 @@ export const StyledButton = styled(Button)`
   margin-top: 10px;
   background: primary;
   height: 50px;
+  cursor: pointer;
 `;
 
 export const StyledInput = styled(Input)`
@@ -109,6 +110,15 @@ export const HeaderLogoutButton = styled(Button)`
   }
 `;
 
+export const MenuLogout = styled(Button)`
+  margin-bottom: 7.5px;
+  margin-top: 7.5px;
+  border: none;
+  &:hover {
+    color: red;
+  }
+`;
+
 export const StyledMenuOutlined = styled(MenuOutlined)`
   font-size: 30px;
   float: right;
@@ -127,13 +137,21 @@ export const MenuItem = styled.div`
 export const Atag2 = styled.a`
   color: black;
   padding: 15px;
-  margin-top: 10px;
+  &:hover {
+    color: red;
+  }
 `;
 
 export const StyledCol = styled(Col)`
-  margin-top: 10px;
-  margin-bottom: 10px;
-  border-bottom: 1px solid white;
+  display: flex;
+  justify-content: center;
+  border: 1px solid #d9d9d9;
+`;
+
+export const StyledMenuItem = styled(MenuItem)`
+  width: 100%;
+  background: white;
+  display: ${(props) => props.display};
 `;
 
 //HeaderBg.js
@@ -192,7 +210,7 @@ export const PaginationWrapper = styled.div`
   .paginate-li {
     padding: 0.5rem 1rem;
     border: 1px solid #d9d9d9;
-    cursor: grab;
+    cursor: pointer;
     &:hover {
       border: 1px solid #1890ff;
     }
@@ -261,4 +279,7 @@ export const StyledPost = styled(FormOutlined)`
   position: absolute;
   right: 0;
   margin-right: 10px;
+  &:hover {
+    background: yellow;
+  }
 `;

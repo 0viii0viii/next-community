@@ -5,19 +5,37 @@ import {
   HeaderLoginButton,
   HeaderLogoutButton,
   StyledMenuOutlined,
-  MenuItem,
+  StyledMenuItem,
   Atag2,
   StyledCol,
+  MenuLogout,
 } from '../components/style/styles';
 import Link from 'next/link';
 import { useCallback, useEffect, useState } from 'react';
-import { Row } from 'antd';
+import { Button, Row } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
 import { LOGOUT_REQUEST } from '../reducers/types';
 const HeaderBar = () => {
   const dispatch = useDispatch();
   const { me } = useSelector((state) => state.user);
   const [menuOpened, setmenuOpened] = useState(false);
+  const [display, setDisplay] = useState('');
+
+  useEffect(() => {
+    function onResize() {
+      console.log(document.defaultView);
+      if (window.innerWidth >= 1200) {
+        setDisplay('none');
+      } else {
+        setDisplay('');
+      }
+    }
+    window.addEventListener('resize', onResize);
+    return () => {
+      window.removeEventListener('resize', onResize);
+    };
+  }, []);
+
   const handleMenuClick = useCallback(() => {
     setmenuOpened((prev) => !prev);
   });
@@ -47,7 +65,7 @@ const HeaderBar = () => {
       </StyledHeaderBar>
       {menuOpened && (
         <Row>
-          <MenuItem>
+          <StyledMenuItem display={display}>
             {me ? (
               <>
                 <StyledCol xs={24} lg={24} xl={0}>
@@ -59,6 +77,11 @@ const HeaderBar = () => {
                   <Link href={`/myposts/${me.id}`}>
                     <Atag2>내 게시글</Atag2>
                   </Link>
+                </StyledCol>
+                <StyledCol xs={24} lg={24} xl={0}>
+                  <MenuLogout onClick={onLogout}>
+                    <Atag2>로그아웃</Atag2>
+                  </MenuLogout>
                 </StyledCol>
               </>
             ) : (
@@ -88,7 +111,7 @@ const HeaderBar = () => {
                 <Atag2>경기 토론</Atag2>
               </Link>
             </StyledCol>
-          </MenuItem>
+          </StyledMenuItem>
         </Row>
       )}
     </>

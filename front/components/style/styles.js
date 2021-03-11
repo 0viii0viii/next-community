@@ -175,6 +175,15 @@ export const P = styled.p`
   padding: 10px;
   color: gray;
 `;
+export const CommentLength = styled.p`
+  display: inline;
+  color: blue;
+`;
+
+export const ImageContainer = styled.img`
+  width: 50px;
+  float: right;
+`;
 
 //Profile.js
 export const BtnContainer = styled.div`

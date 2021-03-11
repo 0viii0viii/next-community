@@ -1,13 +1,13 @@
 import { Card, Col, Row, Pagination } from 'antd';
 import Link from 'next/link';
-
 import moment from 'moment';
-import { PictureOutlined } from '@ant-design/icons';
 import {
   PostDetail,
   P,
   PaginationWrapper,
   PostContainerCard,
+  ImageContainer,
+  CommentLength,
 } from '../components/style/styles';
 import { useEffect, useState } from 'react';
 import Router, { useRouter } from 'next/router';
@@ -49,8 +49,8 @@ const PostContainer = ({ data }) => {
               <PostContainerCard>
                 <Row>
                   <Col xs={24}>
-                    {title} {fileUrl ? <PictureOutlined /> : ''}[
-                    {Comments.length}]
+                    {title} <CommentLength>[{Comments.length}]</CommentLength>
+                    <ImageContainer src={fileUrl} />
                   </Col>
                   <Col xs={24}>
                     <PostDetail>

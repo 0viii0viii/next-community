@@ -29,6 +29,10 @@ const Funcbar = () => {
   }, []);
 
   const onSearch = useCallback(() => {
+    if (searchInput === '') {
+      alert('검색어를 입력해야합니다.');
+      return null;
+    }
     Router.push(`/search/${searchInput}`);
   });
 

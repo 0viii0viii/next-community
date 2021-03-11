@@ -51,6 +51,11 @@ export const Atag = styled.a`
     background: #d9d9d9;
   }
 `;
+export const SideMenuWrapper = styled(Col)`
+  width: 380px;
+  position: ${(props) => props.position};
+  top: 56px;
+`;
 
 export const SideMenuButton = styled(Button)`
   width: 100%;
@@ -61,22 +66,15 @@ export const SideMenuButton = styled(Button)`
   }
 `;
 
-export const SideMenuWrapper = styled(Col)`
-  --offset: 2rem;
-  flex-grow: 1;
-  flex-basis: 300px;
-  align-self: start;
-  position: sticky;
-  top: var(--offset);
-`;
-
 //HeaderBar.js
 export const StyledHeaderBar = styled(Row)`
   height: 56px;
   background: red;
   top: 0;
   display: flex;
+  position: sticky;
   align-items: center;
+  z-index: 1;
 `;
 
 export const HeaderMenu = styled.div`
@@ -194,7 +192,7 @@ export const PaginationWrapper = styled.div`
   .paginate-li {
     padding: 0.5rem 1rem;
     border: 1px solid #d9d9d9;
-    cursor: pointer;
+    cursor: grab;
     &:hover {
       border: 1px solid #1890ff;
     }
@@ -236,8 +234,12 @@ export const PostContainerCard = styled(Card)`
 export const FuncWrapper = styled.div`
   height: 50px;
   padding-top: 10px;
+  width: 800px;
   border-bottom: 1px;
   background: white;
+  position: ${(props) => props.position};
+  z-index: 1;
+  top: 56px;
 `;
 
 export const FuncWrapperTest = styled.div`

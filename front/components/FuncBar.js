@@ -1,7 +1,7 @@
 import { Row, Col } from 'antd';
 import Router from 'next/router';
 import Link from 'next/link';
-import { useCallback } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import useInput from '../hooks/useInput';
 import {
   FuncWrapper,
@@ -12,15 +12,31 @@ import {
 
 const Funcbar = () => {
   const [searchInput, onChangeSearchInput] = useInput('');
+  const [position, setPosition] = useState('static');
+  //scorll
+  useEffect(() => {
+    function onScroll() {
+      if (window.scrollY >= 200) {
+        setPosition('fixed');
+      } else {
+        setPosition('static');
+      }
+    }
+    window.addEventListener('scroll', onScroll);
+    return () => {
+      window.removeEventListener('scroll', onScroll); /// return 부분이 없으면 메모리에 스크롤이 계속 쌓여있어서 필수
+    };
+  }, []);
 
   const onSearch = useCallback(() => {
     Router.push(`/search/${searchInput}`);
   });
+
   return (
     <>
       <Row>
         <Col xs={0} sm={0} md={0} lg={0} xl={24}>
-          <FuncWrapper>
+          <FuncWrapper position={position}>
             <StyledSearch
               enterButton
               value={searchInput}

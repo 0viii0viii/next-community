@@ -10,7 +10,7 @@ import {
   StyledCol,
 } from '../components/style/styles';
 import Link from 'next/link';
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { Row } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
 import { LOGOUT_REQUEST } from '../reducers/types';

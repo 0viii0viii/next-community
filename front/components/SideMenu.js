@@ -7,13 +7,36 @@ import {
   SideMenuButton,
   SideMenuWrapper,
 } from '../components/style/styles';
+import { useEffect, useState } from 'react';
+import styled from 'styled-components';
 
 const SideMenu = () => {
+  const [position, setPosition] = useState('static');
   const { me } = useSelector((state) => state.user);
+  useEffect(() => {
+    function onScroll() {
+      if (window.scrollY >= 200) {
+        setPosition('fixed');
+      } else {
+        setPosition('static');
+      }
+    }
+    window.addEventListener('scroll', onScroll);
+    return () => {
+      window.removeEventListener('scroll', onScroll); /// return 부분이 없으면 메모리에 스크롤이 계속 쌓여있어서 필수
+    };
+  }, []);
   return (
     <>
       <Row>
-        <SideMenuWrapper xs={0} sm={0} md={0} lg={0} xl={24}>
+        <SideMenuWrapper
+          position={position}
+          xs={0}
+          sm={0}
+          md={0}
+          lg={0}
+          xl={24}
+        >
           {me ? (
             <Card>
               <Profile />

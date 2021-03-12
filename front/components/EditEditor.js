@@ -62,7 +62,7 @@ const EditEditor = ({ data }) => {
 
       for (let i = 0; i < ext_name.length; i++) {
         if (datas.match(ext_name[i])) {
-          console.log(datas.indexOf(`${ext_name[i]}`));
+          console.log(datas.indexOf(`${ext_name[i]}`), '확장자');
           ext_name_find = ext_name[i];
           whereImg_end = datas.indexOf(`${ext_name[i]}`);
         }

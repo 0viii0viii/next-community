@@ -21,12 +21,14 @@ import Router, { useRouter } from 'next/router';
 import useInput from '../../hooks/useInput';
 import Link from 'next/link';
 import { PostDetail, P } from '../../components/style/styles';
+import CommentForm from '../../components/CommentForm';
 
 moment.locale('ko');
 const fetcher = (url) =>
   axios.get(url, { withCredentials: true }).then((result) => result.data);
 const Posts = (props) => {
   const initialData = props.data;
+  const { me } = useSelector((state) => state.user);
   const { data, error } = useSWR('/post/detail/:id', fetcher, { initialData });
   const dispatch = useDispatch();
   const router = useRouter();
@@ -40,10 +42,6 @@ const Posts = (props) => {
     postDeleteDone,
     commentDeleteDone,
   } = useSelector((state) => state.post);
-
-  if (error) {
-    console.error('데이터를 불러오지 못했습니다.');
-  }
 
   useEffect(() => {
     if (postCommentDone) {
@@ -66,6 +64,10 @@ const Posts = (props) => {
     }
   }, [postDeleteDone]);
 
+  if (error) {
+    console.error('데이터를 불러오지 못했습니다.');
+  }
+
   const onSubmitComment = useCallback(() => {
     console.log(data.id, comment);
     dispatch({
@@ -81,13 +83,6 @@ const Posts = (props) => {
     });
   });
 
-  const onClickDeleteComment = (id) =>
-    useCallback(() => {
-      dispatch({
-        type: COMMENT_DELETE_REQUEST,
-        data: id,
-      });
-    });
   return (
     <>
       <AppLayout>
@@ -116,28 +111,25 @@ const Posts = (props) => {
 
           {ReactHtmlParser(data.content)}
         </Card>
-        <Form onFinish={onSubmitComment}>
-          <Card title="댓글">
-            <Input.TextArea value={comment} onChange={onChangeComment} />
-            <Button
-              type="primary"
-              htmlType="submit"
-              loading={postCommentLoading}
-            >
-              작성
-            </Button>
-          </Card>
-        </Form>
-        {data.Comments.map(({ id, User, content, createdAt, UserId }) => (
-          <Card>
-            {User.nickname} {content} {moment(createdAt).fromNow()}
-            {uid === UserId ? (
-              <Button onClick={onClickDeleteComment(id)}>삭제</Button>
-            ) : (
-              ''
-            )}
-          </Card>
-        ))}
+        {me ? (
+          <>
+            <Form onFinish={onSubmitComment}>
+              <Card title="댓글">
+                <Input.TextArea value={comment} onChange={onChangeComment} />
+                <Button
+                  type="primary"
+                  htmlType="submit"
+                  loading={postCommentLoading}
+                >
+                  작성
+                </Button>
+              </Card>
+            </Form>
+          </>
+        ) : (
+          ''
+        )}
+        <CommentForm data={data} />
       </AppLayout>
     </>
   );

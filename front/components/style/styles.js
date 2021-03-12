@@ -83,13 +83,10 @@ export const HeaderMenu = styled.div`
   margin-right: auto;
   width: 1200px;
 `;
-export const HeaderA = styled.a`
-  color: white;
-  font-size: 30px;
-  font-family: 'Roboto', sans-serif;
-  &: hover {
-    color: yellow;
-  }
+export const HeaderLogo = styled.img`
+  width: 50px;
+  height: 50px;
+  cursor: pointer;
 `;
 
 export const HeaderLoginButton = styled(Button)`
@@ -103,6 +100,7 @@ export const HeaderLoginButton = styled(Button)`
   }
 `;
 export const HeaderLogoutButton = styled(Button)`
+  margin-top: 7.5px;
   float: right;
 
   @media screen and (max-width: 1200px) {
@@ -263,7 +261,7 @@ export const FuncWrapper = styled.div`
   padding-top: 10px;
   width: 800px;
   border-bottom: 1px;
-  background: white;
+  background: yellow;
   position: ${(props) => props.position};
   z-index: 1;
   top: 56px;

@@ -9,12 +9,14 @@ import {
   Atag2,
   StyledCol,
   MenuLogout,
+  HeaderLogo,
 } from '../components/style/styles';
+import Logo from '../img/logo.png';
 import Link from 'next/link';
 import { useCallback, useEffect, useState } from 'react';
-import { Button, Row } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
 import { LOGOUT_REQUEST } from '../reducers/types';
+import { Row } from 'antd';
 const HeaderBar = () => {
   const dispatch = useDispatch();
   const { me } = useSelector((state) => state.user);
@@ -50,7 +52,7 @@ const HeaderBar = () => {
       <StyledHeaderBar>
         <HeaderMenu>
           <Link href="/">
-            <HeaderA>ARSENAL</HeaderA>
+            <HeaderLogo src={Logo} />
           </Link>
           {me ? (
             <HeaderLogoutButton onClick={onLogout}>로그아웃</HeaderLogoutButton>

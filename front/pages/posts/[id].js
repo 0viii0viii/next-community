@@ -1,6 +1,7 @@
 import { useDispatch, useSelector } from 'react-redux';
 import AppLayout from '../../components/AppLayout';
 import { useCallback, useEffect } from 'react';
+import dynamic from 'next/dynamic';
 import {
   COMMENT_DELETE_REQUEST,
   LOAD_ME_REQUEST,
@@ -15,13 +16,16 @@ import { END } from 'redux-saga';
 import useSWR from 'swr';
 
 import moment from 'moment';
-import ReactHtmlParser from 'react-html-parser';
-import { Card, Divider, Form, Input, Button } from 'antd';
+import { Card, Divider, Form, Input, Button, Col } from 'antd';
 import Router, { useRouter } from 'next/router';
 import useInput from '../../hooks/useInput';
 import Link from 'next/link';
 import { PostDetail, P } from '../../components/style/styles';
 import CommentForm from '../../components/CommentForm';
+
+const PostViewer = dynamic(() => import('../../components/PostViewer'), {
+  ssr: false,
+});
 
 moment.locale('ko');
 const fetcher = (url) =>
@@ -108,14 +112,18 @@ const Posts = (props) => {
             <Button onClick={() => router.back()}>이전</Button>
           )}
           <Divider />
-
-          {ReactHtmlParser(data.content)}
+          <PostViewer data={data} />
         </Card>
         {me ? (
           <>
             <Form onFinish={onSubmitComment}>
               <Card title="댓글">
-                <Input.TextArea value={comment} onChange={onChangeComment} />
+                <Input.TextArea
+                  showCount
+                  maxLength={100}
+                  value={comment}
+                  onChange={onChangeComment}
+                />
                 <Button
                   type="primary"
                   htmlType="submit"

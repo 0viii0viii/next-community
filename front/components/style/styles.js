@@ -2,6 +2,7 @@ import styled, { createGlobalStyle } from 'styled-components';
 import { Form, Button, Input, Col, Row, Card } from 'antd';
 import { MenuOutlined, FormOutlined } from '@ant-design/icons';
 import img from '../../img/logo2.jpg';
+import TextArea from 'antd/lib/input/TextArea';
 
 // Login.js & Register.js
 export const FormWrapper = styled(Form)`
@@ -70,7 +71,7 @@ export const SideMenuButton = styled(Button)`
 //HeaderBar.js
 export const StyledHeaderBar = styled(Row)`
   height: 56px;
-  background: red;
+  background: #e72a2a;
   top: 0;
   display: flex;
   position: sticky;
@@ -189,7 +190,7 @@ export const BtnContainer = styled.div`
 `;
 
 export const ProfileBtn = styled(Button)`
-  width: 25%;
+  width: 30%;
 `;
 
 //index.js
@@ -261,7 +262,7 @@ export const FuncWrapper = styled.div`
   padding-top: 10px;
   width: 800px;
   border-bottom: 1px;
-  background: yellow;
+  background: white;
   position: ${(props) => props.position};
   z-index: 1;
   top: 56px;
@@ -289,4 +290,28 @@ export const StyledPost = styled(FormOutlined)`
   &:hover {
     background: yellow;
   }
+`;
+
+//CommentForm.js
+
+export const NicknameText = styled.p`
+  display: inline;
+  font-weight: bold;
+`;
+
+export const DeleteBtn = styled(Button)`
+  float: right;
+  margin-bottom: 10px;
+  &: hover {
+
+  }
+`;
+
+export const CommentTtitle = styled(Col)`
+  border-bottom: 1px solid #d9d9d9;
+`;
+
+export const CommentDate = styled.p`
+  display: inline;
+  color: gray;
 `;

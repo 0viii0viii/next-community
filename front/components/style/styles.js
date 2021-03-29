@@ -10,6 +10,8 @@ export const FormWrapper = styled(Form)`
   background: white;
   padding-left: 20px;
   padding-right: 20px;
+  margin-left: auto;
+  margin-right: auto;
   width: 500px;
   height: 100vh;
 `;
@@ -42,6 +44,12 @@ export const ErrorMessage = styled.div`
 export const RedirectCard = styled(Card)`
   text-align: center;
   justify-content: center;
+`;
+
+export const KakaoLogin = styled(Button)`
+  background-color: yellow;
+  width: 100%;
+  border-radius: 5px;
 `;
 
 //SideMenu.js

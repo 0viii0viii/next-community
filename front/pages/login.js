@@ -1,4 +1,4 @@
-import { Button, Card, Col, Row } from 'antd';
+import { Button, Card, Col, Divider, Row } from 'antd';
 import Link from 'next/link';
 import Router, { useRouter } from 'next/router';
 import { useCallback, useEffect } from 'react';
@@ -12,6 +12,7 @@ import {
   StyledButton,
   StyledInput,
   RedirectCard,
+  KakaoLogin,
 } from '../components/style/styles';
 //SSR
 import wrapper from '../store/configureStore';
@@ -54,12 +55,15 @@ const login = () => {
           <Global />
           <Row>
             <Col flex="auto"></Col>
-            <Col xs={24} sm={24} md={6}>
+            <Col xs={24} sm={24} md={24}>
               <FormWrapper onFinish={onSubmitLogin}>
                 <Link href="/">
                   <h1>Gunners</h1>
                 </Link>
-
+                <KakaoLogin href="http://localhost:5000/auth/kakao">
+                  카카오톡으로 로그인
+                </KakaoLogin>
+                <Divider>Or</Divider>
                 <h3>이메일로 로그인</h3>
                 <StyledInput
                   type="email"

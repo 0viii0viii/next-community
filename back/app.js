@@ -7,6 +7,7 @@ const userRouter = require('./routes/user');
 const postRouter = require('./routes/post');
 const searchRouter = require('./routes/search');
 const categoryRouter = require('./routes/category');
+const authRouter = require('./routes/auth');
 //Passport 연결
 const passportConfig = require('./passport');
 const passport = require('passport');
@@ -53,6 +54,7 @@ app.use('/user', userRouter);
 app.use('/post', postRouter);
 app.use('/search', searchRouter);
 app.use('/category', categoryRouter);
+app.use('/auth', authRouter);
 
 app.listen(5000, () => {
   console.log('실행완료');

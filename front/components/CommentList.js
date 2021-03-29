@@ -10,7 +10,7 @@ import {
   NicknameText,
 } from './style/styles';
 
-const CommentForm = ({ data }) => {
+const CommentList = ({ data }) => {
   // map 반복문안에서 function delete를 사용하니 hook 규칙에 어긋났다
   //component로 만들어서 사용하니 해결
   const dispatch = useDispatch();
@@ -46,4 +46,4 @@ const CommentForm = ({ data }) => {
   );
 };
 
-export default CommentForm;
+export default CommentList;

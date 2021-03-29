@@ -5,7 +5,7 @@ module.exports = (sequelize, DataTypes) => {
       // mysql에는 소문자, 복수 users로 생성
       email: {
         type: DataTypes.STRING(30),
-        allowNull: false, //필수 값
+        allowNull: true, //필수 값
         unique: true, // 중복 x
       },
       nickname: {
@@ -15,7 +15,16 @@ module.exports = (sequelize, DataTypes) => {
       },
       password: {
         type: DataTypes.STRING(100),
+        allowNull: true,
+      },
+      provider: {
+        type: DataTypes.STRING(10),
         allowNull: false,
+        defaultValue: 'local',
+      },
+      snsId: {
+        type: DataTypes.STRING(30),
+        allowNull: true,
       },
     },
     {

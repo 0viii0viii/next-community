@@ -3,7 +3,6 @@ import AppLayout from '../../components/AppLayout';
 import { useCallback, useEffect } from 'react';
 import dynamic from 'next/dynamic';
 import {
-  COMMENT_DELETE_REQUEST,
   LOAD_ME_REQUEST,
   POST_COMMENT_REQUEST,
   POST_DELETE_REQUEST,
@@ -21,7 +20,7 @@ import Router, { useRouter } from 'next/router';
 import useInput from '../../hooks/useInput';
 import Link from 'next/link';
 import { PostDetail, P } from '../../components/style/styles';
-import CommentForm from '../../components/CommentForm';
+import CommentList from '../../components/CommentList';
 
 const PostViewer = dynamic(() => import('../../components/PostViewer'), {
   ssr: false,
@@ -137,7 +136,7 @@ const Posts = (props) => {
         ) : (
           ''
         )}
-        <CommentForm data={data} />
+        <CommentList data={data} />
       </AppLayout>
     </>
   );

@@ -75,7 +75,7 @@ const register = () => {
           <Global />
           <Row>
             <Col flex="auto"></Col>
-            <Col xs={24} sm={24} md={6}>
+            <Col xs={24} sm={24} md={24}>
               <FormWrapper onFinish={onSubmit}>
                 <Link href="/">
                   <h1>Gunners</h1>

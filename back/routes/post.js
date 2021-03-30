@@ -210,6 +210,11 @@ router.get('/detail/:id', async (req, res, next) => {
             },
           ],
         },
+        {
+          model: User,
+          as: 'Likers',
+          attributes: ['id'],
+        },
       ],
     });
     post.view += 1;
@@ -244,6 +249,37 @@ router.delete('/comment/:id', isLoggedIn, async (req, res, next) => {
       where: { id: req.params.id },
     });
     res.json();
+  } catch (error) {
+    console.error(error);
+    next(error);
+  }
+});
+
+// PATCH /post/1/like
+// @게시물 좋아요
+router.patch('/:postId/like', isLoggedIn, async (req, res, next) => {
+  try {
+    const post = await Post.findOne({ where: { id: req.params.postId } });
+    if (!post) {
+      return res.status(403).send('게시글이 존재하지 않습니다.');
+    }
+    await post.addLikers(req.user.id);
+    res.json({ PostId: post.id, UserId: req.user.id });
+  } catch (error) {
+    console.error(error);
+    next(error);
+  }
+});
+// DELETE /post/1/like
+// @좋아요 취소
+router.delete('/:postId/like', isLoggedIn, async (req, res, next) => {
+  try {
+    const post = await Post.findOne({ where: { id: req.params.postId } });
+    if (!post) {
+      return res.status(403).send('게시글이 존재하지 않습니다.');
+    }
+    await post.removeLikers(req.user.id);
+    res.json({ PostId: post.id, UserId: req.user.id });
   } catch (error) {
     console.error(error);
     next(error);

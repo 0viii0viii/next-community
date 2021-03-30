@@ -1,8 +1,18 @@
-import { all, call, fork, put, takeLatest } from 'redux-saga/effects';
+import {
+  all,
+  call,
+  fork,
+  put,
+  takeLatest,
+  takeEvery,
+} from 'redux-saga/effects';
 import {
   COMMENT_DELETE_FAILURE,
   COMMENT_DELETE_REQUEST,
   COMMENT_DELETE_SUCCESS,
+  LIKE_POST_FAILURE,
+  LIKE_POST_REQUEST,
+  LIKE_POST_SUCCESS,
   POST_COMMENT_FAILURE,
   POST_COMMENT_REQUEST,
   POST_COMMENT_SUCCESS,
@@ -15,6 +25,9 @@ import {
   POST_UPLOAD_FAILURE,
   POST_UPLOAD_REQUEST,
   POST_UPLOAD_SUCCESS,
+  UNLIKE_POST_FAILURE,
+  UNLIKE_POST_REQUEST,
+  UNLIKE_POST_SUCCESS,
 } from '../reducers/types';
 import axios from 'axios';
 import Router from 'next/router';
@@ -127,13 +140,59 @@ function* commentDelete(action) {
     });
   }
 }
+
+//게시글 좋아요
+function likePostAPI(data) {
+  return axios.patch(`/post/${data}/like`);
+}
+
+function* likePost(action) {
+  try {
+    const result = yield call(likePostAPI, action.data);
+    yield put({
+      type: LIKE_POST_SUCCESS,
+      data: result.data,
+    });
+  } catch (err) {
+    console.error(err);
+    yield put({
+      type: LIKE_POST_FAILURE,
+      error: err.response.data,
+    });
+  }
+}
+//게시글 좋아요 취소
+function unlikePostAPI(data) {
+  return axios.delete(`/post/${data}/like`);
+}
+
+function* unlikePost(action) {
+  try {
+    const result = yield call(unlikePostAPI, action.data);
+    yield put({
+      type: UNLIKE_POST_SUCCESS,
+      data: result.data,
+    });
+  } catch (err) {
+    console.error(err);
+    yield put({
+      type: UNLIKE_POST_FAILURE,
+      error: err.response.data,
+    });
+  }
+}
+function* watchlikePost() {
+  yield takeEvery(LIKE_POST_REQUEST, likePost);
+}
+function* watchunlikePost() {
+  yield takeEvery(UNLIKE_POST_REQUEST, unlikePost);
+}
 function* watchcommentDelete() {
   yield takeLatest(COMMENT_DELETE_REQUEST, commentDelete);
 }
 function* watchpostEdit() {
   yield takeLatest(POST_EDIT_REQUEST, postEdit);
 }
-
 function* watchpostDelete() {
   yield takeLatest(POST_DELETE_REQUEST, postDelete);
 }
@@ -151,5 +210,7 @@ export default function* postSaga() {
     fork(watchpostDelete),
     fork(watchpostEdit),
     fork(watchcommentDelete),
+    fork(watchlikePost),
+    fork(watchunlikePost),
   ]);
 }

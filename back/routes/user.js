@@ -86,6 +86,7 @@ router.patch('/password', isLoggedIn, async (req, res, next) => {
     next(error); //status 500
   }
 });
+
 // GET /user
 // @desc 유저정보 가져오기
 router.get('/', async (req, res, next) => {

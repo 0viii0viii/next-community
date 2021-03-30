@@ -3,16 +3,18 @@ import AppLayout from '../../components/AppLayout';
 import { useCallback, useEffect } from 'react';
 import dynamic from 'next/dynamic';
 import {
+  LIKE_POST_REQUEST,
   LOAD_ME_REQUEST,
   POST_COMMENT_REQUEST,
   POST_DELETE_REQUEST,
+  UNLIKE_POST_REQUEST,
 } from '../../reducers/types';
 //SSR
 import wrapper from '../../store/configureStore';
 import axios from 'axios';
 import { END } from 'redux-saga';
 
-import useSWR from 'swr';
+import useSWR, { mutate } from 'swr';
 
 import moment from 'moment';
 import { Card, Divider, Form, Input, Button, Col } from 'antd';
@@ -21,6 +23,7 @@ import useInput from '../../hooks/useInput';
 import Link from 'next/link';
 import { PostDetail, P } from '../../components/style/styles';
 import CommentList from '../../components/CommentList';
+import { HeartOutlined, HeartTwoTone } from '@ant-design/icons';
 
 const PostViewer = dynamic(() => import('../../components/PostViewer'), {
   ssr: false,
@@ -31,11 +34,13 @@ const fetcher = (url) =>
   axios.get(url, { withCredentials: true }).then((result) => result.data);
 const Posts = (props) => {
   const initialData = props.data;
-  const { me } = useSelector((state) => state.user);
-  const { data, error } = useSWR('/post/detail/:id', fetcher, { initialData });
   const dispatch = useDispatch();
   const router = useRouter();
   const { id } = router.query;
+  const { me } = useSelector((state) => state.user);
+  const { data, error, mutate } = useSWR(`/post/detail/${id}`, fetcher, {
+    initialData,
+  });
   const uid = useSelector((state) => state.user.me?.id);
   const [comment, onChangeComment, setComment] = useInput('');
   const {
@@ -44,20 +49,28 @@ const Posts = (props) => {
     postDeleteLoading,
     postDeleteDone,
     commentDeleteDone,
+    likePostDone,
+    unlikePostDone,
   } = useSelector((state) => state.post);
 
   useEffect(() => {
     if (postCommentDone) {
       // 댓글 업로드 완료시 입력창 초기화
       setComment('');
-      router.reload(); //새로고침해서 re-rendering
+      mutate();
     }
   }, [postCommentDone]);
 
   useEffect(() => {
+    if (likePostDone || unlikePostDone) {
+      mutate();
+    }
+  }, [likePostDone, unlikePostDone]);
+
+  useEffect(() => {
     if (commentDeleteDone) {
       //댓글 삭제 완료 -> 리렌더링
-      router.reload();
+      mutate();
     }
   }, [commentDeleteDone]);
 
@@ -86,10 +99,42 @@ const Posts = (props) => {
     });
   });
 
+  const onLike = useCallback(() => {
+    if (!uid) {
+      return alert('로그인이 필요합니다.');
+    }
+    dispatch({
+      type: LIKE_POST_REQUEST,
+      data: data.id,
+    });
+    mutate();
+  }, [dispatch]);
+
+  const onUnLike = useCallback(() => {
+    if (!uid) {
+      return alert('로그인이 필요합니다.');
+    }
+    dispatch({
+      type: UNLIKE_POST_REQUEST,
+      data: data.id,
+    });
+    mutate();
+  }, [dispatch]);
+
+  const liked = data.Likers?.find((v) => v.id == uid);
   return (
     <>
       <AppLayout>
-        <Card title={data.title}>
+        <Card
+          title={data.title}
+          actions={[
+            liked ? (
+              <HeartTwoTone twoToneColor="#eb2f96" onClick={onUnLike} />
+            ) : (
+              <HeartOutlined onClick={onLike} />
+            ),
+          ]}
+        >
           <Link href={`/myposts/${data.UserId}`}>{data.creator}</Link>
           <PostDetail>
             <P>{data.category}</P>

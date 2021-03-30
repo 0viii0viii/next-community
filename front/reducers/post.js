@@ -3,6 +3,9 @@ import {
   COMMENT_DELETE_FAILURE,
   COMMENT_DELETE_REQUEST,
   COMMENT_DELETE_SUCCESS,
+  LIKE_POST_FAILURE,
+  LIKE_POST_REQUEST,
+  LIKE_POST_SUCCESS,
   POST_COMMENT_FAILURE,
   POST_COMMENT_REQUEST,
   POST_COMMENT_SUCCESS,
@@ -15,6 +18,9 @@ import {
   POST_UPLOAD_FAILURE,
   POST_UPLOAD_REQUEST,
   POST_UPLOAD_SUCCESS,
+  UNLIKE_POST_FAILURE,
+  UNLIKE_POST_REQUEST,
+  UNLIKE_POST_SUCCESS,
 } from './types';
 
 export const initialState = {
@@ -33,6 +39,12 @@ export const initialState = {
   commentDeleteDone: false,
   commentDeleteError: null,
   commentDeleteLoading: false,
+  likePostDone: false,
+  likePostError: null,
+  likePostLoading: false,
+  unlikePostDone: false,
+  unlikePostError: null,
+  unlikePostLoading: false,
   posts: [],
   searchLoadPosts: [],
 };
@@ -112,6 +124,39 @@ const reducer = (state = initialState, action) => {
         draft.postEditLoading = false;
         draft.postEditDone = false;
         draft.postEditError = action.error;
+        break;
+      case LIKE_POST_REQUEST:
+        draft.likePostLoading = true;
+        draft.likePostDone = false;
+        draft.likePostError = null;
+        break;
+      case LIKE_POST_SUCCESS: {
+        // const post = draft.posts.find((v) => v.id === action.data.PostId);
+        // post.Likers.push({ id: action.data.UserId });
+        draft.likePostLoading = false;
+        draft.likePostDone = true;
+        break;
+      }
+      case LIKE_POST_FAILURE:
+        draft.likePostLoading = false;
+        draft.likePostDone = false;
+        draft.likePostError = action.error;
+        break;
+      case UNLIKE_POST_REQUEST:
+        draft.unlikePostLoading = true;
+        draft.unlikePostDone = false;
+        draft.unlikePostError = null;
+        break;
+      case UNLIKE_POST_SUCCESS:
+        // const post = draft.mainPosts.find((v) => v.id === action.data.PostId);
+        // post.Likers = post.Likers.filter((v) => v.id !== action.data.UserId);
+        draft.unlikePostLoading = false;
+        draft.unlikePostDone = true;
+        break;
+      case UNLIKE_POST_FAILURE:
+        draft.unlikePostLoading = false;
+        draft.unlikePostDone = false;
+        draft.unlikePostError = action.error;
         break;
     }
   });

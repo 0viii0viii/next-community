@@ -1,9 +1,13 @@
-import { Button, Card, Col, Row } from 'antd';
+import { Button, Card, Col, Input, Row } from 'antd';
 import Link from 'next/link';
 import { useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import useInput from '../hooks/useInput';
-import { LOAD_ME_REQUEST, REGISTER_REQUEST } from '../reducers/types';
+import {
+  EMAIL_AUTH_REQUEST,
+  LOAD_ME_REQUEST,
+  REGISTER_REQUEST,
+} from '../reducers/types';
 import {
   FormWrapper,
   Global,
@@ -11,6 +15,7 @@ import {
   StyledButton,
   ErrorMessage,
   RedirectCard,
+  EmailFormWrapper,
 } from '../components/style/styles';
 import { useRouter } from 'next/router';
 //SSR
@@ -22,9 +27,15 @@ import AppLayout from '../components/AppLayout';
 const register = () => {
   const router = useRouter();
   const dispatch = useDispatch();
-  const { me, registerLoading, registerError } = useSelector(
-    (state) => state.user
-  );
+  const {
+    me,
+    registerLoading,
+    registerError,
+    emailAuthLoading,
+    emailAuthDone,
+    emailAuthNum,
+    emailAuthError,
+  } = useSelector((state) => state.user);
   //에러가 있을경우
   useEffect(() => {
     if (registerError) {
@@ -32,9 +43,16 @@ const register = () => {
     }
   }, [registerError]);
 
+  useEffect(() => {
+    if (emailAuthError) {
+      alert(emailAuthError);
+    }
+  }, [emailAuthError]);
+
   const [email, onChangeEmail] = useInput('');
   const [nickname, onChangeNickname] = useInput('');
   const [password, onChangePassword] = useInput('');
+  const [authNum, onChangeAuthNum] = useInput('');
   const [passwordCheck, setPasswordCheck] = useState('');
   const [passwordError, setPasswordError] = useState(false);
 
@@ -46,17 +64,30 @@ const register = () => {
     },
     [password]
   );
-
   const onSubmit = useCallback(() => {
     if (password !== passwordCheck) {
       //password가 다르면 error
       return setPasswordError(true);
+    }
+    if (authNum != emailAuthNum) {
+      return alert('인증번호가 일치하지 않습니다.');
     }
     dispatch({
       type: REGISTER_REQUEST,
       data: { email, password, nickname },
     });
   }, [email, password, passwordCheck]);
+
+  const onEmailAuth = useCallback(() => {
+    if (!email) {
+      alert('이메일을 입력해주십시오.');
+    } else {
+      dispatch({
+        type: EMAIL_AUTH_REQUEST,
+        data: { email },
+      });
+    }
+  });
 
   return (
     <>
@@ -81,15 +112,35 @@ const register = () => {
                   <h1>Gunners</h1>
                 </Link>
 
-                <StyledInput
-                  name="user-email"
-                  type="email"
-                  value={email}
-                  onChange={onChangeEmail}
-                  required
-                  bordered={false}
-                  placeholder="이메일"
-                />
+                <EmailFormWrapper>
+                  <Input
+                    name="user-email"
+                    type="email"
+                    value={email}
+                    onChange={onChangeEmail}
+                    required
+                    bordered={false}
+                    placeholder="이메일"
+                  />
+                  {!emailAuthDone ? (
+                    <Button onClick={onEmailAuth} loading={emailAuthLoading}>
+                      인증
+                    </Button>
+                  ) : (
+                    <Button>전송됨</Button>
+                  )}
+                </EmailFormWrapper>
+                {emailAuthDone ? (
+                  <StyledInput
+                    value={authNum}
+                    onChange={onChangeAuthNum}
+                    bordered={false}
+                    placeholder="인증번호"
+                  />
+                ) : (
+                  ''
+                )}
+
                 <StyledInput
                   name="user-nickname"
                   value={nickname}

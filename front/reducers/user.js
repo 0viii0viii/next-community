@@ -18,6 +18,9 @@ import {
   EDIT_PASSWORD_REQUEST,
   EDIT_PASSWORD_SUCCESS,
   EDIT_PASSWORD_FAILURE,
+  EMAIL_AUTH_REQUEST,
+  EMAIL_AUTH_SUCCESS,
+  EMAIL_AUTH_FAILURE,
 } from './types';
 
 export const initialState = {
@@ -27,6 +30,9 @@ export const initialState = {
   loginLoading: false, //로그인
   loginDone: false,
   loginError: null,
+  emailAuthLoading: false, //이메일 인증
+  emailAuthDone: false,
+  emailAuthError: null,
   logoutLoading: false, //로그아웃
   logoutDone: false,
   logoutError: null,
@@ -57,6 +63,20 @@ const reducer = (state = initialState, action) => {
       case REGISTER_FAILURE:
         draft.registerLoading = false;
         draft.registerError = action.error;
+        break;
+      case EMAIL_AUTH_REQUEST:
+        draft.emailAuthLoading = true;
+        draft.emailAuthDone = false;
+        draft.emailAuthError = null;
+        break;
+      case EMAIL_AUTH_SUCCESS:
+        draft.emailAuthLoading = false;
+        draft.emailAuthDone = true;
+        draft.emailAuthNum = action.data;
+        break;
+      case EMAIL_AUTH_FAILURE:
+        draft.emailAuthLoading = false;
+        draft.emailAuthError = action.error;
         break;
       case LOGIN_REQUEST:
         draft.loginLoading = true;

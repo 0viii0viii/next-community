@@ -31,6 +31,13 @@ export const StyledButton = styled(Button)`
   cursor: pointer;
 `;
 
+export const EmailFormWrapper = styled.div`
+  display: flex;
+  width: 100;
+  margin-bottom: 20px;
+  border-bottom: 1px solid #ebeef1;
+`;
+
 export const StyledInput = styled(Input)`
   margin-bottom: 20px;
 

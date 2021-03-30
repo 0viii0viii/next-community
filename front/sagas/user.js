@@ -6,6 +6,9 @@ import {
   EDIT_PASSWORD_FAILURE,
   EDIT_PASSWORD_REQUEST,
   EDIT_PASSWORD_SUCCESS,
+  EMAIL_AUTH_FAILURE,
+  EMAIL_AUTH_REQUEST,
+  EMAIL_AUTH_SUCCESS,
   LOAD_ME_FAILURE,
   LOAD_ME_REQUEST,
   LOAD_ME_SUCCESS,
@@ -41,6 +44,27 @@ function* register(action) {
     });
   }
 }
+//이메일 인증
+function emailAuthAPI(data) {
+  return axios.post('/email', data);
+}
+
+function* emailAuth(action) {
+  try {
+    const result = yield call(emailAuthAPI, action.data);
+    console.log(result);
+    yield put({
+      type: EMAIL_AUTH_SUCCESS,
+      data: result.data,
+    });
+  } catch (e) {
+    yield put({
+      type: EMAIL_AUTH_FAILURE,
+      error: e.response.data,
+    });
+  }
+}
+
 //로그인
 function loginAPI(data) {
   return axios.post('/user/login', data);
@@ -144,6 +168,9 @@ function* editPassword(action) {
   }
 }
 
+function* watchemailAuth() {
+  yield takeLatest(EMAIL_AUTH_REQUEST, emailAuth);
+}
 function* watchEditPassword() {
   yield takeLatest(EDIT_PASSWORD_REQUEST, editPassword);
 }
@@ -166,6 +193,7 @@ function* watchLogout() {
 export default function* userSaga() {
   yield all([
     fork(watchRegister),
+    fork(watchemailAuth),
     fork(watchLogin),
     fork(watchLogout),
     fork(watchLoadMe),

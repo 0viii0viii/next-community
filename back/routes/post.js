@@ -146,6 +146,11 @@ router.get('/all', async (req, res, next) => {
           model: Comment,
           attributes: ['id'],
         },
+        {
+          model: User,
+          as: 'Likers',
+          attributes: ['id'],
+        },
       ],
     });
     const totalPosts = await Post.count();

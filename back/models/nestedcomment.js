@@ -1,6 +1,6 @@
 module.exports = (sequelize, DataTypes) => {
-  const Comment = sequelize.define(
-    'Comment',
+  const Nestedcomment = sequelize.define(
+    'Nestedcomment',
     {
       content: { type: DataTypes.TEXT, allowNull: false },
     },
@@ -9,10 +9,9 @@ module.exports = (sequelize, DataTypes) => {
       collate: 'utf8mb4_general_ci',
     }
   );
-  Comment.associate = (db) => {
+  Nestedcomment.associate = (db) => {
     db.Comment.belongsTo(db.User);
-    db.Comment.belongsTo(db.Post);
-    db.Comment.hasMany(db.Nestedcomment);
+    db.Comment.belongsTo(db.Comment);
   };
-  return Comment;
+  return Nestedcomment;
 };

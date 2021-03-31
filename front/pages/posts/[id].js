@@ -129,9 +129,15 @@ const Posts = (props) => {
           title={data.title}
           actions={[
             liked ? (
-              <HeartTwoTone twoToneColor="#eb2f96" onClick={onUnLike} />
+              <div style={{ display: 'inline' }}>
+                <HeartTwoTone twoToneColor="#eb2f96" onClick={onUnLike} />
+                <P>{data.Likers.length}</P>
+              </div>
             ) : (
-              <HeartOutlined onClick={onLike} />
+              <div>
+                <HeartOutlined onClick={onLike} />
+                <P>{data.Likers.length}</P>
+              </div>
             ),
           ]}
         >

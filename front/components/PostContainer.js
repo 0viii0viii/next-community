@@ -12,6 +12,7 @@ import {
 import { useEffect, useState } from 'react';
 import Router, { useRouter } from 'next/router';
 import ReactPaginate from 'react-paginate';
+import { HeartTwoTone } from '@ant-design/icons';
 
 moment.locale('ko'); //한글로
 const PostContainer = ({ data }) => {
@@ -43,7 +44,16 @@ const PostContainer = ({ data }) => {
   return (
     <>
       {posts.map(
-        ({ id, title, creator, category, createdAt, fileUrl, Comments }) => {
+        ({
+          id,
+          title,
+          creator,
+          category,
+          createdAt,
+          fileUrl,
+          Comments,
+          Likers,
+        }) => {
           return (
             <Link href={`/posts/${id}`}>
               <PostContainerCard>
@@ -54,9 +64,16 @@ const PostContainer = ({ data }) => {
                   </Col>
                   <Col xs={24}>
                     <PostDetail>
+                      <P>
+                        <HeartTwoTone
+                          twoToneColor="#eb2f96"
+                          style={{ marginRight: '5px' }}
+                        />
+                        {Likers.length}
+                      </P>
                       <P>{category} </P>
-                      <P>{moment(createdAt).fromNow()} </P>
                       <P>{creator}</P>
+                      <P>{moment(createdAt).fromNow()} </P>
                     </PostDetail>
                   </Col>
                 </Row>

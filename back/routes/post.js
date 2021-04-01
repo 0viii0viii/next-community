@@ -7,7 +7,7 @@ const dotenv = require('dotenv');
 dotenv.config();
 
 const express = require('express');
-const { Post } = require('../models');
+const { Post, Nestedcomment } = require('../models');
 const { Comment } = require('../models');
 const { User } = require('../models');
 const { isLoggedIn } = require('./middlewares');
@@ -207,6 +207,16 @@ router.get('/detail/:id', async (req, res, next) => {
       include: [
         {
           model: Comment,
+          include: [
+            {
+              model: User,
+              attributes: ['id', 'nickname'],
+              order: [['createdAt', 'DESC']],
+            },
+          ],
+        },
+        {
+          model: Nestedcomment,
           include: [
             {
               model: User,

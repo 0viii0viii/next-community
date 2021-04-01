@@ -3,6 +3,12 @@ import {
   COMMENT_DELETE_FAILURE,
   COMMENT_DELETE_REQUEST,
   COMMENT_DELETE_SUCCESS,
+  DELETE_NESTED_COMMENT_FAILURE,
+  DELETE_NESTED_COMMENT_REQUEST,
+  DELETE_NESTED_COMMENT_SUCCESS,
+  EDIT_NESTED_COMMENT_FAILURE,
+  EDIT_NESTED_COMMENT_REQUEST,
+  EDIT_NESTED_COMMENT_SUCCESS,
   LIKE_POST_FAILURE,
   LIKE_POST_REQUEST,
   LIKE_POST_SUCCESS,
@@ -15,6 +21,9 @@ import {
   POST_EDIT_FAILURE,
   POST_EDIT_REQUEST,
   POST_EDIT_SUCCESS,
+  POST_NESTED_COMMENT_FAILURE,
+  POST_NESTED_COMMENT_REQUEST,
+  POST_NESTED_COMMENT_SUCCESS,
   POST_UPLOAD_FAILURE,
   POST_UPLOAD_REQUEST,
   POST_UPLOAD_SUCCESS,
@@ -45,6 +54,15 @@ export const initialState = {
   unlikePostDone: false,
   unlikePostError: null,
   unlikePostLoading: false,
+  postNestedCommentLoading: false,
+  postNestedCommentDone: false,
+  postNestedCommentError: null,
+  editNestedCommentLoading: false,
+  editNestedCommentDone: false,
+  editNestedCommentError: null,
+  deleteNestedCommentLoading: false,
+  deleteNestedCommentDone: false,
+  deleteNestedCommentError: null,
   posts: [],
   searchLoadPosts: [],
 };
@@ -94,6 +112,48 @@ const reducer = (state = initialState, action) => {
         draft.commentDeleteLoading = false;
         draft.commentDeleteDone = false;
         draft.commentDeleteError = action.error;
+        break;
+      case POST_NESTED_COMMENT_REQUEST:
+        draft.postNestedCommentLoading = true;
+        draft.postNestedCommentDone = false;
+        draft.postNestedCommentError = null;
+        break;
+      case POST_NESTED_COMMENT_SUCCESS:
+        draft.postNestedCommentLoading = false;
+        draft.postNestedCommentDone = true;
+        break;
+      case POST_NESTED_COMMENT_FAILURE:
+        draft.postNestedCommentLoading = false;
+        draft.postNestedCommentDone = false;
+        draft.postNestedCommentError = action.error;
+        break;
+      case EDIT_NESTED_COMMENT_REQUEST:
+        draft.editNestedCommentLoading = true;
+        draft.editNestedCommentDone = false;
+        draft.editNestedCommentError = null;
+        break;
+      case EDIT_NESTED_COMMENT_SUCCESS:
+        draft.editNestedCommentLoading = false;
+        draft.editNestedCommentDone = true;
+        break;
+      case EDIT_NESTED_COMMENT_FAILURE:
+        draft.editNestedCommentLoading = false;
+        draft.editNestedCommentDone = false;
+        draft.editNestedCommentError = action.error;
+        break;
+      case DELETE_NESTED_COMMENT_REQUEST:
+        draft.deleteNestedCommentLoading = true;
+        draft.deleteNestedCommentDone = false;
+        draft.deleteNestedCommentError = null;
+        break;
+      case DELETE_NESTED_COMMENT_SUCCESS:
+        draft.deleteNestedCommentLoading = false;
+        draft.deleteNestedCommentDone = true;
+        break;
+      case DELETE_NESTED_COMMENT_FAILURE:
+        draft.deleteNestedCommentLoading = false;
+        draft.deleteNestedCommentDone = false;
+        draft.deleteNestedCommentError = action.error;
         break;
       case POST_DELETE_REQUEST:
         draft.postDeleteLoading = true;

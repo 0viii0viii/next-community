@@ -10,8 +10,9 @@ module.exports = (sequelize, DataTypes) => {
     }
   );
   Nestedcomment.associate = (db) => {
-    db.Comment.belongsTo(db.User);
-    db.Comment.belongsTo(db.Comment);
+    db.Nestedcomment.belongsTo(db.User);
+    db.Nestedcomment.belongsTo(db.Comment);
+    db.Nestedcomment.belongsTo(db.Post);
   };
   return Nestedcomment;
 };

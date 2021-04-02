@@ -1,16 +1,39 @@
 import { Button, Card, Form, Input } from 'antd';
-import { useCallback } from 'react';
+import { useRouter } from 'next/router';
+import { useCallback, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { mutate } from 'swr';
 import useInput from '../hooks/useInput';
 import { POST_NESTED_COMMENT_REQUEST } from '../reducers/types';
 
-const NestedCommentForm = ({ data }) => {
+const NestedCommentForm = ({ PostId, CommentId }) => {
+  const { me } = useSelector((state) => state.user);
+  const { postNestedCommentDone, postNestedCommentLoading } = useSelector(
+    (state) => state.post
+  );
   const [nested, onChangeNested, setNested] = useInput('');
+  const dispatch = useDispatch();
+  console.log(PostId, 'PostId');
+  console.log(CommentId, 'CommentId');
+  console.log(me.id, 'meid');
   const onSubmitNested = useCallback(() => {
-    // dispatch({
-    //   type: POST_NESTED_COMMENT_REQUEST,
-    //   data:{ content: content, userId:,postId: data.id, commentId:}
-    // })
+    dispatch({
+      type: POST_NESTED_COMMENT_REQUEST,
+      data: {
+        content: nested,
+        userId: me.id,
+        postId: PostId,
+        commentId: CommentId,
+      },
+    });
   });
+
+  useEffect(() => {
+    if (postNestedCommentDone) {
+      setNested('');
+    }
+  }, [postNestedCommentDone]);
+
   return (
     <>
       <Form onFinish={onSubmitNested}>
@@ -21,7 +44,11 @@ const NestedCommentForm = ({ data }) => {
             value={nested}
             onChange={onChangeNested}
           />
-          <Button type="primary" htmlType="submit">
+          <Button
+            type="primary"
+            htmlType="submit"
+            loading={postNestedCommentLoading}
+          >
             작성
           </Button>
         </Card>

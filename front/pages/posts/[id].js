@@ -51,6 +51,8 @@ const Posts = (props) => {
     commentDeleteDone,
     likePostDone,
     unlikePostDone,
+    postNestedCommentDone,
+    deleteNestedCommentDone,
   } = useSelector((state) => state.post);
 
   useEffect(() => {
@@ -62,17 +64,23 @@ const Posts = (props) => {
   }, [postCommentDone]);
 
   useEffect(() => {
-    if (likePostDone || unlikePostDone) {
-      mutate();
-    }
-  }, [likePostDone, unlikePostDone]);
-
-  useEffect(() => {
-    if (commentDeleteDone) {
+    if (
+      commentDeleteDone ||
+      postNestedCommentDone ||
+      likePostDone ||
+      unlikePostDone ||
+      deleteNestedCommentDone
+    ) {
       //댓글 삭제 완료 -> 리렌더링
       mutate();
     }
-  }, [commentDeleteDone]);
+  }, [
+    commentDeleteDone,
+    postNestedCommentDone,
+    likePostDone,
+    unlikePostDone,
+    deleteNestedCommentDone,
+  ]);
 
   useEffect(() => {
     if (postDeleteDone) {

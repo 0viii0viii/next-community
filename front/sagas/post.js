@@ -10,6 +10,9 @@ import {
   COMMENT_DELETE_FAILURE,
   COMMENT_DELETE_REQUEST,
   COMMENT_DELETE_SUCCESS,
+  DELETE_NESTED_COMMENT_FAILURE,
+  DELETE_NESTED_COMMENT_REQUEST,
+  DELETE_NESTED_COMMENT_SUCCESS,
   LIKE_POST_FAILURE,
   LIKE_POST_REQUEST,
   LIKE_POST_SUCCESS,
@@ -22,6 +25,9 @@ import {
   POST_EDIT_FAILURE,
   POST_EDIT_REQUEST,
   POST_EDIT_SUCCESS,
+  POST_NESTED_COMMENT_FAILURE,
+  POST_NESTED_COMMENT_REQUEST,
+  POST_NESTED_COMMENT_SUCCESS,
   POST_UPLOAD_FAILURE,
   POST_UPLOAD_REQUEST,
   POST_UPLOAD_SUCCESS,
@@ -75,6 +81,29 @@ function* postComment(action) {
     console.error(e);
     yield put({
       type: POST_COMMENT_FAILURE,
+      error: e.response.data,
+    });
+  }
+}
+
+//대댓글 업로드
+
+function postNestedCommentAPI(data) {
+  return axios.post(`/post/${data.postId}/nestedcomment`, data);
+}
+
+function* postNestedComment(action) {
+  try {
+    const result = yield call(postNestedCommentAPI, action.data);
+    console.log(result);
+    yield put({
+      type: POST_NESTED_COMMENT_SUCCESS,
+      data: result.data,
+    });
+  } catch (e) {
+    console.error(e);
+    yield put({
+      type: POST_NESTED_COMMENT_FAILURE,
       error: e.response.data,
     });
   }
@@ -140,6 +169,25 @@ function* commentDelete(action) {
     });
   }
 }
+//대댓글 삭제
+function nestedCommentDeleteAPI(data) {
+  return axios.delete(`/post/nestedComment/${data}`);
+}
+
+function* nestedCommentDelete(action) {
+  try {
+    const result = yield call(nestedCommentDeleteAPI, action.data);
+    yield put({
+      type: DELETE_NESTED_COMMENT_SUCCESS,
+      data: result.data,
+    });
+  } catch (e) {
+    yield put({
+      type: DELETE_NESTED_COMMENT_FAILURE,
+      error: e.response.data,
+    });
+  }
+}
 
 //게시글 좋아요
 function likePostAPI(data) {
@@ -190,8 +238,15 @@ function* watchunlikePost() {
 function* watchcommentDelete() {
   yield takeLatest(COMMENT_DELETE_REQUEST, commentDelete);
 }
+function* watchnestedCommentDelete() {
+  yield takeLatest(DELETE_NESTED_COMMENT_REQUEST, nestedCommentDelete);
+}
+
 function* watchpostEdit() {
   yield takeLatest(POST_EDIT_REQUEST, postEdit);
+}
+function* watchpostNestedComment() {
+  yield takeLatest(POST_NESTED_COMMENT_REQUEST, postNestedComment);
 }
 function* watchpostDelete() {
   yield takeLatest(POST_DELETE_REQUEST, postDelete);
@@ -212,5 +267,7 @@ export default function* postSaga() {
     fork(watchcommentDelete),
     fork(watchlikePost),
     fork(watchunlikePost),
+    fork(watchnestedCommentDelete),
+    fork(watchpostNestedComment),
   ]);
 }

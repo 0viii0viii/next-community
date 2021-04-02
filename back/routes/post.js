@@ -101,6 +101,7 @@ router.patch(
 );
 
 // POST /post/:id/comment
+// @desc 댓글작성
 router.post('/:postId/comment', isLoggedIn, async (req, res, next) => {
   try {
     const post = await Post.findOne({
@@ -125,6 +126,29 @@ router.post('/:postId/comment', isLoggedIn, async (req, res, next) => {
     });
     console.log(fullComment);
     res.status(201).json(fullComment);
+  } catch (error) {
+    console.error(error);
+    next(error);
+  }
+});
+
+// POST /post/:id/nestedcomment
+// @desc 대댓글작성
+router.post('/:postId/nestedcomment', isLoggedIn, async (req, res, next) => {
+  try {
+    const post = await Post.findOne({
+      where: { id: req.body.postId },
+    });
+    if (!post) {
+      return res.status(403).send('게시글이 존재하지 않습니다.');
+    }
+    const NestedComment = await Nestedcomment.create({
+      content: req.body.content,
+      PostId: req.body.postId,
+      UserId: req.body.userId,
+      CommentId: req.body.commentId,
+    });
+    res.status(201).json(NestedComment);
   } catch (error) {
     console.error(error);
     next(error);
@@ -261,6 +285,20 @@ router.delete('/:postId', isLoggedIn, async (req, res, next) => {
 router.delete('/comment/:id', isLoggedIn, async (req, res, next) => {
   try {
     await Comment.destroy({
+      where: { id: req.params.id },
+    });
+    res.json();
+  } catch (error) {
+    console.error(error);
+    next(error);
+  }
+});
+
+// DELETE  /post/nestedComment/:id
+//@desc 대댓글 삭제
+router.delete('/nestedComment/:id', isLoggedIn, async (req, res, next) => {
+  try {
+    await Nestedcomment.destroy({
       where: { id: req.params.id },
     });
     res.json();

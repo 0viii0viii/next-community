@@ -1,1 +1,1 @@
-Next Toy Project 
+Next Project: 커뮤니티  

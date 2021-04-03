@@ -12,7 +12,13 @@ import { useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { LOGOUT_REQUEST } from '../reducers/types';
 import styled from 'styled-components';
-import { CloseOutlined } from '@ant-design/icons';
+import {
+  CloseOutlined,
+  ContainerOutlined,
+  FireOutlined,
+  LoginOutlined,
+  ProfileOutlined,
+} from '@ant-design/icons';
 import { Button, Card, Divider } from 'antd';
 const HeaderBar = () => {
   const dispatch = useDispatch();
@@ -65,7 +71,6 @@ const HeaderBar = () => {
               <Link href="/login">로그인</Link>
             </HeaderLoginButton>
           )}
-
           <StyledMenuOutlined onClick={handleMenuClick} />
           <SidebarNav sidebar={sidebar} display={display}>
             <SidebarWrapper>
@@ -73,42 +78,72 @@ const HeaderBar = () => {
                 <CloseOutlined onClick={handleMenuClick} />
               </NavIcon>
               {me ? (
-                <Link href="/profile">
-                  <SidebarLink>프로필</SidebarLink>
-                </Link>
+                <>
+                  <Link href="/profile">
+                    <SidebarLink>
+                      <ProfileOutlined />
+                      프로필
+                    </SidebarLink>
+                  </Link>
+                  <Link href={`/myposts/${me.id}`}>
+                    <SidebarLink>
+                      <ContainerOutlined />내 게시글
+                    </SidebarLink>
+                  </Link>
+                  <div onClick={onLogout}>
+                    <SidebarLink>
+                      <LoginOutlined />
+                      로그아웃
+                    </SidebarLink>
+                  </div>
+                </>
               ) : (
                 <Link href="/login">
-                  <SidebarLink>로그인</SidebarLink>
+                  <SidebarLink>
+                    <LoginOutlined />
+                    로그인
+                  </SidebarLink>
                 </Link>
               )}
               <Link href="/?page=1">
                 <SidebarLink>전체</SidebarLink>
               </Link>
               <Link href="/category/free">
-                <SidebarLink>자유</SidebarLink>
+                <SidebarLink>
+                  <FireOutlined />
+                  자유
+                </SidebarLink>
               </Link>
               <Link href="/category/humor">
-                <SidebarLink>유머</SidebarLink>
+                <SidebarLink>
+                  <FireOutlined />
+                  유머
+                </SidebarLink>
               </Link>
               <Link href="/category/transfer">
-                <SidebarLink>이적 시장</SidebarLink>
+                <SidebarLink>
+                  <FireOutlined />
+                  이적 시장
+                </SidebarLink>
               </Link>
               <Link href="/category/forecast">
-                <SidebarLink>경기 예측</SidebarLink>
+                <SidebarLink>
+                  <FireOutlined />
+                  경기 예측
+                </SidebarLink>
               </Link>
               <Link href="/category/examine">
-                <SidebarLink>경기 분석</SidebarLink>
+                <SidebarLink>
+                  <FireOutlined />
+                  경기 분석
+                </SidebarLink>
               </Link>
               <Link href="/category/debate">
-                <SidebarLink>경기 토론</SidebarLink>
+                <SidebarLink>
+                  <FireOutlined />
+                  경기 토론
+                </SidebarLink>
               </Link>
-              {me ? (
-                <div onClick={onLogout}>
-                  <SidebarLink>로그아웃</SidebarLink>
-                </div>
-              ) : (
-                ''
-              )}
             </SidebarWrapper>
           </SidebarNav>
         </HeaderMenu>
@@ -135,9 +170,9 @@ const SidebarWrapper = styled.div`
   width: 100%;
 `;
 const NavIcon = styled.div`
-  margin-right: 2rem;
-  font-size: 2rem;
-  height: 80px;
+  margin-right: 1rem;
+  font-size: 1rem;
+  height: 40px;
   display: flex;
   justify-content: flex-end;
   align-items: center;
@@ -148,7 +183,7 @@ const SidebarLink = styled.a`
   align-items: center;
   padding: 20px;
   list-style: none;
-  height: 60px;
+  height: 50px;
   text-decoration: none;
   color: black;
   font-size: 18px;

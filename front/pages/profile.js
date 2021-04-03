@@ -1,4 +1,4 @@
-import { Button, Card } from 'antd';
+import { Button, Card, Spin } from 'antd';
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useRouter } from 'next/router';
@@ -11,6 +11,7 @@ import { END } from 'redux-saga';
 import axios from 'axios';
 import { LOAD_ME_REQUEST } from '../reducers/types';
 import wrapper from '../store/configureStore';
+import Link from 'next/link';
 
 const Profile = () => {
   const { me } = useSelector((state) => state.user);
@@ -21,7 +22,6 @@ const Profile = () => {
       key: 'tab1',
       tab: '계정 정보',
     },
-
     {
       key: 'tab2',
       tab: '비밀번호 변경',

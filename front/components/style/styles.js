@@ -133,6 +133,7 @@ export const MenuLogout = styled(Button)`
 export const StyledMenuOutlined = styled(MenuOutlined)`
   font-size: 30px;
   float: right;
+  margin-top: 0.5rem;
   @media screen and (min-width: 1200px) {
     display: none;
   }

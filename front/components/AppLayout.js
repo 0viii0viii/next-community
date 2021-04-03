@@ -5,8 +5,23 @@ import SideMenu from './SideMenu';
 import Funcbar from './FuncBar';
 import HeaderBar from './HeaderBar';
 import { Global } from './style/styles';
+import { useEffect, useState } from 'react';
 
 const AppLayout = ({ children }) => {
+  const [width, setWidth] = useState('800px');
+  useEffect(() => {
+    function onResize() {
+      if (window.innerWidth >= 1200) {
+        setWidth('800px');
+      } else {
+        setWidth('100%');
+      }
+    }
+    window.addEventListener('resize', onResize);
+    return () => {
+      window.removeEventListener('resize', onResize);
+    };
+  }, []);
   return (
     <div>
       <Global />
@@ -21,7 +36,7 @@ const AppLayout = ({ children }) => {
         <Col flex="380px">
           <SideMenu />
         </Col>
-        <Col flex="800px">
+        <Col flex={width}>
           <Funcbar />
           {children}
         </Col>

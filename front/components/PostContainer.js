@@ -53,6 +53,7 @@ const PostContainer = ({ data }) => {
           fileUrl,
           Comments,
           Likers,
+          view,
         }) => {
           return (
             <Link href={`/posts/${id}`}>
@@ -71,6 +72,7 @@ const PostContainer = ({ data }) => {
                         />
                         {Likers.length}
                       </P>
+                      <P> 조회 {view}</P>
                       <P>{category} </P>
                       <P>{creator}</P>
                       <P>{moment(createdAt).fromNow()} </P>

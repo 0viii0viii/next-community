@@ -1,8 +1,15 @@
-import { Button, Card } from 'antd';
+import { Button, Card, Col, Divider, Row } from 'antd';
 import { useCallback } from 'react';
 import { useDispatch } from 'react-redux';
 import { DELETE_NESTED_COMMENT_REQUEST } from '../reducers/types';
 import moment from 'moment';
+import {
+  NestedTitle,
+  NestedContent,
+  NestedDate,
+  NestedCommentWrapper,
+  NestedBtn,
+} from '../components/style/styles';
 
 const NestedCommentList = ({ data, CId, UId }) => {
   console.log(data, 'nested');
@@ -24,16 +31,22 @@ const NestedCommentList = ({ data, CId, UId }) => {
             }
           }
           return (
-            <Card>
-              {User.nickname}, {content}, {moment(createdAt).fromNow()}
-              {UId == User.id ? (
-                <Button onClick={() => deleteNestedComment(id)}>
-                  댓글 삭제
-                </Button>
-              ) : (
-                ''
-              )}
-            </Card>
+            <NestedCommentWrapper>
+              <NestedTitle>
+                {User.nickname}
+                <NestedDate>{moment(createdAt).fromNow()}</NestedDate>
+                <NestedBtn>
+                  {UId == User.id ? (
+                    <Button onClick={() => deleteNestedComment(id)}>
+                      삭제
+                    </Button>
+                  ) : (
+                    ''
+                  )}
+                </NestedBtn>
+              </NestedTitle>
+              <NestedContent>{content}</NestedContent>
+            </NestedCommentWrapper>
           );
         }
       )}

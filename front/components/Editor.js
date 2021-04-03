@@ -7,6 +7,7 @@ import { useCallback, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import axios from 'axios';
 import { POST_UPLOAD_REQUEST } from '../reducers/types';
+import { PostBtn, Select } from './style/styles';
 
 const PostEditor = () => {
   const dispatch = useDispatch();
@@ -110,43 +111,40 @@ const PostEditor = () => {
 
   return (
     <>
-      <div>
-        <Form onFinish={onClickSubmit}>
-          <select name="category" onChange={onChange}>
-            <option>선택 안함</option>
-            <option value="자유">자유</option>
-            <option value="유머">유머</option>
-            <option value="이적 시장">이적 시장</option>
-            <option value="경기 예측">경기 예측</option>
-            <option value="경기 분석">경기 분석</option>
-            <option value="경기 토론">경기 토론</option>
-          </select>
-
-          <Input
-            type="text"
-            name="title"
-            placeholder="제목"
-            onChange={onChange}
-          />
-          <Editor
-            initialEditType="wysiwyg"
-            previewStyle="tab"
-            height="600px"
-            useCommandShortcut={true}
-            ref={editorRef}
-            hooks={{
-              addImageBlobHook: async (blob, callback) => {
-                const upload = await uploadImage(blob);
-                callback(upload, 'alt text');
-                return false;
-              },
-            }}
-            onBlur={getDataFromEditor}
-          />
-          <Button>취소</Button>
-          <Button htmlType="submit">작성 완료</Button>
-        </Form>
-      </div>
+      <Form onFinish={onClickSubmit}>
+        <Select name="category" onChange={onChange}>
+          <option>선택 안함</option>
+          <option value="자유">자유</option>
+          <option value="유머">유머</option>
+          <option value="이적 시장">이적 시장</option>
+          <option value="경기 예측">경기 예측</option>
+          <option value="경기 분석">경기 분석</option>
+          <option value="경기 토론">경기 토론</option>
+        </Select>
+        <Input
+          type="text"
+          name="title"
+          placeholder="제목"
+          onChange={onChange}
+        />
+        <Editor
+          initialEditType="wysiwyg"
+          previewStyle="tab"
+          height="1200px"
+          useCommandShortcut={true}
+          ref={editorRef}
+          hooks={{
+            addImageBlobHook: async (blob, callback) => {
+              const upload = await uploadImage(blob);
+              callback(upload, 'alt text');
+              return false;
+            },
+          }}
+          onBlur={getDataFromEditor}
+        />
+        <Button>취소</Button>
+        <PostBtn htmlType="submit">작성 완료</PostBtn>
+      </Form>
     </>
   );
 };

@@ -4,8 +4,11 @@ import { COMMENT_DELETE_REQUEST } from '../reducers/types';
 import { useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
+  CommentBtn,
+  Commentcontent,
   CommentDate,
   CommentTtitle,
+  ContentWrapper,
   DeleteBtn,
   NicknameText,
 } from './style/styles';
@@ -42,36 +45,34 @@ const CommentList = ({ data }) => {
   const ButtonDeleteComment = ({ id }) => {
     return <DeleteBtn onClick={onClickDeleteComment(id)}>삭제</DeleteBtn>;
   };
+
   return (
     <>
       {data.Comments.map(({ id, User, content, createdAt, UserId, PostId }) => {
         return (
-          <Card key={id}>
-            <Row>
-              <CommentTtitle xs={24}>
-                {PostId}
-                <NicknameText>{User.nickname} </NicknameText>
-                <CommentDate>{moment(createdAt).fromNow()}</CommentDate>
-                {uid === UserId ? <ButtonDeleteComment id={id} /> : ''}
-              </CommentTtitle>
-              <Col xs={24}> {content}</Col>
-              <Divider />
-              <NestedCommentList UId={uid} CId={id} data={data} />
-              <Col xs={24}>
-                <Button
-                  style={{ border: 'none' }}
-                  onClick={() => handleCommentClick(id)}
-                >
-                  댓글 달기
-                </Button>
-              </Col>
-            </Row>
-            {pid == id ? (
-              <NestedCommentForm PostId={PostId} CommentId={pid} />
-            ) : (
-              ''
-            )}
-          </Card>
+          <>
+            <Card key={id}>
+              <Row>
+                <CommentTtitle xs={24}>
+                  <NicknameText>{User.nickname} </NicknameText>
+                  <CommentDate>{moment(createdAt).fromNow()}</CommentDate>
+                  {uid === UserId ? <ButtonDeleteComment id={id} /> : ''}
+                </CommentTtitle>
+                <ContentWrapper>
+                  <Commentcontent>{content}</Commentcontent>
+                  <CommentBtn onClick={() => handleCommentClick(id)}>
+                    댓글 달기
+                  </CommentBtn>
+                </ContentWrapper>
+              </Row>
+              {pid == id ? (
+                <NestedCommentForm PostId={PostId} CommentId={pid} />
+              ) : (
+                ''
+              )}
+            </Card>
+            <NestedCommentList UId={uid} CId={id} data={data} />
+          </>
         );
       })}
     </>

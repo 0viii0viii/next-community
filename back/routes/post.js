@@ -208,6 +208,11 @@ router.get('/myposts/:id', async (req, res, next) => {
           model: Comment,
           attributes: ['id'],
         },
+        {
+          model: User,
+          as: 'Likers',
+          attributes: ['id'],
+        },
       ],
     });
     const totalPosts = await Post.count({ where: { UserId: req.params.id } });

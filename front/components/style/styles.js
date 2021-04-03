@@ -94,15 +94,12 @@ export const StyledHeaderBar = styled(Row)`
   z-index: 1;
 `;
 
-export const HeaderMenu = styled.div`
-  margin-left: auto;
-  margin-right: auto;
-  width: 1200px;
-`;
+export const HeaderMenu = styled(Col)``;
 export const HeaderLogo = styled.img`
   width: 50px;
   height: 50px;
   cursor: pointer;
+  float: left;
 `;
 
 export const HeaderLoginButton = styled(Button)`
@@ -118,7 +115,7 @@ export const HeaderLoginButton = styled(Button)`
 export const HeaderLogoutButton = styled(Button)`
   margin-top: 7.5px;
   float: right;
-
+  margin-right: 10px;
   @media screen and (max-width: 1200px) {
     display: none;
   }
@@ -136,7 +133,6 @@ export const MenuLogout = styled(Button)`
 export const StyledMenuOutlined = styled(MenuOutlined)`
   font-size: 30px;
   float: right;
-
   @media screen and (min-width: 1200px) {
     display: none;
   }
@@ -186,7 +182,7 @@ export const PostDetail = styled.div`
 
 export const P = styled.p`
   display: inline;
-  padding: 10px;
+  padding: 5px;
   color: gray;
 `;
 export const CommentLength = styled.p`
@@ -197,6 +193,7 @@ export const CommentLength = styled.p`
 export const ImageContainer = styled.img`
   width: 50px;
   float: right;
+  height: 50px;
 `;
 
 //Profile.js
@@ -275,7 +272,6 @@ export const PostContainerCard = styled(Card)`
 export const FuncWrapper = styled.div`
   height: 50px;
   padding-top: 10px;
-  width: 800px;
   border-bottom: 1px;
   background: white;
   position: ${(props) => props.position};
@@ -284,34 +280,34 @@ export const FuncWrapper = styled.div`
 `;
 
 export const FuncWrapperTest = styled.div`
-  width: 1200px;
   height: 50px;
   padding-top: 10px;
   border-bottom: 1px;
   background: white;
+  width: 100%;
 `;
 
 export const StyledSearch = styled(Input.Search)`
-  width: auto;
-  margin-left: 20px;
+  width: 80%;
+  margin-left: 10px;
 `;
 
 export const StyledPost = styled(FormOutlined)`
   font-size: 30px;
   color: blue;
-  position: absolute;
-  right: 0;
+  float: right;
   margin-right: 10px;
   &:hover {
-    background: yellow;
+    background: #d9d9d9;
   }
 `;
 
-//CommentForm.js
+//CommentList.js
 
 export const NicknameText = styled.p`
   display: inline;
   font-weight: bold;
+  padding-bottom: 1rem;
 `;
 
 export const DeleteBtn = styled(Button)`
@@ -323,10 +319,65 @@ export const DeleteBtn = styled(Button)`
 `;
 
 export const CommentTtitle = styled(Col)`
-  border-bottom: 1px solid #d9d9d9;
+  padding-bottom: 1rem;
 `;
 
 export const CommentDate = styled.p`
   display: inline;
   color: gray;
+  text-weight: bold;
+`;
+
+export const CommentBtn = styled(Button)`
+  border: none;
+  height: 0;
+  padding: 0;
+`;
+
+export const Commentcontent = styled.p``;
+
+export const ContentWrapper = styled.div`
+  display: block;
+`;
+
+//NestedCommentList.js
+
+export const NestedCommentWrapper = styled.div`
+  display: block;
+  background: white;
+  border-bottom: 1px solid #d9d9d9;
+  width: 100%;
+`;
+
+export const NestedTitle = styled.p`
+  margin-left: 4rem;
+  padding-top: 1rem;
+  font-weight: bold;
+`;
+
+export const NestedContent = styled.p`
+  margin-left: 4rem;
+`;
+
+export const NestedBtn = styled.p`
+  float: right;
+  margin-right: 1rem;
+`;
+
+export const NestedDate = styled.p`
+  display: inline;
+  color: gray;
+  margin-left: 1rem;
+`;
+
+//Editor.js
+
+export const Select = styled.select`
+  width: 100%;
+  border: none;
+`;
+
+export const CancelBtn = styled(Button)``;
+export const PostBtn = styled(Button)`
+  float: right;
 `;

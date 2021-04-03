@@ -1,6 +1,7 @@
 const express = require('express');
 const { Post } = require('../models');
 const { Comment } = require('../models');
+const { User } = require('../models');
 const router = express.Router();
 
 // category ---------------------------------------------
@@ -27,6 +28,11 @@ router.get('/free', async (req, res, next) => {
       include: [
         {
           model: Comment,
+          attributes: ['id'],
+        },
+        {
+          model: User,
+          as: 'Likers',
           attributes: ['id'],
         },
       ],
@@ -71,6 +77,11 @@ router.get('/humor', async (req, res, next) => {
           model: Comment,
           attributes: ['id'],
         },
+        {
+          model: User,
+          as: 'Likers',
+          attributes: ['id'],
+        },
       ],
     });
     const totalPosts = await Post.count({ where: { category: '유머' } });
@@ -111,6 +122,11 @@ router.get('/transfer', async (req, res, next) => {
       include: [
         {
           model: Comment,
+          attributes: ['id'],
+        },
+        {
+          model: User,
+          as: 'Likers',
           attributes: ['id'],
         },
       ],
@@ -155,6 +171,11 @@ router.get('/forecast', async (req, res, next) => {
           model: Comment,
           attributes: ['id'],
         },
+        {
+          model: User,
+          as: 'Likers',
+          attributes: ['id'],
+        },
       ],
     });
     const totalPosts = await Post.count({ where: { category: '경기예측' } });
@@ -197,6 +218,11 @@ router.get('/examine', async (req, res, next) => {
           model: Comment,
           attributes: ['id'],
         },
+        {
+          model: User,
+          as: 'Likers',
+          attributes: ['id'],
+        },
       ],
     });
     const totalPosts = await Post.count({ where: { category: '경기분석' } });
@@ -237,6 +263,11 @@ router.get('/debate', async (req, res, next) => {
       include: [
         {
           model: Comment,
+          attributes: ['id'],
+        },
+        {
+          model: User,
+          as: 'Likers',
           attributes: ['id'],
         },
       ],

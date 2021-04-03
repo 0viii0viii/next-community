@@ -50,7 +50,7 @@ const HeaderBar = () => {
   return (
     <>
       <StyledHeaderBar>
-        <HeaderMenu>
+        <HeaderMenu xs={24}>
           <Link href="/">
             <HeaderLogo src={Logo} />
           </Link>

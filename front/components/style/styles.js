@@ -265,6 +265,7 @@ export const PaginationWrapper = styled.div`
 export const PostContainerCard = styled(Card)`
   cursor: pointer;
   &:hover {
+    border-left: 4px solid yellow;
     background: #d9d9d9;
   }
 `;

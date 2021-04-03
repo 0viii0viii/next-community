@@ -1,14 +1,9 @@
 import {
   StyledHeaderBar,
   HeaderMenu,
-  HeaderA,
   HeaderLoginButton,
   HeaderLogoutButton,
   StyledMenuOutlined,
-  StyledMenuItem,
-  Atag2,
-  StyledCol,
-  MenuLogout,
   HeaderLogo,
 } from '../components/style/styles';
 import Logo from '../img/logo.png';
@@ -16,11 +11,13 @@ import Link from 'next/link';
 import { useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { LOGOUT_REQUEST } from '../reducers/types';
-import { Row } from 'antd';
+import styled from 'styled-components';
+import { CloseOutlined } from '@ant-design/icons';
+import { Button, Card, Divider } from 'antd';
 const HeaderBar = () => {
   const dispatch = useDispatch();
-  const { me } = useSelector((state) => state.user);
-  const [menuOpened, setmenuOpened] = useState(false);
+  const { me, logoutDone } = useSelector((state) => state.user);
+  const [sidebar, setSidebar] = useState(false);
   const [display, setDisplay] = useState('');
 
   useEffect(() => {
@@ -38,9 +35,16 @@ const HeaderBar = () => {
     };
   }, []);
 
+  useEffect(() => {
+    if (logoutDone) {
+      setSidebar(!sidebar);
+    }
+  }, [logoutDone]);
+
   const handleMenuClick = useCallback(() => {
-    setmenuOpened((prev) => !prev);
+    setSidebar(!sidebar);
   });
+
   const onLogout = useCallback(() => {
     dispatch({
       type: LOGOUT_REQUEST,
@@ -63,61 +67,97 @@ const HeaderBar = () => {
           )}
 
           <StyledMenuOutlined onClick={handleMenuClick} />
-        </HeaderMenu>
-      </StyledHeaderBar>
-      {menuOpened && (
-        <Row>
-          <StyledMenuItem display={display}>
-            {me ? (
-              <>
-                <StyledCol xs={24} lg={24} xl={0}>
-                  <Link href="/profile">
-                    <Atag2>내 프로필</Atag2>
-                  </Link>
-                </StyledCol>
-                <StyledCol xs={24} lg={24} xl={0}>
-                  <Link href={`/myposts/${me.id}`}>
-                    <Atag2>내 게시글</Atag2>
-                  </Link>
-                </StyledCol>
-                <StyledCol xs={24} lg={24} xl={0}>
-                  <MenuLogout onClick={onLogout}>
-                    <Atag2>로그아웃</Atag2>
-                  </MenuLogout>
-                </StyledCol>
-              </>
-            ) : (
-              <StyledCol xs={24} lg={24} xl={0}>
-                <Link href="/login">
-                  <Atag2>로그인</Atag2>
+          <SidebarNav sidebar={sidebar} display={display}>
+            <SidebarWrapper>
+              <NavIcon>
+                <CloseOutlined onClick={handleMenuClick} />
+              </NavIcon>
+              {me ? (
+                <Link href="/profile">
+                  <SidebarLink>프로필</SidebarLink>
                 </Link>
-              </StyledCol>
-            )}
-            <StyledCol xs={24} lg={24} xl={0}>
+              ) : (
+                <Link href="/login">
+                  <SidebarLink>로그인</SidebarLink>
+                </Link>
+              )}
+              <Link href="/?page=1">
+                <SidebarLink>전체</SidebarLink>
+              </Link>
               <Link href="/category/free">
-                <Atag2>자유</Atag2>
+                <SidebarLink>자유</SidebarLink>
               </Link>
               <Link href="/category/humor">
-                <Atag2>유머</Atag2>
+                <SidebarLink>유머</SidebarLink>
               </Link>
               <Link href="/category/transfer">
-                <Atag2>이적 시장</Atag2>
+                <SidebarLink>이적 시장</SidebarLink>
               </Link>
               <Link href="/category/forecast">
-                <Atag2>경기 예측</Atag2>
+                <SidebarLink>경기 예측</SidebarLink>
               </Link>
               <Link href="/category/examine">
-                <Atag2>경기 분석</Atag2>
+                <SidebarLink>경기 분석</SidebarLink>
               </Link>
               <Link href="/category/debate">
-                <Atag2>경기 토론</Atag2>
+                <SidebarLink>경기 토론</SidebarLink>
               </Link>
-            </StyledCol>
-          </StyledMenuItem>
-        </Row>
-      )}
+              {me ? (
+                <div onClick={onLogout}>
+                  <SidebarLink>로그아웃</SidebarLink>
+                </div>
+              ) : (
+                ''
+              )}
+            </SidebarWrapper>
+          </SidebarNav>
+        </HeaderMenu>
+      </StyledHeaderBar>
     </>
   );
 };
+
+const SidebarNav = styled.nav`
+  background: white;
+  width: 250px;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  position: fixed;
+  top: 0;
+  right: ${({ sidebar }) => (sidebar ? '0' : '-100%')};
+  transition: 350ms;
+  z-index: 10;
+  display: ${(props) => props.display};
+`;
+
+const SidebarWrapper = styled.div`
+  width: 100%;
+`;
+const NavIcon = styled.div`
+  margin-right: 2rem;
+  font-size: 2rem;
+  height: 80px;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+`;
+const SidebarLink = styled.a`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  list-style: none;
+  height: 60px;
+  text-decoration: none;
+  color: black;
+  font-size: 18px;
+  border-bottom: 1px solid #d9d9d9;
+  &:hover {
+    background: #d9d9d9;
+    border-left: 4px solid yellow;
+    cursor: pointer;
+  }
+`;
 
 export default HeaderBar;

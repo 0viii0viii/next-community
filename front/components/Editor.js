@@ -136,7 +136,7 @@ const PostEditor = () => {
           hooks={{
             addImageBlobHook: async (blob, callback) => {
               const upload = await uploadImage(blob);
-              callback(upload, 'alt text');
+              callback(upload, '');
               return false;
             },
           }}

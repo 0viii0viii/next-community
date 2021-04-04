@@ -279,6 +279,7 @@ export const FuncWrapper = styled.div`
   position: ${(props) => props.position};
   z-index: 1;
   top: 56px;
+  width: 800px;
 `;
 
 export const FuncWrapperTest = styled.div`

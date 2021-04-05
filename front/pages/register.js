@@ -8,21 +8,14 @@ import {
   LOAD_ME_REQUEST,
   REGISTER_REQUEST,
 } from '../reducers/types';
-import {
-  FormWrapper,
-  Global,
-  StyledInput,
-  StyledButton,
-  ErrorMessage,
-  RedirectCard,
-  EmailFormWrapper,
-} from '../components/style/styles';
+import styled, { createGlobalStyle } from 'styled-components';
 import { useRouter } from 'next/router';
 //SSR
 import wrapper from '../store/configureStore';
 import axios from 'axios';
 import { END } from 'redux-saga';
 import AppLayout from '../components/AppLayout';
+import Form from 'antd/lib/form/Form';
 
 const register = () => {
   const router = useRouter();
@@ -207,4 +200,53 @@ export const getServerSideProps = wrapper.getServerSideProps(
     await context.store.sagaTask.toPromise();
   }
 );
+
+const FormWrapper = styled(Form)`
+  text-align: center;
+  background: white;
+  padding-left: 20px;
+  padding-right: 20px;
+  margin-left: auto;
+  margin-right: auto;
+  width: 500px;
+  height: 100vh;
+`;
+const Global = createGlobalStyle`
+ body {
+     background:#ebeef1;
+     font-family: 'Roboto', sans-serif;
+ }
+`;
+
+const StyledButton = styled(Button)`
+  width: 100%;
+  border-radius: 5px;
+  margin-top: 10px;
+  background: primary;
+  height: 50px;
+  cursor: pointer;
+`;
+
+const EmailFormWrapper = styled.div`
+  display: flex;
+  width: 100;
+  margin-bottom: 20px;
+  border-bottom: 1px solid #ebeef1;
+`;
+
+const StyledInput = styled(Input)`
+  margin-bottom: 20px;
+
+  border-bottom: 1px solid #ebeef1;
+`;
+
+const RedirectCard = styled(Card)`
+  text-align: center;
+  justify-content: center;
+`;
+
+const ErrorMessage = styled.div`
+  color: red;
+`;
+
 export default register;

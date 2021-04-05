@@ -2,13 +2,8 @@ import { Button, Card, Col, Divider, Row } from 'antd';
 import Link from 'next/link';
 import Profile from './Profile';
 import { useSelector } from 'react-redux';
-import {
-  Atag,
-  SideMenuButton,
-  SideMenuWrapper,
-} from '../components/style/styles';
-import { useEffect, useState } from 'react';
 import styled from 'styled-components';
+import { useEffect, useState } from 'react';
 
 const SideMenu = () => {
   const { me } = useSelector((state) => state.user);
@@ -16,6 +11,7 @@ const SideMenu = () => {
   useEffect(() => {
     function onScroll() {
       if (window.scrollY >= 200) {
+        //200px 만큼 스크롤이 되면 사이드메뉴가 상단에 고정
         setPosition('fixed');
       } else {
         setPosition('static');
@@ -79,5 +75,28 @@ const SideMenu = () => {
     </>
   );
 };
+
+const Atag = styled.a`
+  color: black;
+  display: flex;
+  margin-bottom: 10px;
+  &: hover {
+    background: #d9d9d9;
+  }
+`;
+const SideMenuWrapper = styled(Col)`
+  width: 380px;
+  position: ${(props) => props.position};
+  top: 56px;
+`;
+
+const SideMenuButton = styled(Button)`
+  width: 100%;
+  background: red;
+  color: white;
+  &:hover {
+    background: yellow;
+  }
+`;
 
 export default SideMenu;

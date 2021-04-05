@@ -1,6 +1,4 @@
-import { ContactsOutlined } from '@ant-design/icons';
 import { Viewer } from '@toast-ui/react-editor';
-import { useEffect, useState } from 'react';
 
 const PostViewer = ({ data }) => {
   //자체 image 반응형으로 만들기

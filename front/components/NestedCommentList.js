@@ -3,13 +3,7 @@ import { useCallback } from 'react';
 import { useDispatch } from 'react-redux';
 import { DELETE_NESTED_COMMENT_REQUEST } from '../reducers/types';
 import moment from 'moment';
-import {
-  NestedTitle,
-  NestedContent,
-  NestedDate,
-  NestedCommentWrapper,
-  NestedBtn,
-} from '../components/style/styles';
+import styled from 'styled-components';
 
 const NestedCommentList = ({ data, CId, UId }) => {
   console.log(data, 'nested');
@@ -53,5 +47,29 @@ const NestedCommentList = ({ data, CId, UId }) => {
     </>
   );
 };
+const NestedCommentWrapper = styled.div`
+  display: block;
+  background: white;
+  border-bottom: 1px solid #d9d9d9;
+  width: 100%;
+`;
+const NestedTitle = styled.p`
+  margin-left: 4rem;
+  padding-top: 1rem;
+  font-weight: bold;
+`;
+const NestedContent = styled.p`
+  margin-left: 4rem;
+`;
+const NestedBtn = styled.p`
+  float: right;
+  margin-right: 1rem;
+`;
+
+const NestedDate = styled.p`
+  display: inline;
+  color: gray;
+  margin-left: 1rem;
+`;
 
 export default NestedCommentList;

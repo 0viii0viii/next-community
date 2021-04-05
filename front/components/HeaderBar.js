@@ -1,11 +1,3 @@
-import {
-  StyledHeaderBar,
-  HeaderMenu,
-  HeaderLoginButton,
-  HeaderLogoutButton,
-  StyledMenuOutlined,
-  HeaderLogo,
-} from '../components/style/styles';
 import Logo from '../img/logo.png';
 import Link from 'next/link';
 import { useCallback, useEffect, useState } from 'react';
@@ -17,8 +9,10 @@ import {
   ContainerOutlined,
   FireOutlined,
   LoginOutlined,
+  MenuOutlined,
   ProfileOutlined,
 } from '@ant-design/icons';
+import { Button, Col, Row } from 'antd';
 const HeaderBar = () => {
   const dispatch = useDispatch();
   const { me, logoutDone } = useSelector((state) => state.user);
@@ -192,6 +186,55 @@ const SidebarLink = styled.a`
     border-left: 4px solid yellow;
     cursor: pointer;
   }
+`;
+
+const StyledHeaderBar = styled(Row)`
+  height: 56px;
+  background: #e72a2a;
+  top: 0;
+  display: flex;
+  position: sticky;
+  align-items: center;
+  z-index: 1;
+`;
+const HeaderMenu = styled(Col)``;
+const HeaderLogo = styled.img`
+  width: 50px;
+  height: 50px;
+  cursor: pointer;
+  float: left;
+`;
+const HeaderLoginButton = styled(Button)`
+  float: right;
+  margin-top: 0.25rem;
+  &:hover {
+    background: yellow;
+  }
+  @media screen and (max-width: 1200px) {
+    display: none;
+  }
+`;
+const HeaderLogoutButton = styled(Button)`
+  margin-top: 7.5px;
+  float: right;
+  margin-right: 10px;
+  @media screen and (max-width: 1200px) {
+    display: none;
+  }
+`;
+
+const StyledMenuOutlined = styled(MenuOutlined)`
+  font-size: 30px;
+  float: right;
+  margin-top: 0.5rem;
+  @media screen and (min-width: 1200px) {
+    display: none;
+  }
+`;
+const MenuItem = styled.div`
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
 `;
 
 export default HeaderBar;

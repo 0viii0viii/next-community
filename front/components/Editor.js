@@ -7,7 +7,7 @@ import { useCallback, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import axios from 'axios';
 import { POST_UPLOAD_REQUEST } from '../reducers/types';
-import { PostBtn, Select } from './style/styles';
+import styled from 'styled-components';
 
 const PostEditor = () => {
   const dispatch = useDispatch();
@@ -148,5 +148,14 @@ const PostEditor = () => {
     </>
   );
 };
+
+const Select = styled.select`
+  width: 100%;
+  border: none;
+`;
+
+const PostBtn = styled(Button)`
+  float: right;
+`;
 
 export default PostEditor;

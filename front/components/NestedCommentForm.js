@@ -1,8 +1,6 @@
 import { Button, Card, Form, Input } from 'antd';
-import { useRouter } from 'next/router';
 import { useCallback, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { mutate } from 'swr';
 import useInput from '../hooks/useInput';
 import { POST_NESTED_COMMENT_REQUEST } from '../reducers/types';
 
@@ -13,9 +11,6 @@ const NestedCommentForm = ({ PostId, CommentId }) => {
   );
   const [nested, onChangeNested, setNested] = useInput('');
   const dispatch = useDispatch();
-  console.log(PostId, 'PostId');
-  console.log(CommentId, 'CommentId');
-  console.log(me.id, 'meid');
   const onSubmitNested = useCallback(() => {
     dispatch({
       type: POST_NESTED_COMMENT_REQUEST,

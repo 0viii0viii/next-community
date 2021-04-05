@@ -1,10 +1,10 @@
-import { Card } from 'antd';
+import { Button, Card } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
 import { useCallback } from 'react';
 import { LOGOUT_REQUEST } from '../reducers/types';
 import Link from 'next/link';
 import Meta from 'antd/lib/card/Meta';
-import { BtnContainer, ProfileBtn } from '../components/style/styles';
+import styled from 'styled-components';
 
 const Profile = () => {
   const dispatch = useDispatch();
@@ -34,4 +34,11 @@ const Profile = () => {
   );
 };
 
+const BtnContainer = styled.div`
+  margin-top: 10px;
+`;
+
+const ProfileBtn = styled(Button)`
+  width: 30%;
+`;
 export default Profile;

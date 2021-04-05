@@ -2,7 +2,7 @@ import AppLayout from '../../../components/AppLayout';
 import dynamic from 'next/dynamic';
 import axios from 'axios';
 import useSWR from 'swr';
-import Router, { useRouter } from 'next/router';
+import { useRouter } from 'next/router';
 const EditEditor = dynamic(() => import('../../../components/EditEditor'), {
   ssr: false,
 });
@@ -11,7 +11,7 @@ import wrapper from '../../../store/configureStore';
 import { END } from 'redux-saga';
 import { LOAD_ME_REQUEST } from '../../../reducers/types';
 import { useSelector } from 'react-redux';
-import { RedirectCard } from '../../../components/style/styles';
+import styled from 'styled-components';
 import { Button } from 'antd';
 
 const fetcher = (url) =>
@@ -62,5 +62,9 @@ export const getServerSideProps = wrapper.getServerSideProps(
     await context.store.sagaTask.toPromise();
   }
 );
+
+const RedirectCard = styled.div`
+  color: red;
+`;
 
 export default Edit;

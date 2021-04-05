@@ -3,17 +3,9 @@ import { Button, Card, Col, Divider, Row } from 'antd';
 import { COMMENT_DELETE_REQUEST } from '../reducers/types';
 import { useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import {
-  CommentBtn,
-  Commentcontent,
-  CommentDate,
-  CommentTtitle,
-  ContentWrapper,
-  DeleteBtn,
-  NicknameText,
-} from './style/styles';
 import NestedCommentForm from './NestedCommentForm';
 import NestedCommentList from './NestedCommentList';
+import styled from 'styled-components';
 
 const CommentList = ({ data }) => {
   // map 반복문안에서 function delete를 사용하니 hook 규칙에 어긋났다
@@ -78,5 +70,36 @@ const CommentList = ({ data }) => {
     </>
   );
 };
+
+const NicknameText = styled.p`
+  display: inline;
+  font-weight: bold;
+  padding-bottom: 1rem;
+`;
+
+const DeleteBtn = styled(Button)`
+  float: right;
+  margin-bottom: 10px;
+  &: hover {
+
+  }
+`;
+const CommentTtitle = styled(Col)`
+  padding-bottom: 1rem;
+`;
+const CommentDate = styled.p`
+  display: inline;
+  color: gray;
+  text-weight: bold;
+`;
+const CommentBtn = styled(Button)`
+  border: none;
+  height: 0;
+  padding: 0;
+`;
+const Commentcontent = styled.p``;
+const ContentWrapper = styled.div`
+  display: block;
+`;
 
 export default CommentList;

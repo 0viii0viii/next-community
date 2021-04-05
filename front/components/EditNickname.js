@@ -1,6 +1,5 @@
 import { Divider, Input, Form } from 'antd';
 import { useCallback, useEffect } from 'react';
-
 import { useDispatch, useSelector } from 'react-redux';
 import useInput from '../hooks/useInput';
 import { EDIT_NICKNAME_REQUEST } from '../reducers/types';

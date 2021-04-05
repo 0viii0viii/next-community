@@ -1,23 +1,17 @@
-import { Button, Card, Col, Divider, Row } from 'antd';
+import { Button, Card, Col, Divider, Input, Row } from 'antd';
 import Link from 'next/link';
-import Router, { useRouter } from 'next/router';
+import { useRouter } from 'next/router';
 import { useCallback, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import useInput from '../hooks/useInput';
 import { LOAD_ME_REQUEST, LOGIN_REQUEST } from '../reducers/types';
 import AppLayout from '../components/AppLayout';
-import {
-  FormWrapper,
-  Global,
-  StyledButton,
-  StyledInput,
-  RedirectCard,
-  KakaoLogin,
-} from '../components/style/styles';
+import styled, { createGlobalStyle } from 'styled-components';
 //SSR
 import wrapper from '../store/configureStore';
 import axios from 'axios';
 import { END } from 'redux-saga';
+import Form from 'antd/lib/form/Form';
 const login = () => {
   const dispatch = useDispatch();
   const { me, loginLoading, loginError } = useSelector((state) => state.user);
@@ -115,4 +109,48 @@ export const getServerSideProps = wrapper.getServerSideProps(
     await context.store.sagaTask.toPromise();
   }
 );
+
+const FormWrapper = styled(Form)`
+  text-align: center;
+  background: white;
+  padding-left: 20px;
+  padding-right: 20px;
+  margin-left: auto;
+  margin-right: auto;
+  width: 500px;
+  height: 100vh;
+`;
+const Global = createGlobalStyle`
+ body {
+     background:#ebeef1;
+     font-family: 'Roboto', sans-serif;
+ }
+`;
+
+const StyledButton = styled(Button)`
+  width: 100%;
+  border-radius: 5px;
+  margin-top: 10px;
+  background: primary;
+  height: 50px;
+  cursor: pointer;
+`;
+
+const StyledInput = styled(Input)`
+  margin-bottom: 20px;
+
+  border-bottom: 1px solid #ebeef1;
+`;
+
+const RedirectCard = styled(Card)`
+  text-align: center;
+  justify-content: center;
+`;
+
+const KakaoLogin = styled(Button)`
+  background-color: yellow;
+  width: 100%;
+  border-radius: 5px;
+`;
+
 export default login;

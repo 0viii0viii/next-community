@@ -1,14 +1,10 @@
-import { Row, Col } from 'antd';
+import { Row, Col, Input } from 'antd';
 import Router from 'next/router';
 import Link from 'next/link';
 import { useCallback, useEffect, useState } from 'react';
 import useInput from '../hooks/useInput';
-import {
-  FuncWrapper,
-  FuncWrapperTest,
-  StyledPost,
-  StyledSearch,
-} from '../components/style/styles';
+import styled from 'styled-components';
+import { FormOutlined } from '@ant-design/icons';
 
 const Funcbar = () => {
   const [searchInput, onChangeSearchInput] = useInput('');
@@ -71,5 +67,39 @@ const Funcbar = () => {
     </>
   );
 };
+
+const FuncWrapper = styled.div`
+  height: 50px;
+  padding-top: 10px;
+  border-bottom: 1px;
+  background: white;
+  position: ${(props) => props.position};
+  z-index: 1;
+  top: 56px;
+  width: 800px;
+`;
+
+const FuncWrapperTest = styled.div`
+  height: 50px;
+  padding-top: 10px;
+  border-bottom: 1px;
+  background: white;
+  width: 100%;
+`;
+
+const StyledSearch = styled(Input.Search)`
+  width: 80%;
+  margin-left: 10px;
+`;
+
+const StyledPost = styled(FormOutlined)`
+  font-size: 30px;
+  color: blue;
+  float: right;
+  margin-right: 10px;
+  &:hover {
+    background: #d9d9d9;
+  }
+`;
 
 export default Funcbar;

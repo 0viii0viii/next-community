@@ -7,10 +7,6 @@ import { EDIT_PASSWORD_REQUEST } from '../reducers/types';
 import Router from 'next/router';
 import { initialState } from '../reducers/user';
 
-const ErrorMessage = styled.div`
-  color: red;
-`;
-
 const EditPassword = () => {
   const dispatch = useDispatch();
   const { me, editPasswordLoading, editPasswordDone } = useSelector(
@@ -75,5 +71,9 @@ const EditPassword = () => {
     </>
   );
 };
+
+const ErrorMessage = styled.div`
+  color: red;
+`;
 
 export default EditPassword;

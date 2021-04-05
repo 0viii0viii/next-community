@@ -1,13 +1,13 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Button, Form, Input } from 'antd';
+import { Button, Card, Form, Input } from 'antd';
 import { Editor } from '@toast-ui/react-editor';
 import 'codemirror/lib/codemirror.css'; // Editor's Dependency Style
 import '@toast-ui/editor/dist/toastui-editor.css'; // Editor's Style
-import Router, { useRouter } from 'next/router';
+import { useRouter } from 'next/router';
 import { POST_EDIT_REQUEST } from '../reducers/types';
 import axios from 'axios';
-import { RedirectCard } from './style/styles';
+import styled from 'styled-components';
 
 const EditEditor = ({ data }) => {
   const dispatch = useDispatch();
@@ -159,5 +159,10 @@ const EditEditor = ({ data }) => {
     </>
   );
 };
+
+const RedirectCard = styled(Card)`
+  text-align: center;
+  justify-content: center;
+`;
 
 export default EditEditor;

@@ -21,7 +21,7 @@ import { Card, Divider, Form, Input, Button, Col } from 'antd';
 import Router, { useRouter } from 'next/router';
 import useInput from '../../hooks/useInput';
 import Link from 'next/link';
-import { PostDetail, P } from '../../components/style/styles';
+import styled from 'styled-components';
 import CommentList from '../../components/CommentList';
 import { HeartOutlined, HeartTwoTone } from '@ant-design/icons';
 
@@ -223,4 +223,13 @@ export const getServerSideProps = wrapper.getServerSideProps(
   }
 );
 
+const PostDetail = styled.div`
+  margin-top: 5px;
+`;
+
+const P = styled.p`
+  display: inline;
+  padding: 5px;
+  color: gray;
+`;
 export default Posts;

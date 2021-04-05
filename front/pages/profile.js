@@ -1,17 +1,16 @@
-import { Button, Card, Spin } from 'antd';
+import { Button, Card } from 'antd';
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useRouter } from 'next/router';
 import AppLayout from '../components/AppLayout';
 import EditNickname from '../components/EditNickname';
 import EditPassword from '../components/EditPassword';
-import { RedirectCard } from '../components/style/styles';
+import styled from 'styled-components';
 //SSR
 import { END } from 'redux-saga';
 import axios from 'axios';
 import { LOAD_ME_REQUEST } from '../reducers/types';
 import wrapper from '../store/configureStore';
-import Link from 'next/link';
 
 const Profile = () => {
   const { me } = useSelector((state) => state.user);
@@ -77,5 +76,9 @@ export const getServerSideProps = wrapper.getServerSideProps(
     await context.store.sagaTask.toPromise();
   }
 );
+
+const RedirectCard = styled.div`
+  color: red;
+`;
 
 export default Profile;

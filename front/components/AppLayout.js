@@ -1,15 +1,16 @@
-import { PropTypes } from 'prop-types';
 import { Col, Row } from 'antd';
 import HeaderBg from './HeaderBg';
 import SideMenu from './SideMenu';
 import Funcbar from './FuncBar';
 import HeaderBar from './HeaderBar';
-import { Global } from './style/styles';
 import { useEffect, useState } from 'react';
+import { createGlobalStyle } from 'styled-components';
 
 const AppLayout = ({ children }) => {
   const [width, setWidth] = useState('800px');
+
   useEffect(() => {
+    // 윈도우 창 가로 크기에 따라 게시물섹션 width 설정
     function onResize() {
       if (window.innerWidth >= 1200) {
         setWidth('800px');
@@ -20,8 +21,10 @@ const AppLayout = ({ children }) => {
     window.addEventListener('resize', onResize);
     return () => {
       window.removeEventListener('resize', onResize);
+      // event가 메모리에 쌓이지 않도록(성능)
     };
   }, []);
+
   return (
     <div>
       <Global />
@@ -46,8 +49,11 @@ const AppLayout = ({ children }) => {
   );
 };
 
-AppLayout.propType = {
-  children: PropTypes.node.isRequired,
-};
+const Global = createGlobalStyle`
+ body {
+     background:#ebeef1;
+     font-family: 'Roboto', sans-serif;
+ }
+`;
 
 export default AppLayout;

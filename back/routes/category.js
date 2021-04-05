@@ -9,7 +9,7 @@ const router = express.Router();
 // @desc  GET Posts 자유게시판
 router.get('/free', async (req, res, next) => {
   const curPage = req.query.page || 1;
-  const perPage = 10;
+  const perPage = 20;
   try {
     const freePosts = await Post.findAll({
       offset: (curPage - 1) * perPage,
@@ -56,7 +56,7 @@ router.get('/free', async (req, res, next) => {
 // @desc  GET Posts 유머게시판
 router.get('/humor', async (req, res, next) => {
   const curPage = req.query.page || 1;
-  const perPage = 10;
+  const perPage = 20;
   try {
     const humorPosts = await Post.findAll({
       offset: (curPage - 1) * perPage,
@@ -103,7 +103,7 @@ router.get('/humor', async (req, res, next) => {
 // @desc  GET Posts 이적시장
 router.get('/transfer', async (req, res, next) => {
   const curPage = req.query.page || 1;
-  const perPage = 10;
+  const perPage = 20;
   try {
     const transferPosts = await Post.findAll({
       offset: (curPage - 1) * perPage,
@@ -150,7 +150,7 @@ router.get('/transfer', async (req, res, next) => {
 // @desc  GET Post forecast
 router.get('/forecast', async (req, res, next) => {
   const curPage = req.query.page || 1;
-  const perPage = 10;
+  const perPage = 20;
   try {
     const forecastPosts = await Post.findAll({
       offset: (curPage - 1) * perPage,
@@ -197,7 +197,7 @@ router.get('/forecast', async (req, res, next) => {
 // @desc  GET Post examine
 router.get('/examine', async (req, res, next) => {
   const curPage = req.query.page || 1;
-  const perPage = 10;
+  const perPage = 20;
   try {
     const examinePosts = await Post.findAll({
       offset: (curPage - 1) * perPage,
@@ -244,7 +244,7 @@ router.get('/examine', async (req, res, next) => {
 // @desc  GET Post debate
 router.get('/debate', async (req, res, next) => {
   const curPage = req.query.page || 1;
-  const perPage = 10;
+  const perPage = 20;
   try {
     const debatePosts = await Post.findAll({
       offset: (curPage - 1) * perPage,

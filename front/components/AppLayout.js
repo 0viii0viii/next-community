@@ -26,7 +26,7 @@ const AppLayout = ({ children }) => {
   }, []);
 
   return (
-    <div>
+    <>
       <Global />
       <HeaderBar />
       <Row>
@@ -45,7 +45,7 @@ const AppLayout = ({ children }) => {
         </Col>
         <Col flex="auto"></Col>
       </Row>
-    </div>
+    </>
   );
 };
 

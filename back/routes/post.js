@@ -158,7 +158,7 @@ router.post('/:postId/nestedcomment', isLoggedIn, async (req, res, next) => {
 //@desc 모든 게시글
 router.get('/all', async (req, res, next) => {
   const curPage = req.query.page || 1;
-  const perPage = 10;
+  const perPage = 20;
   console.log(curPage, '컬페이지');
   try {
     const posts = await Post.findAll({
@@ -196,7 +196,7 @@ router.get('/all', async (req, res, next) => {
 //@desc 내 게시글
 router.get('/myposts/:id', async (req, res, next) => {
   const curPage = req.query.page || 1;
-  const perPage = 10;
+  const perPage = 20;
   try {
     const posts = await Post.findAll({
       offset: (curPage - 1) * perPage,

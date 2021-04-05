@@ -119,7 +119,7 @@ const EditEditor = ({ data }) => {
       ) : (
         <div>
           <Form onFinish={onClickSubmit}>
-            <select name="category" onChange={onChange}>
+            <Select name="category" onChange={onChange}>
               <option>선택 안함</option>
               <option value="자유">자유</option>
               <option value="유머">유머</option>
@@ -127,7 +127,7 @@ const EditEditor = ({ data }) => {
               <option value="경기 예측">경기 예측</option>
               <option value="경기 분석">경기 분석</option>
               <option value="경기 토론">경기 토론</option>
-            </select>
+            </Select>
 
             <Input
               type="text"
@@ -152,7 +152,7 @@ const EditEditor = ({ data }) => {
               onBlur={getDataFromEditor}
             />
             <Button>취소</Button>
-            <Button htmlType="submit">작성 완료</Button>
+            <PostBtn htmlType="submit">작성 완료</PostBtn>
           </Form>
         </div>
       )}
@@ -163,6 +163,15 @@ const EditEditor = ({ data }) => {
 const RedirectCard = styled(Card)`
   text-align: center;
   justify-content: center;
+`;
+
+const Select = styled.select`
+  width: 100%;
+  border: none;
+`;
+
+const PostBtn = styled(Button)`
+  float: right;
 `;
 
 export default EditEditor;

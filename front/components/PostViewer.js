@@ -4,14 +4,17 @@ const PostViewer = ({ data }) => {
   //자체 image 반응형으로 만들기
   const content = data.content;
   let imageContent = data.content;
-
-  console.log(window.innerWidth);
+  const regex = /src\=/gi; //src= 를 찾는 Regular Expression
+  console.log(content.replace(regex, 'width="300px"'), '하이');
   if (content.match('<img src=') && window.innerWidth <= 1200) {
+    // img태그가 하나라도 존재하고 window 가로사이즈가 1200px보다 낮다면
     imageContent = content.replace(
-      '<img src=',
-      `<img width="${window.innerWidth - 50}" src=`
+      // 정규표현식에 일치하는 img파일의 width를 모두를 현재 window.innerWidth사이즈의 -50 px만큼 (반응형)
+      regex,
+      `width="${window.innerWidth - 50}" src=`
     );
   }
+
   console.log(imageContent);
   return <Viewer initialValue={imageContent} />;
 };

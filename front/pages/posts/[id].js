@@ -53,6 +53,7 @@ const Posts = (props) => {
     unlikePostDone,
     postNestedCommentDone,
     deleteNestedCommentDone,
+    postEditDone,
   } = useSelector((state) => state.post);
 
   useEffect(() => {
@@ -69,7 +70,8 @@ const Posts = (props) => {
       postNestedCommentDone ||
       likePostDone ||
       unlikePostDone ||
-      deleteNestedCommentDone
+      deleteNestedCommentDone ||
+      postEditDone
     ) {
       //댓글 삭제 완료 -> 리렌더링
       mutate();
@@ -80,6 +82,7 @@ const Posts = (props) => {
     likePostDone,
     unlikePostDone,
     deleteNestedCommentDone,
+    postEditDone,
   ]);
 
   useEffect(() => {

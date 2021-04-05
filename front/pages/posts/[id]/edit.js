@@ -21,6 +21,7 @@ const Edit = () => {
   const { id } = router.query;
   const { data, error } = useSWR(`/post/detail/${id}`, fetcher);
   const { me } = useSelector((state) => state.user);
+
   if (error) {
     console.error('데이터를 불러오지 못했습니다.');
   }

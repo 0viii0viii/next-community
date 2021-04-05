@@ -15,7 +15,7 @@ import {
 import { Button, Col, Row } from 'antd';
 const HeaderBar = () => {
   const dispatch = useDispatch();
-  const { me, logoutDone } = useSelector((state) => state.user);
+  const { me } = useSelector((state) => state.user);
   const [sidebar, setSidebar] = useState(false);
   const [display, setDisplay] = useState('');
 
@@ -33,12 +33,6 @@ const HeaderBar = () => {
       window.removeEventListener('resize', onResize);
     };
   }, []);
-
-  useEffect(() => {
-    if (logoutDone) {
-      setSidebar(!sidebar);
-    }
-  }, [logoutDone]);
 
   const handleMenuClick = useCallback(() => {
     setSidebar(!sidebar);
@@ -75,7 +69,7 @@ const HeaderBar = () => {
                   <Link href="/profile">
                     <SidebarLink>
                       <ProfileOutlined />
-                      프로필
+                      {me.nickname} 프로필
                     </SidebarLink>
                   </Link>
                   <Link href={`/myposts/${me.id}`}>
@@ -147,7 +141,6 @@ const HeaderBar = () => {
 
 const SidebarNav = styled.nav`
   background: white;
-  width: 250px;
   height: 100vh;
   display: flex;
   justify-content: center;
@@ -157,6 +150,15 @@ const SidebarNav = styled.nav`
   transition: 350ms;
   z-index: 10;
   display: ${(props) => props.display};
+  @media screen and (max-width: 1200px) {
+    width: 500px;
+  }
+  @media screen and (max-width: 768px) {
+    width: 400px;
+  }
+  @media screen and (max-width: 400px) {
+    width: 200px;
+  }
 `;
 
 const SidebarWrapper = styled.div`
@@ -230,11 +232,6 @@ const StyledMenuOutlined = styled(MenuOutlined)`
   @media screen and (min-width: 1200px) {
     display: none;
   }
-`;
-const MenuItem = styled.div`
-  text-align: center;
-  margin-left: auto;
-  margin-right: auto;
 `;
 
 export default HeaderBar;

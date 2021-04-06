@@ -14,8 +14,6 @@ const EditEditor = ({ data }) => {
   const router = useRouter();
   const { id } = router.query;
   const { me } = useSelector((state) => state.user);
-  console.log(me.id);
-  console.log(data.UserId);
   const editorRef = useRef();
   const [form, setValues] = useState({
     title: '',
@@ -53,6 +51,8 @@ const EditEditor = ({ data }) => {
     const Instance = editorRef.current.getInstance();
     const datas = Instance.getHtml();
 
+    //img 태그가 존재하면 img의 url만 따로 저장하여 데이터베이스에 저장한다.
+    // 이미지 미리보기를 위하여
     if (datas && datas.match('<img src=')) {
       const whereImg_start = datas.indexOf('<img src=');
       let whereImg_end = '';
@@ -91,6 +91,7 @@ const EditEditor = ({ data }) => {
       });
     }
   };
+
   const uploadImage = (blob) => {
     let formData = new FormData();
 
@@ -109,6 +110,7 @@ const EditEditor = ({ data }) => {
       throw new Error('Server or network error');
     });
   };
+
   return (
     <>
       {me.id !== data.UserId ? (

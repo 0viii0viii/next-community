@@ -14,13 +14,12 @@ const CommentList = ({ data }) => {
   const [pid, setpId] = useState('');
   const uid = useSelector((state) => state.user.me?.id);
   const { postNestedCommentDone } = useSelector((state) => state.post);
-  const onClickDeleteComment = (id) =>
-    useCallback(() => {
-      dispatch({
-        type: COMMENT_DELETE_REQUEST,
-        data: id,
-      });
+  const onClickDeleteComment = useCallback((id) => {
+    dispatch({
+      type: COMMENT_DELETE_REQUEST,
+      data: id,
     });
+  });
 
   useEffect(() => {
     //대댓글 업로드후 폼 닫기
@@ -31,12 +30,9 @@ const CommentList = ({ data }) => {
     if (!uid) {
       return alert('로그인이 필요합니다.');
     }
-    pid == '' ? setpId(id) : setpId(''); //누르면 열리고, 한 번 더 누르면 닫히게
+    pid == '' ? setpId(id) : setpId('');
+    //누르면 열리고, 한 번 더 누르면 닫히게
   });
-  console.log(data.Nestedcomments, '?');
-  const ButtonDeleteComment = ({ id }) => {
-    return <DeleteBtn onClick={onClickDeleteComment(id)}>삭제</DeleteBtn>;
-  };
 
   return (
     <>
@@ -48,7 +44,14 @@ const CommentList = ({ data }) => {
                 <CommentTtitle xs={24}>
                   <NicknameText>{User.nickname} </NicknameText>
                   <CommentDate>{moment(createdAt).fromNow()}</CommentDate>
-                  {uid === UserId ? <ButtonDeleteComment id={id} /> : ''}
+                  {uid === UserId ? (
+                    <DeleteBtn onClick={() => onClickDeleteComment(id)}>
+                      {/* onClick에 화살표함수를 사용해서 함수를 호출가능 */}
+                      삭제
+                    </DeleteBtn>
+                  ) : (
+                    ''
+                  )}
                 </CommentTtitle>
                 <ContentWrapper>
                   <Commentcontent>{content}</Commentcontent>
@@ -57,6 +60,7 @@ const CommentList = ({ data }) => {
                   </CommentBtn>
                 </ContentWrapper>
               </Row>
+              {/* 댓글 달기 버튼을 누른 comment의 대댓글 달기 Form이 열리도록 */}
               {pid == id ? (
                 <NestedCommentForm PostId={PostId} CommentId={pid} />
               ) : (

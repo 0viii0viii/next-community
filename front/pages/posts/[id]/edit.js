@@ -3,16 +3,17 @@ import dynamic from 'next/dynamic';
 import axios from 'axios';
 import useSWR from 'swr';
 import { useRouter } from 'next/router';
+import { useSelector } from 'react-redux';
+import RedirectPage from '../../../components/RedirectPage';
+
 const EditEditor = dynamic(() => import('../../../components/EditEditor'), {
+  // text-editor는 ssr을 지원하지 않기때문에 next/dynamic import를 사용하여 ssr을 강제로 false로 만든다
   ssr: false,
 });
 //SSR
 import wrapper from '../../../store/configureStore';
 import { END } from 'redux-saga';
 import { LOAD_ME_REQUEST } from '../../../reducers/types';
-import { useSelector } from 'react-redux';
-import styled from 'styled-components';
-import { Button } from 'antd';
 
 const fetcher = (url) =>
   axios.get(url, { withCredentials: true }).then((result) => result.data);
@@ -35,12 +36,7 @@ const Edit = () => {
           </AppLayout>
         </>
       ) : (
-        <AppLayout>
-          <RedirectCard>
-            <h1> 접근 권한이 없는 페이지입니다.</h1>
-            <Button onClick={() => router.replace('/')}>확인</Button>
-          </RedirectCard>
-        </AppLayout>
+        <RedirectPage />
       )}
     </>
   );
@@ -63,9 +59,5 @@ export const getServerSideProps = wrapper.getServerSideProps(
     await context.store.sagaTask.toPromise();
   }
 );
-
-const RedirectCard = styled.div`
-  color: red;
-`;
 
 export default Edit;

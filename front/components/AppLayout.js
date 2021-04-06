@@ -10,9 +10,10 @@ const AppLayout = ({ children }) => {
   const [width, setWidth] = useState('800px');
 
   useEffect(() => {
-    // 윈도우 창 가로 크기에 따라 게시물섹션 width 설정
+    // 윈도우 창 가로 크기에 따라 게시물 component width 설정
     function onResize() {
       if (window.innerWidth >= 1200) {
+        //window 창의 크기가 1200px 보다 크다면
         setWidth('800px');
       } else {
         setWidth('100%');

@@ -79,8 +79,9 @@ const RegisterForm = () => {
         <Col flex="auto"></Col>
         <Col xs={24} sm={24} md={24}>
           <FormWrapper onFinish={onSubmit}>
+            <h1>회원가입</h1>
             <Link href="/">
-              <h1>Gunners</h1>
+              <h3>홈으로 가기</h3>
             </Link>
 
             <EmailFormWrapper>
@@ -167,11 +168,22 @@ const FormWrapper = styled(Form)`
   margin-left: auto;
   margin-right: auto;
   width: 500px;
-  height: 100vh;
+  @media screen and (max-height: 568px) {
+    // iphone SE
+    margin-top: 35vh;
+  }
+  @media screen and (max-height: 812px) {
+    // iphone X
+    margin-top: 38vh;
+  }
+  @media screen and (max-height: 1366px) {
+    //ipad pro
+    margin-top: 30vh;
+  }
 `;
 const Global = createGlobalStyle`
  body {
-     background:#ebeef1;
+     background: white;
      font-family: 'Roboto', sans-serif;
  }
 `;

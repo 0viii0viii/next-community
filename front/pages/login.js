@@ -9,7 +9,7 @@ import LoginForm from '../components/LoginForm';
 import RedirectPage from '../components/RedirectPage';
 const login = () => {
   const { me } = useSelector((state) => state.user);
-
+  //로그인되어있으면 Redirect해주는 컴포넌트를 렌더링한다. (authentication)
   return <>{me ? <RedirectPage /> : <LoginForm />}</>;
 };
 export const getServerSideProps = wrapper.getServerSideProps(

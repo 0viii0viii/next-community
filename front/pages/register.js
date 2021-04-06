@@ -1,186 +1,18 @@
-import { Button, Card, Col, Input, Row } from 'antd';
-import Link from 'next/link';
-import { useCallback, useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import useInput from '../hooks/useInput';
-import {
-  EMAIL_AUTH_REQUEST,
-  LOAD_ME_REQUEST,
-  REGISTER_REQUEST,
-} from '../reducers/types';
-import styled, { createGlobalStyle } from 'styled-components';
-import { useRouter } from 'next/router';
+import { useSelector } from 'react-redux';
+
+import { LOAD_ME_REQUEST } from '../reducers/types';
+
 //SSR
 import wrapper from '../store/configureStore';
 import axios from 'axios';
 import { END } from 'redux-saga';
-import AppLayout from '../components/AppLayout';
-import Form from 'antd/lib/form/Form';
+import RedirectPage from '../components/RedirectPage';
+import RegisterForm from '../components/RegisterForm';
 
 const register = () => {
-  const router = useRouter();
-  const dispatch = useDispatch();
-  const {
-    me,
-    registerLoading,
-    registerError,
-    emailAuthLoading,
-    emailAuthDone,
-    emailAuthNum,
-    emailAuthError,
-  } = useSelector((state) => state.user);
-  //에러가 있을경우
-  useEffect(() => {
-    if (registerError) {
-      alert(registerError);
-    }
-  }, [registerError]);
+  const { me } = useSelector((state) => state.user);
 
-  useEffect(() => {
-    if (emailAuthError) {
-      alert(emailAuthError);
-    }
-  }, [emailAuthError]);
-
-  const [email, onChangeEmail] = useInput('');
-  const [nickname, onChangeNickname] = useInput('');
-  const [password, onChangePassword] = useInput('');
-  const [authNum, onChangeAuthNum] = useInput('');
-  const [passwordCheck, setPasswordCheck] = useState('');
-  const [passwordError, setPasswordError] = useState(false);
-
-  const onChangePasswordCheck = useCallback(
-    // password 일치 여부확인
-    (e) => {
-      setPasswordCheck(e.target.value);
-      setPasswordError(e.target.value !== password);
-    },
-    [password]
-  );
-  const onSubmit = useCallback(() => {
-    if (password !== passwordCheck) {
-      //password가 다르면 error
-      return setPasswordError(true);
-    }
-    if (authNum != emailAuthNum) {
-      return alert('인증번호가 일치하지 않습니다.');
-    }
-    dispatch({
-      type: REGISTER_REQUEST,
-      data: { email, password, nickname },
-    });
-  }, [email, password, passwordCheck]);
-
-  const onEmailAuth = useCallback(() => {
-    if (!email) {
-      alert('이메일을 입력해주십시오.');
-    } else {
-      dispatch({
-        type: EMAIL_AUTH_REQUEST,
-        data: { email },
-      });
-    }
-  });
-
-  return (
-    <>
-      {me ? (
-        <>
-          <AppLayout>
-            <RedirectCard>
-              <h1> Arsenal</h1>
-              <p>이미 가입하신 회원입니다.</p>
-              <Button onClick={() => router.replace('/')}> 확인</Button>
-            </RedirectCard>
-          </AppLayout>
-        </>
-      ) : (
-        <>
-          <Global />
-          <Row>
-            <Col flex="auto"></Col>
-            <Col xs={24} sm={24} md={24}>
-              <FormWrapper onFinish={onSubmit}>
-                <Link href="/">
-                  <h1>Gunners</h1>
-                </Link>
-
-                <EmailFormWrapper>
-                  <Input
-                    name="user-email"
-                    type="email"
-                    value={email}
-                    onChange={onChangeEmail}
-                    required
-                    bordered={false}
-                    placeholder="이메일"
-                  />
-                  {!emailAuthDone ? (
-                    <Button onClick={onEmailAuth} loading={emailAuthLoading}>
-                      인증
-                    </Button>
-                  ) : (
-                    <Button>전송됨</Button>
-                  )}
-                </EmailFormWrapper>
-                {emailAuthDone ? (
-                  <StyledInput
-                    value={authNum}
-                    onChange={onChangeAuthNum}
-                    bordered={false}
-                    placeholder="인증번호"
-                  />
-                ) : (
-                  ''
-                )}
-
-                <StyledInput
-                  name="user-nickname"
-                  value={nickname}
-                  onChange={onChangeNickname}
-                  required
-                  bordered={false}
-                  placeholder="닉네임"
-                />
-                <StyledInput
-                  name="user-password"
-                  type="password"
-                  value={password}
-                  onChange={onChangePassword}
-                  required
-                  bordered={false}
-                  placeholder="비밀번호"
-                />
-                <StyledInput
-                  name="user-password-check"
-                  type="password"
-                  value={passwordCheck}
-                  onChange={onChangePasswordCheck}
-                  required
-                  bordered={false}
-                  placeholder="비밀번호 확인"
-                />
-                {passwordError && ( //passwordError가 존재하면 ErrorMessage
-                  <ErrorMessage>비밀번호가 일치하지 않습니다</ErrorMessage>
-                )}
-                <StyledButton
-                  type="primary"
-                  htmlType="submit"
-                  loading={registerLoading}
-                >
-                  가입하기
-                </StyledButton>
-
-                <p>이미 회원이신가요?</p>
-                <Link href="/login">로그인하기</Link>
-              </FormWrapper>
-            </Col>
-            <Col flex="auto"></Col>
-          </Row>
-        </>
-      )}
-    </>
-  );
+  return <>{me ? <RedirectPage /> : <RegisterForm />}</>;
 };
 
 export const getServerSideProps = wrapper.getServerSideProps(
@@ -200,53 +32,5 @@ export const getServerSideProps = wrapper.getServerSideProps(
     await context.store.sagaTask.toPromise();
   }
 );
-
-const FormWrapper = styled(Form)`
-  text-align: center;
-  background: white;
-  padding-left: 20px;
-  padding-right: 20px;
-  margin-left: auto;
-  margin-right: auto;
-  width: 500px;
-  height: 100vh;
-`;
-const Global = createGlobalStyle`
- body {
-     background:#ebeef1;
-     font-family: 'Roboto', sans-serif;
- }
-`;
-
-const StyledButton = styled(Button)`
-  width: 100%;
-  border-radius: 5px;
-  margin-top: 10px;
-  background: primary;
-  height: 50px;
-  cursor: pointer;
-`;
-
-const EmailFormWrapper = styled.div`
-  display: flex;
-  width: 100;
-  margin-bottom: 20px;
-  border-bottom: 1px solid #ebeef1;
-`;
-
-const StyledInput = styled(Input)`
-  margin-bottom: 20px;
-
-  border-bottom: 1px solid #ebeef1;
-`;
-
-const RedirectCard = styled(Card)`
-  text-align: center;
-  justify-content: center;
-`;
-
-const ErrorMessage = styled.div`
-  color: red;
-`;
 
 export default register;

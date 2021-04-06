@@ -6,18 +6,26 @@ import wrapper from '../../store/configureStore';
 import axios from 'axios';
 import { END } from 'redux-saga';
 import { Card } from 'antd';
+import { useRouter } from 'next/router';
 
 const Search = ({ data }) => {
+  const router = useRouter();
+  const { searchTerm } = router.query;
   return (
     <>
       {data.posts.length != 0 ? (
         <AppLayout>
-          <Card>게시글 {data.posts.length}개가 존재합니다.</Card>
+          <Card>
+            검색어: "{searchTerm}"에 해당하는 게시글 {data.posts.length}개가
+            존재합니다.
+          </Card>
           <PostContainer data={data} />
         </AppLayout>
       ) : (
         <AppLayout>
-          <Card> 해당 검색 게시물이 존재하지 않습니다</Card>
+          <Card>
+            검색어: "{searchTerm}"에 해당하는 검색 게시물이 존재하지 않습니다
+          </Card>
         </AppLayout>
       )}
     </>
@@ -45,7 +53,7 @@ export const getServerSideProps = wrapper.getServerSideProps(
     try {
       const res = await fetch(
         `http://localhost:5000/search/${encodeURI(
-          context.params.id
+          context.params.searchTerm
         )}?page=${page}`
       );
       if (res.status != 200) {

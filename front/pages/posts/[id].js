@@ -133,6 +133,7 @@ const Posts = (props) => {
   }, [dispatch]);
 
   const liked = data.Likers?.find((v) => v.id == uid);
+  //data.Likers에서 현재 user의 id 와 일치하는 id를 찾는다.
   return (
     <>
       <AppLayout>

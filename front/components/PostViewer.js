@@ -5,7 +5,6 @@ const PostViewer = ({ data }) => {
   const content = data.content;
   let imageContent = data.content;
   const regex = /src\=/gi; //src= 를 찾는 Regular Expression
-  console.log(content.replace(regex, 'width="300px"'), '하이');
   if (content.match('<img src=') && window.innerWidth <= 1200) {
     // img태그가 하나라도 존재하고 window 가로사이즈가 1200px보다 낮다면
     imageContent = content.replace(
@@ -14,8 +13,6 @@ const PostViewer = ({ data }) => {
       `width="${window.innerWidth - 50}" src=`
     );
   }
-
-  console.log(imageContent);
   return <Viewer initialValue={imageContent} />;
 };
 

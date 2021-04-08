@@ -9,6 +9,9 @@ const searchRouter = require('./routes/search');
 const categoryRouter = require('./routes/category');
 const authRouter = require('./routes/auth');
 const emailRouter = require('./routes/email');
+const morgan = require('morgan');
+const helmet = require('helmet');
+const hpp = require('hpp');
 //Passport 연결
 const passportConfig = require('./passport');
 const passport = require('passport');
@@ -26,12 +29,20 @@ db.sequelize
   })
   .catch(console.error);
 
+if (process.env.NODE_ENV === 'production') {
+  app.use(morgan('combined')); //log가 구체적
+  app.use(hpp()); //보안에 유용
+  app.use(helmet());
+} else {
+  app.use(morgan('dev'));
+}
+
 //프론트에서 받아온 data를 req.body에 넣어주기 위함
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(
   cors({
-    origin: 'http://localhost:3000',
+    origin: ['http://localhost:3000', 'gunners88.com'],
     credentials: true, // 쿠키 전달하기 위함 ->saga index에 withCredential:true적용
   })
 );

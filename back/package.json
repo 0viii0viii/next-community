@@ -25,7 +25,8 @@
   },
   "devDependencies": {},
   "scripts": {
-    "dev": "nodemon app"
+    "dev": "nodemon app",
+    "start": "node app"
   },
   "author": "",
   "license": "ISC"

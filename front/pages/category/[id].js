@@ -7,6 +7,7 @@ import axios from 'axios';
 import { END } from 'redux-saga';
 
 import moment from 'moment';
+import { serverUrl } from '../../config/config';
 
 moment.locale('ko');
 
@@ -41,7 +42,7 @@ export const getServerSideProps = wrapper.getServerSideProps(
 
     try {
       const res = await fetch(
-        `http://localhost:5000/category/${context.params.id}?page=${page}`
+        `${serverUrl}/category/${context.params.id}?page=${page}`
       );
       if (res.status != 200) {
         throw new Error('Failed to fetch');

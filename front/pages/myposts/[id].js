@@ -9,6 +9,7 @@ import PostContainer from '../../components/PostContainer';
 import AppLayout from '../../components/AppLayout';
 import { LOAD_ME_REQUEST } from '../../reducers/types';
 import { useSelector } from 'react-redux';
+import { serverUrl } from '../../config/config';
 
 const Myposts = ({ data }) => {
   const { me } = useSelector((state) => state.user);
@@ -45,7 +46,7 @@ export const getServerSideProps = wrapper.getServerSideProps(
 
     try {
       const res = await fetch(
-        `http://localhost:5000/post/myposts/${context.params.id}?page=${page}`
+        `${serverUrl}/post/myposts/${context.params.id}?page=${page}`
       );
       if (res.status != 200) {
         throw new Error('Failed to Fetch');

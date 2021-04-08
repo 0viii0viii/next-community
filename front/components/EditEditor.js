@@ -8,6 +8,7 @@ import { useRouter } from 'next/router';
 import { POST_EDIT_REQUEST } from '../reducers/types';
 import axios from 'axios';
 import styled from 'styled-components';
+import { serverUrl } from '../config/config';
 
 const EditEditor = ({ data }) => {
   const dispatch = useDispatch();
@@ -97,7 +98,7 @@ const EditEditor = ({ data }) => {
 
     formData.append('upload', blob);
 
-    return axios('http://localhost:5000/post/image', {
+    return axios(`${serverUrl}/post/image`, {
       method: 'POST',
       data: formData,
 

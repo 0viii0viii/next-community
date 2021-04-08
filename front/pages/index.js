@@ -4,6 +4,7 @@ import PostContainer from '../components/PostContainer';
 import { LOAD_ME_REQUEST } from '../reducers/types';
 import wrapper from '../store/configureStore';
 import axios from 'axios';
+import { serverUrl } from '../config/config';
 
 const Home = ({ data }) => {
   const Body = (
@@ -34,7 +35,7 @@ export const getServerSideProps = wrapper.getServerSideProps(
     const page = query.page || 1;
     let data = null;
     try {
-      const res = await fetch(`http://localhost:5000/post/all?page=${page}`);
+      const res = await fetch(`${serverUrl}/post/all?page=${page}`);
       if (res.status !== 200) {
         throw new Error('Failed to fetch');
       }

@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import useInput from '../hooks/useInput';
 import styled, { createGlobalStyle } from 'styled-components';
 import { LOGIN_REQUEST } from '../reducers/types';
+import { serverUrl } from '../config/config';
 
 const LoginForm = () => {
   const dispatch = useDispatch();
@@ -37,7 +38,7 @@ const LoginForm = () => {
             <Link href="/">
               <h3>홈으로 가기</h3>
             </Link>
-            <KakaoLogin href="http://localhost:5000/auth/kakao">
+            <KakaoLogin href={`${serverUrl}/auth/kakao}`}>
               카카오톡으로 로그인
             </KakaoLogin>
             <Divider>Or</Divider>

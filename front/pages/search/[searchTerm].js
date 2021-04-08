@@ -7,6 +7,7 @@ import axios from 'axios';
 import { END } from 'redux-saga';
 import { Card } from 'antd';
 import { useRouter } from 'next/router';
+import { serverUrl } from '../../config/config';
 
 const Search = ({ data }) => {
   const router = useRouter();
@@ -52,7 +53,7 @@ export const getServerSideProps = wrapper.getServerSideProps(
     let data = null;
     try {
       const res = await fetch(
-        `http://localhost:5000/search/${encodeURI(
+        `${serverUrl}/search/${encodeURI(
           context.params.searchTerm
         )}?page=${page}`
       );

@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import axios from 'axios';
 import { POST_UPLOAD_REQUEST } from '../reducers/types';
 import styled from 'styled-components';
+import { serverUrl } from '../config/config';
 
 const PostEditor = () => {
   const dispatch = useDispatch();
@@ -95,7 +96,7 @@ const PostEditor = () => {
 
     formData.append('upload', blob);
 
-    return axios('http://localhost:5000/post/image', {
+    return axios(`${serverUrl}/post/image`, {
       method: 'POST',
       data: formData,
 

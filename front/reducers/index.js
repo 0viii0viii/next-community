@@ -12,6 +12,7 @@ const rootReducer = (state, action) => {
       return action.payload;
     default: {
       const combinedReducer = combineReducers({
+        //  combineReducers() => 각각의 다른 reducer(함수)를 하나의 함수로 묶어준다.
         user,
         post,
       });

@@ -1,5 +1,10 @@
-module.exports = {
-  webpack(config, options) {
+const withBundleAnalyzer = require('@next/bundle-analyzer')({
+  enabled: process.env.ANALYZE === 'true',
+});
+
+module.exports = withBundleAnalyzer({
+  compress: true,
+  webpack(config, { webpack }) {
     config.module.rules.push({
       test: /\.(png|jpe?g|gif)$/i,
       loader: 'file-loader',
@@ -21,6 +26,18 @@ module.exports = {
       },
     });
 
-    return config;
+    const prod = process.env.NODE_ENV === 'production';
+    const plugins = [
+      ...config.plugins,
+      new webpack.ContextReplacementPlugin(/moment[/\\]locale$/, /^\.\/ko$/),
+    ];
+    //moment에서 locale 한국어만 쓰도록 설정(용량문제)
+
+    return {
+      ...config,
+      mode: prod ? 'production' : 'development',
+      devtool: prod ? 'hidden-source-map' : 'eval',
+      plugins,
+    };
   },
-};
+});

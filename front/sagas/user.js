@@ -23,7 +23,7 @@ import {
   REGISTER_SUCCESS,
 } from '../reducers/types';
 import axios from 'axios';
-import Router, { useRouter } from 'next/router';
+import Router from 'next/router';
 //회원가입
 function registerAPI(data) {
   return axios.post('/user/register', data);
@@ -169,7 +169,7 @@ function* editPassword(action) {
 }
 
 function* watchemailAuth() {
-  yield takeLatest(EMAIL_AUTH_REQUEST, emailAuth);
+  yield takeLatest(EMAIL_AUTH_REQUEST, emailAuth); //takeLatest 다수의 요청이 들어온다면 가장 첫번째 요청만을 수행함
 }
 function* watchEditPassword() {
   yield takeLatest(EDIT_PASSWORD_REQUEST, editPassword);

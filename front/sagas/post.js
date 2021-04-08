@@ -231,6 +231,7 @@ function* unlikePost(action) {
 }
 function* watchlikePost() {
   yield takeEvery(LIKE_POST_REQUEST, likePost);
+  //takeEvery: 좋아요 기능이기 때문 모든 (좋아요)요청을 handle 한다.
 }
 function* watchunlikePost() {
   yield takeEvery(UNLIKE_POST_REQUEST, unlikePost);

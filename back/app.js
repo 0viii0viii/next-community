@@ -42,7 +42,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(
   cors({
-    origin: ['http://localhost:3000', 'gunners88.com', 'http://3.36.74.84'],
+    origin: ['http://localhost:3000', 'gunners88.com', 'http://3.36.74.84'], //프론트 ip cors적용
     credentials: true, // 쿠키 전달하기 위함 ->saga index에 withCredential:true적용
   })
 );

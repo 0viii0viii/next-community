@@ -69,6 +69,6 @@ app.use('/category', categoryRouter);
 app.use('/auth', authRouter);
 app.use('/email', emailRouter);
 
-app.listen(5000, () => {
+app.listen(80, () => {
   console.log('실행완료');
 });

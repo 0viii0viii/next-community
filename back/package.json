@@ -23,13 +23,18 @@
     "passport-kakao": "^1.0.1",
     "passport-local": "^1.0.0",
     "path": "^0.12.7",
+    "pm2": "^4.5.6",
     "sequelize": "^6.5.0",
     "sequelize-cli": "^6.2.0"
   },
   "devDependencies": {},
   "scripts": {
     "dev": "nodemon app",
+<<<<<<< Updated upstream
     "start": "cross-env NODE_ENV=production pm2 start app.js"
+=======
+    "start": "pm2 start app.js"
+>>>>>>> Stashed changes
   },
   "author": "",
   "license": "ISC"

@@ -30,11 +30,7 @@
   "devDependencies": {},
   "scripts": {
     "dev": "nodemon app",
-<<<<<<< Updated upstream
     "start": "cross-env NODE_ENV=production pm2 start app.js"
-=======
-    "start": "pm2 start app.js"
->>>>>>> Stashed changes
   },
   "author": "",
   "license": "ISC"

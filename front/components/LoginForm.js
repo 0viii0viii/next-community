@@ -38,7 +38,7 @@ const LoginForm = () => {
             <Link href="/">
               <h3>홈으로 가기</h3>
             </Link>
-            <KakaoLogin href={`${serverUrl}/auth/kakao}`}>
+            <KakaoLogin href={`${serverUrl}/auth/kakao`}>
               카카오톡으로 로그인
             </KakaoLogin>
             <Divider>Or</Divider>

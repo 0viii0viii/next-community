@@ -42,7 +42,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(
   cors({
-    origin: ['http://localhost:3000', 'gunners88.com', 'http://3.36.74.84'], //프론트 ip cors적용
+    origin: ['http://localhost:3000'],
     credentials: true, // 쿠키 전달하기 위함 ->saga index에 withCredential:true적용
   })
 );
@@ -69,6 +69,6 @@ app.use('/category', categoryRouter);
 app.use('/auth', authRouter);
 app.use('/email', emailRouter);
 
-app.listen(80, () => {
+app.listen(5000, () => {
   console.log('실행완료');
 });
